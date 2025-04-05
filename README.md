@@ -1,11 +1,27 @@
 # hpr
 
 ## **Str**
-To handle strings. Usage: `Str.*`.
+To handle strings. The main method is `Str.from`.
+
+### Type Definition
+
+`StringInput` is `any` value that can be converted to string.
+
+Usage: `Str.*`
+
 ```ts
 import { Str } from 'hpr'
-const uri = Str.slug('My first group')
-// uri = "my-first-group"
+
+Str.from(2000); // "2000"
+Str.from([1, 2, 3, 4]); // "1,2,3,4"
+Str.from({ variant: "outline" }); // "{\"variant\": \"outline\"}"
+```
+
+### from
+Convert the given input to a string.
+
+```ts
+export function from(input: StringInput): string
 ```
 
 ### after
@@ -125,13 +141,6 @@ Escape special characters in a string to be safely used in a regular expression.
 
 ```ts
 export function escapeRegExp(input: StringInput): string
-```
-
-### from
-Convert the given input to a string.
-
-```ts
-export function from(input: StringInput): string
 ```
 
 ### is
