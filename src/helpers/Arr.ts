@@ -1,20 +1,4 @@
-export type ArrayInput = any
-
-export function isArray(input: ArrayInput) {
-    return Array.isArray(input);
-}
-
-export function from<T = any>(input: ArrayInput): T[] {
-    if (Array.isArray(input)) {
-        return input;
-    }
-
-    if (input === null || input === undefined) {
-        return [];
-    }
-
-    return [input];
-}
+export type ArrayInput = any;
 
 export function accessible(input: ArrayInput): boolean {
   const arr = from(input);
@@ -34,22 +18,17 @@ export function collapse<T = any>(input: ArrayInput): T[] {
 
 export function crossJoin<T = any>(input: ArrayInput, ...arrays: any[]): T[][] {
   const arr = from(input);
-  return arr.reduce(
-    (acc, val) => acc.flatMap((x: T[]) => arrays.map((y) => [x, ...y])),
-    [[...arr]]
-  );
+  return arr.reduce((acc, val) => acc.flatMap((x: T[]) => arrays.map((y) => [x, ...y])), [[...arr]]);
 }
 
 export function divide<T = any>(input: ArrayInput, size: number): T[][] {
   const arr = from(input);
-  return Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
-    arr.slice(i * size, i * size + size)
-  );
+  return Array.from({ length: Math.ceil(arr.length / size) }, (_, i) => arr.slice(i * size, i * size + size));
 }
 
 export function dot(input: ArrayInput, key: string): any {
   const arr = from(input);
-  return arr.reduce((acc, cur) => acc && acc[cur] ? acc[cur] : undefined, key.split('.'));
+  return arr.reduce((acc, cur) => (acc && acc[cur] ? acc[cur] : undefined), key.split('.'));
 }
 
 export function except<T = any>(input: ArrayInput, keys: string[]): T[] {
@@ -78,6 +57,18 @@ export function forget(input: ArrayInput, key: number): any[] {
   return arr;
 }
 
+export function from<T = any>(input: ArrayInput): T[] {
+  if (Array.isArray(input)) {
+    return input;
+  }
+
+  if (input === null || input === undefined) {
+    return [];
+  }
+
+  return [input];
+}
+
 export function get<T = any>(input: ArrayInput, key: number): T | undefined {
   const arr = from(input);
   return arr[key];
@@ -95,6 +86,10 @@ export function hasAny(input: ArrayInput, keys: string[]): boolean {
     const index = Number(key); // Converte a chave para número
     return !isNaN(index) && arr[index] !== undefined;
   });
+}
+
+export function isArray(input: ArrayInput) {
+  return Array.isArray(input);
 }
 
 export function isAssoc(input: ArrayInput): boolean {
@@ -135,21 +130,24 @@ export function mapSpread<T = any, R = any>(input: ArrayInput, callback: (...arg
   return arr.map((item, index, array) => callback(...array));
 }
 
-export function mapWithKeys<T = any, K extends string | number | symbol = string>(
+export function mapWithKeys<T = any, K extends number | string | symbol = string>(
   input: ArrayInput,
-  callback: (value: T, index: number) => { key: K; value: any }
+  callback: (value: T, index: number) => { key: K; value: any },
 ): Record<K, any> {
   const arr = from(input);
-  return arr.reduce((acc, item, index) => {
-    const { key, value } = callback(item, index);
-    acc[key] = value;
-    return acc;
-  }, {} as Record<K, any>);
+  return arr.reduce(
+    (acc, item, index) => {
+      const { key, value } = callback(item, index);
+      acc[key] = value;
+      return acc;
+    },
+    {} as Record<K, any>,
+  );
 }
 
 export function only<T = any>(input: ArrayInput, keys: string[]): T[] {
   const arr = from(input);
-  return arr.filter(item => keys.includes(item));
+  return arr.filter((item) => keys.includes(item));
 }
 
 export function partition<T = any>(input: ArrayInput, callback: (value: T) => boolean): [T[], T[]] {
@@ -163,13 +161,13 @@ export function partition<T = any>(input: ArrayInput, callback: (value: T) => bo
       }
       return acc;
     },
-    [[], []]
+    [[], []],
   );
 }
 
 export function pluck<T = any>(input: ArrayInput, key: string): T[] {
   const arr = from(input);
-  return arr.map(item => item[key]);
+  return arr.map((item) => item[key]);
 }
 
 export function prepend<T = any>(input: ArrayInput, value: any): T[] {
@@ -258,7 +256,7 @@ export function toCssClasses(input: ArrayInput): string {
 
 export function toCssStyles(input: ArrayInput): string {
   const arr = from(input);
-  return arr.map(style => `${style}: ${style}`).join('; ');
+  return arr.map((style) => `${style}: ${style}`).join('; ');
 }
 
 export function undot(input: ArrayInput): Record<string, boolean> {
@@ -276,7 +274,7 @@ export function where<T = any>(input: ArrayInput, callback: (value: T) => boolea
 
 export function whereNotNull<T = any>(input: ArrayInput): T[] {
   const arr = from(input);
-  return arr.filter(item => item !== null && item !== undefined);
+  return arr.filter((item) => item !== null && item !== undefined);
 }
 
 export function wrap<T = any>(input: ArrayInput): T[] {

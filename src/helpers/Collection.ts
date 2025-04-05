@@ -9,7 +9,7 @@ export class Collection<T> {
     return new Collection(items);
   }
 
-    after(value: T): T[] {
+  after(value: T): T[] {
     const index = this.items.indexOf(value);
     return index !== -1 ? this.items.slice(index + 1) : [];
   }
@@ -33,12 +33,12 @@ export class Collection<T> {
 
   chunk(size: number): T[][] {
     return Array.from({ length: Math.ceil(this.items.length / size) }, (_, i) =>
-      this.items.slice(i * size, i * size + size)
+      this.items.slice(i * size, i * size + size),
     );
   }
 
   chunkWhile(predicate: (value: T, index: number) => boolean): T[][] {
-    let result: T[][] = [];
+    const result: T[][] = [];
     let chunk: T[] = [];
     for (let i = 0; i < this.items.length; i++) {
       if (predicate(this.items[i], i)) {
@@ -93,10 +93,7 @@ export class Collection<T> {
   }
 
   crossJoin(...arrays: T[]): T[][] {
-    return this.items.reduce(
-      (acc, val) => acc.flatMap(x => arrays.map(y => [x, ...y])),
-      [[...this.items]]
-    );
+    return this.items.reduce((acc, val) => acc.flatMap((x) => arrays.map((y) => [x, ...y])), [[...this.items]]);
   }
 
   dd(): void {
@@ -105,11 +102,11 @@ export class Collection<T> {
   }
 
   diff(arr: T[]): T[] {
-    return this.items.filter(item => !arr.includes(item));
+    return this.items.filter((item) => !arr.includes(item));
   }
 
   diffAssoc(arr: T[]): T[] {
-    return this.items.filter(item => !Object.keys(arr).includes(item as any));
+    return this.items.filter((item) => !Object.keys(arr).includes(item as any));
   }
 
   diffKeys(keys: string[]): T[] {
@@ -158,7 +155,7 @@ export class Collection<T> {
   }
 
   except(keys: string[]): Collection<T> {
-    return new Collection(this.items.filter(item => !keys.includes(item as any)));
+    return new Collection(this.items.filter((item) => !keys.includes(item as any)));
   }
 
   filter(callback: (item: T, index: number) => boolean): Collection<T> {
@@ -217,7 +214,7 @@ export class Collection<T> {
   }
 
   hasAny(values: T[]): boolean {
-    return values.some(value => this.contains(value));
+    return values.some((value) => this.contains(value));
   }
 
   implode(separator: string): string {
@@ -225,23 +222,23 @@ export class Collection<T> {
   }
 
   intersect(arr: T[]): T[] {
-    return this.items.filter(item => arr.includes(item));
-  }
-
-  intersectUsing(arr: T[], comparator: (a: T, b: T) => boolean): T[] {
-    return this.items.filter(item => arr.some(el => comparator(item, el)));
+    return this.items.filter((item) => arr.includes(item));
   }
 
   intersectAssoc(arr: T[]): T[] {
-    return Object.keys(arr).filter(key => this.items.includes(arr[key]));
+    return Object.keys(arr).filter((key) => this.items.includes(arr[key]));
   }
 
   intersectAssocUsing(arr: T[], comparator: (a: T, b: T) => boolean): T[] {
-    return Object.keys(arr).filter(key => this.items.some(item => comparator(item, arr[key])));
+    return Object.keys(arr).filter((key) => this.items.some((item) => comparator(item, arr[key])));
   }
 
   intersectByKeys(keys: string[]): T[] {
     return this.items.filter((_, index) => keys.includes(index as any));
+  }
+
+  intersectUsing(arr: T[], comparator: (a: T, b: T) => boolean): T[] {
+    return this.items.filter((item) => arr.some((el) => comparator(item, el)));
   }
 
   isEmpty(): boolean {
@@ -284,7 +281,7 @@ export class Collection<T> {
   }
 
   mapInto<U>(constructor: { new (): U }): Collection<U> {
-    return new Collection(this.items.map(item => new constructor(item)));
+    return new Collection(this.items.map((item) => new constructor(item)));
   }
 
   mapSpread(callback: (item: T) => any): Collection<T> {
@@ -300,39 +297,45 @@ export class Collection<T> {
     }, {});
   }
 
-  mapWithKeys<K extends string | number>(callback: (item: T, index: number) => { key: K, value: T }): Record<K, T> {
-    return this.items.reduce((acc, item, index) => {
-      const { key, value } = callback(item, index);
-      acc[key] = value;
-      return acc;
-    }, {} as Record<K, T>);
+  mapWithKeys<K extends number | string>(callback: (item: T, index: number) => { key: K; value: T }): Record<K, T> {
+    return this.items.reduce(
+      (acc, item, index) => {
+        const { key, value } = callback(item, index);
+        acc[key] = value;
+        return acc;
+      },
+      {} as Record<K, T>,
+    );
   }
 
   max(): T | undefined {
-    return Math.max(...this.items as any);
+    return Math.max(...(this.items as any));
   }
 
   median(): number {
-    const sorted = [...this.items].sort((a, b) => a < b ? -1 : 1);
+    const sorted = [...this.items].sort((a, b) => (a < b ? -1 : 1));
     const middle = Math.floor(sorted.length / 2);
     return sorted.length % 2 !== 0 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
   }
 
   min(): T | undefined {
-    return Math.min(...this.items as any);
+    return Math.min(...(this.items as any));
   }
 
   mode(): T[] {
-    const countMap = this.items.reduce((acc, item) => {
-      acc[item] = (acc[item] || 0) + 1;
-      return acc;
-    }, {} as Record<T, number>);
+    const countMap = this.items.reduce(
+      (acc, item) => {
+        acc[item] = (acc[item] || 0) + 1;
+        return acc;
+      },
+      {} as Record<T, number>,
+    );
     const maxCount = Math.max(...Object.values(countMap));
-    return this.items.filter(item => countMap[item] === maxCount);
+    return this.items.filter((item) => countMap[item] === maxCount);
   }
 
   multiply(factor: number): T[] {
-    return this.items.map(item => item as any * factor);
+    return this.items.map((item) => (item as any) * factor);
   }
 
   nth(n: number): T | undefined {
@@ -350,14 +353,17 @@ export class Collection<T> {
   }
 
   partition(callback: (item: T) => boolean): [T[], T[]] {
-    return this.items.reduce((acc, item) => {
-      acc[callback(item) ? 0 : 1].push(item);
-      return acc;
-    }, [[], []]);
+    return this.items.reduce(
+      (acc, item) => {
+        acc[callback(item) ? 0 : 1].push(item);
+        return acc;
+      },
+      [[], []],
+    );
   }
 
   percentage(value: T): number {
-    return (value as any / this.sum()) * 100;
+    return ((value as any) / this.sum()) * 100;
   }
 
   pipe(callback: (items: T[]) => T[]): T[] {
@@ -403,7 +409,7 @@ export class Collection<T> {
   }
 
   range(start: number, end: number): Collection<number> {
-    return new Collection([...Array(end - start + 1).keys()].map(i => start + i));
+    return new Collection([...Array(end - start + 1).keys()].map((i) => start + i));
   }
 
   reduce<U>(callback: (accumulator: U, item: T) => U, initialValue: U): U {
@@ -415,17 +421,19 @@ export class Collection<T> {
   }
 
   reject(callback: (item: T) => boolean): Collection<T> {
-    return new Collection(this.items.filter(item => !callback(item)));
+    return new Collection(this.items.filter((item) => !callback(item)));
   }
 
   replace(search: T, replace: T): Collection<T> {
-    return new Collection(this.items.map(item => (item === search ? replace : item)));
+    return new Collection(this.items.map((item) => (item === search ? replace : item)));
   }
 
   replaceRecursive(search: T, replace: T): Collection<T> {
-    return new Collection(this.items.map(item =>
-      Array.isArray(item) ? item.replaceRecursive(search, replace) : item === search ? replace : item
-    ));
+    return new Collection(
+      this.items.map((item) =>
+        Array.isArray(item) ? item.replaceRecursive(search, replace) : item === search ? replace : item,
+      ),
+    );
   }
 
   reverse(): Collection<T> {
@@ -463,7 +471,7 @@ export class Collection<T> {
   }
 
   skipWhile(callback: (item: T) => boolean): Collection<T> {
-    const index = this.items.findIndex(item => !callback(item));
+    const index = this.items.findIndex((item) => !callback(item));
     return new Collection(this.items.slice(index));
   }
 
@@ -472,7 +480,8 @@ export class Collection<T> {
   }
 
   sliding(windowSize: number): T[][] {
-    return this.items.slice(0, this.count() - windowSize + 1)
+    return this.items
+      .slice(0, this.count() - windowSize + 1)
       .map((_, index) => this.items.slice(index, index + windowSize));
   }
 
@@ -502,15 +511,28 @@ export class Collection<T> {
   }
 
   sortKeys(): Collection<T> {
-    return new Collection(Object.keys(this.items).sort().map(key => this.items[key]));
+    return new Collection(
+      Object.keys(this.items)
+        .sort()
+        .map((key) => this.items[key]),
+    );
   }
 
   sortKeysDesc(): Collection<T> {
-    return new Collection(Object.keys(this.items).sort().reverse().map(key => this.items[key]));
+    return new Collection(
+      Object.keys(this.items)
+        .sort()
+        .reverse()
+        .map((key) => this.items[key]),
+    );
   }
 
   sortKeysUsing(compare: (a: T, b: T) => number): Collection<T> {
-    return new Collection(Object.keys(this.items).sort(compare).map(key => this.items[key]));
+    return new Collection(
+      Object.keys(this.items)
+        .sort(compare)
+        .map((key) => this.items[key]),
+    );
   }
 
   splice(start: number, deleteCount: number, ...items: T[]): T[] {
@@ -540,7 +562,7 @@ export class Collection<T> {
   }
 
   takeWhile(callback: (item: T) => boolean): Collection<T> {
-    const index = this.items.findIndex(item => !callback(item));
+    const index = this.items.findIndex((item) => !callback(item));
     return new Collection(this.items.slice(0, index));
   }
 
@@ -573,7 +595,7 @@ export class Collection<T> {
   }
 
   union(arr: T[]): Collection<T> {
-    return new Collection([...new Set([...this.items, ...arr])]);
+    return new Collection([...new Set([...arr, ...this.items])]);
   }
 
   unique(): Collection<T> {
@@ -638,44 +660,44 @@ export class Collection<T> {
     return new Collection(this.items.filter(callback));
   }
 
-  whereStrict(callback: (item: T) => boolean): Collection<T> {
-    return new Collection(this.items.filter(callback));
-  }
-
   whereBetween(min: T, max: T): Collection<T> {
-    return new Collection(this.items.filter(item => item >= min && item <= max));
+    return new Collection(this.items.filter((item) => item >= min && item <= max));
   }
 
   whereIn(values: T[]): Collection<T> {
-    return new Collection(this.items.filter(item => values.includes(item)));
-  }
-
-  whereInStrict(values: T[]): Collection<T> {
-    return new Collection(this.items.filter(item => values.includes(item)));
+    return new Collection(this.items.filter((item) => values.includes(item)));
   }
 
   whereInstanceOf(type: any): Collection<T> {
-    return new Collection(this.items.filter(item => item instanceof type));
+    return new Collection(this.items.filter((item) => item instanceof type));
+  }
+
+  whereInStrict(values: T[]): Collection<T> {
+    return new Collection(this.items.filter((item) => values.includes(item)));
   }
 
   whereNotBetween(min: T, max: T): Collection<T> {
-    return new Collection(this.items.filter(item => item < min || item > max));
+    return new Collection(this.items.filter((item) => item < min || item > max));
   }
 
   whereNotIn(values: T[]): Collection<T> {
-    return new Collection(this.items.filter(item => !values.includes(item)));
+    return new Collection(this.items.filter((item) => !values.includes(item)));
   }
 
   whereNotInStrict(values: T[]): Collection<T> {
-    return new Collection(this.items.filter(item => !values.includes(item)));
+    return new Collection(this.items.filter((item) => !values.includes(item)));
   }
 
   whereNotNull(): Collection<T> {
-    return new Collection(this.items.filter(item => item != null));
+    return new Collection(this.items.filter((item) => item != null));
   }
 
   whereNull(): Collection<T> {
-    return new Collection(this.items.filter(item => item == null));
+    return new Collection(this.items.filter((item) => item == null));
+  }
+
+  whereStrict(callback: (item: T) => boolean): Collection<T> {
+    return new Collection(this.items.filter(callback));
   }
 
   wrap(): Collection<T[]> {
@@ -685,7 +707,7 @@ export class Collection<T> {
   zip(...arrays: T[][]): T[][] {
     return arrays.reduce(
       (acc, array) => acc.map((tuple, i) => [...tuple, array[i]]),
-      this.items.map(item => [item])
+      this.items.map((item) => [item]),
     );
   }
 }
