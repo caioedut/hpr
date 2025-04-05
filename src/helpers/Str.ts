@@ -232,14 +232,6 @@ export function escapeRegExp(input: StringInput) {
 }
 
 /**
- * Cap a string with a single instance of a given value.
- */
-export function finish(input: StringInput, cap: StringInput) {
-  const suffix = from(cap);
-  return from(input).replace(new RegExp(`(?:${escapeRegExp(suffix)})+$`, 'u'), '') + suffix;
-}
-
-/**
  * Convert the given input to a string.
  *
  * This function ensures that the input is cast to a string, whether it's
@@ -263,16 +255,6 @@ export function from(input: StringInput) {
   return String(input);
 }
 
-// TODO
-// /**
-//  * Extracts an excerpt from text that matches the first instance of a phrase.
-//  */
-// export function excerpt(
-//   input: StringInput,
-//   phrase: StringInput = '',
-//   options: StringExcerptOptions = {}
-// ) {}
-
 /**
  * Determine if a given string matches a given pattern.
  */
@@ -285,6 +267,16 @@ export function is(input: StringInput, pattern: RegExp | RegExp[]) {
 
   return false;
 }
+
+// TODO
+// /**
+//  * Extracts an excerpt from text that matches the first instance of a phrase.
+//  */
+// export function excerpt(
+//   input: StringInput,
+//   phrase: StringInput = '',
+//   options: StringExcerptOptions = {}
+// ) {}
 
 /**
  * Determine if a given string is 7 bit ASCII.
@@ -377,6 +369,20 @@ export function limit(input: StringInput, limit = 100, end = '...', preserveWord
 }
 
 /**
+ * Limit the number of words in a string.
+ */
+export function limitWords(input: StringInput, words = 100, end = '...') {
+  const str = from(input);
+
+  // Divida a string em palavras e pegue as primeiras `words` palavras
+  const wordsArray = str.split(/\s+/);
+  const truncated = wordsArray.slice(0, words).join(' ');
+
+  // Se a string original for maior que o truncado, adicione o `end`
+  return truncated.length < str.length ? truncated + end : truncated;
+}
+
+/**
  * Convert the given string to lowercase.
  */
 export function lower(input: StringInput) {
@@ -420,7 +426,7 @@ export function mask(input: StringInput, character: string, index: number, lengt
 /**
  * Pad both sides of a string with another.
  */
-export function padBoth(input: StringInput, length: number, pad = ' ') {
+export function pad(input: StringInput, length: number, pad = ' ') {
   const str = from(input);
   const short = Math.max(0, length - str.length);
   const left = Math.floor(short / 2);
@@ -472,7 +478,7 @@ export function password(length = 32, options: StringPasswordOptions = {}) {
 /**
  * Get the plural form of an word.
  */
-export function plural(input: StringInput, count: number, plural?: string) {
+export function plural(input: StringInput, count = 2, plural?: string) {
   input = from(input);
   if (!input) return '';
   plural = plural ?? `${input}s`.replace(/ss$/, 's');
@@ -484,6 +490,14 @@ export function plural(input: StringInput, count: number, plural?: string) {
  */
 export function position(haystack: StringInput, needle: StringInput, offset = 0) {
   return from(haystack).indexOf(from(needle), offset);
+}
+
+/**
+ * Begin a string with a single instance of a given value.
+ */
+export function prefix(input: StringInput, prefix: StringInput) {
+  const pattern = escapeRegExp(prefix);
+  return prefix + from(input).replace(new RegExp(`^(?:${pattern})+`), '');
 }
 
 /**
@@ -638,14 +652,6 @@ export function squish(input: StringInput) {
 }
 
 /**
- * Begin a string with a single instance of a given value.
- */
-export function start(input: StringInput, prefix: StringInput) {
-  const pattern = escapeRegExp(prefix);
-  return prefix + from(input).replace(new RegExp(`^(?:${pattern})+`), '');
-}
-
-/**
  * Determine if a given string starts with a given substring.
  */
 export function startsWith(input: StringInput, target: StringInput) {
@@ -704,6 +710,14 @@ export function substrReplace(input: StringInput, start: number, length: number,
   const endIndex = startIndex + length;
 
   return str.slice(0, startIndex) + from(replacement) + str.slice(endIndex);
+}
+
+/**
+ * Cap a string with a single instance of a given value.
+ */
+export function suffix(input: StringInput, cap: StringInput) {
+  const suffix = from(cap);
+  return from(input).replace(new RegExp(`(?:${escapeRegExp(suffix)})+$`, 'u'), '') + suffix;
 }
 
 /**
@@ -872,20 +886,6 @@ export function wordCount(input: StringInput) {
   const pattern = /([A-Za-z0-9]+([-_][A-Za-z0-9])?)+\b/g;
   const words = ascii(input).match(pattern);
   return words ? words.length : 0;
-}
-
-/**
- * Limit the number of words in a string.
- */
-export function words(input: StringInput, words = 100, end = '...') {
-  const str = from(input);
-
-  // Divida a string em palavras e pegue as primeiras `words` palavras
-  const wordsArray = str.split(/\s+/);
-  const truncated = wordsArray.slice(0, words).join(' ');
-
-  // Se a string original for maior que o truncado, adicione o `end`
-  return truncated.length < str.length ? truncated + end : truncated;
 }
 
 /**

@@ -168,6 +168,33 @@ describe('Str', () => {
     });
   });
 
+  describe('beforeLast function', () => {
+    it('should return the substring before the last occurrence of the search string', () => {
+      const result = Str.beforeLast('hello world hello again', 'hello');
+      expect(result).toBe('hello world ');
+    });
+
+    it('should return the original string if the search string is not found', () => {
+      const result = Str.beforeLast('hello world', 'abc');
+      expect(result).toBe('hello world');
+    });
+
+    it('should return the portion before the last occurrence when the search string is at the end', () => {
+      const result = Str.beforeLast('hello world', 'world');
+      expect(result).toBe('hello ');
+    });
+
+    it('should handle empty strings', () => {
+      const result = Str.beforeLast('', 'hello');
+      expect(result).toBe('');
+    });
+
+    it('should handle cases where the search string is an empty string', () => {
+      const result = Str.beforeLast('hello world', '');
+      expect(result).toBe('hello world');
+    });
+  });
+
   describe('between function', () => {
     it('should return the substring between the start and end values', () => {
       const result = Str.between('hello world again', 'hello', 'again');
@@ -195,30 +222,37 @@ describe('Str', () => {
     });
   });
 
-  describe('beforeLast function', () => {
-    it('should return the substring before the last occurrence of the search string', () => {
-      const result = Str.beforeLast('hello world hello again', 'hello');
-      expect(result).toBe('hello world ');
+  describe('betweenLast', () => {
+    it('should return the portion between the last occurrence of two values', () => {
+      const result = Str.betweenLast('abc start middle end last', 'start', 'end');
+      expect(result).toBe(' middle ');
     });
 
-    it('should return the original string if the search string is not found', () => {
-      const result = Str.beforeLast('hello world', 'abc');
-      expect(result).toBe('hello world');
-    });
-
-    it('should return the portion before the last occurrence when the search string is at the end', () => {
-      const result = Str.beforeLast('hello world', 'world');
-      expect(result).toBe('hello ');
-    });
-
-    it('should handle empty strings', () => {
-      const result = Str.beforeLast('', 'hello');
+    it('should return an empty string if the start value is not found', () => {
+      const result = Str.betweenLast('abc start middle end last', 'notFound', 'end');
       expect(result).toBe('');
     });
 
-    it('should handle cases where the search string is an empty string', () => {
-      const result = Str.beforeLast('hello world', '');
-      expect(result).toBe('hello world');
+    it('should return an empty string if the end value is not found', () => {
+      const result = Str.betweenLast('abc start middle end last', 'start', 'notFound');
+      expect(result).toBe('');
+    });
+
+    it('should return an empty string if the start index is greater than or equal to the end index', () => {
+      const result = Str.betweenLast('abc start middle end start', 'start', 'end');
+      expect(result).toBe('');
+    });
+
+    it('should return the entire string if start or end is empty', () => {
+      const result1 = Str.betweenLast('abc start middle end', '', 'end');
+      const result2 = Str.betweenLast('abc start middle end', 'start', '');
+      expect(result1).toBe('abc start middle end');
+      expect(result2).toBe('abc start middle end');
+    });
+
+    it('should return an empty string if start and end do not exist in the string', () => {
+      const result = Str.betweenLast('abc start middle end last', 'begin', 'finish');
+      expect(result).toBe('');
     });
   });
 
@@ -537,34 +571,34 @@ describe('Str', () => {
     });
   });
 
-  describe('finish function', () => {
+  describe('suffix function', () => {
     it('should append the suffix if not present at the end', () => {
-      const result = Str.finish('hello', '!');
+      const result = Str.suffix('hello', '!');
       expect(result).toBe('hello!');
     });
 
     it('should not append the suffix if it is already present at the end', () => {
-      const result = Str.finish('hello!', '!');
+      const result = Str.suffix('hello!', '!');
       expect(result).toBe('hello!');
     });
 
     it('should remove extra instances of the suffix at the end', () => {
-      const result = Str.finish('hello!!!', '!');
+      const result = Str.suffix('hello!!!', '!');
       expect(result).toBe('hello!');
     });
 
     it('should handle an empty string', () => {
-      const result = Str.finish('', '!');
+      const result = Str.suffix('', '!');
       expect(result).toBe('!');
     });
 
     it('should handle an empty suffix', () => {
-      const result = Str.finish('hello', '');
+      const result = Str.suffix('hello', '');
       expect(result).toBe('hello');
     });
 
     it('should handle when the input string is already equal to the suffix', () => {
-      const result = Str.finish('!', '!');
+      const result = Str.suffix('!', '!');
       expect(result).toBe('!');
     });
   });
@@ -792,6 +826,20 @@ describe('Str', () => {
     });
   });
 
+  describe('limitWords function', () => {
+    it('should limit the number of words correctly', () => {
+      expect(Str.limitWords('Hello world this is a test', 3)).toBe('Hello world this...');
+    });
+
+    it('should add ellipsis when truncating', () => {
+      expect(Str.limitWords('This is a long string that needs truncation', 5)).toBe('This is a long string...');
+    });
+
+    it('should not truncate if the string is short enough', () => {
+      expect(Str.limitWords('Short string', 10)).toBe('Short string');
+    });
+  });
+
   describe('lower function', () => {
     it('should convert all characters to lowercase', () => {
       const result = Str.lower('Hello World');
@@ -885,24 +933,24 @@ describe('Str', () => {
     });
   });
 
-  describe('padBoth function', () => {
+  describe('pad function', () => {
     it('should pad both sides of a string with spaces', () => {
-      const result = Str.padBoth('Hello', 10);
+      const result = Str.pad('Hello', 10);
       expect(result).toBe('  Hello   ');
     });
 
     it('should pad both sides of a string with a custom pad character', () => {
-      const result = Str.padBoth('Hello', 10, '*');
+      const result = Str.pad('Hello', 10, '*');
       expect(result).toBe('**Hello***');
     });
 
     it('should return the original string if no padding is needed', () => {
-      const result = Str.padBoth('Hello', 5);
+      const result = Str.pad('Hello', 5);
       expect(result).toBe('Hello');
     });
 
     it('should pad both sides of a string with uneven padding', () => {
-      const result = Str.padBoth('Hello', 9, '*');
+      const result = Str.pad('Hello', 9, '*');
       expect(result).toBe('**Hello**');
     });
   });
@@ -1295,19 +1343,19 @@ describe('Str', () => {
     });
   });
 
-  describe('start function', () => {
+  describe('prefix function', () => {
     it('should add the prefix to the start of the string', () => {
-      const result = Str.start('World', 'Hello ');
+      const result = Str.prefix('World', 'Hello ');
       expect(result).toBe('Hello World');
     });
 
     it('should not add the prefix if it already starts with it', () => {
-      const result = Str.start('Hello World', 'Hello ');
+      const result = Str.prefix('Hello World', 'Hello ');
       expect(result).toBe('Hello World');
     });
 
     it('should handle an empty string', () => {
-      const result = Str.start('', 'Hello ');
+      const result = Str.prefix('', 'Hello ');
       expect(result).toBe('Hello ');
     });
   });
@@ -1681,20 +1729,6 @@ describe('Str', () => {
     it('should not wrap if the string is short enough', () => {
       const result = Str.wordWrap('Short string', 20);
       expect(result).toBe('Short string');
-    });
-  });
-
-  describe('words function', () => {
-    it('should limit the number of words correctly', () => {
-      expect(Str.words('Hello world this is a test', 3)).toBe('Hello world this...');
-    });
-
-    it('should add ellipsis when truncating', () => {
-      expect(Str.words('This is a long string that needs truncation', 5)).toBe('This is a long string...');
-    });
-
-    it('should not truncate if the string is short enough', () => {
-      expect(Str.words('Short string', 10)).toBe('Short string');
     });
   });
 
