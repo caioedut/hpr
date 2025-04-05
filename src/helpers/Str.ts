@@ -1,49 +1,12 @@
-import * as Arr from "../../src/helpers/Arr";
+import * as Arr from '../../src/helpers/Arr';
 
-export type StringInput = any
+export type StringInput = any;
 
 export interface StringPasswordOptions {
   letters?: boolean;
   numbers?: boolean;
-  symbols?: boolean;
   spaces?: boolean;
-}
-
-export interface StringExcerptOptions {
-  radius?: number
-  omission?: string
-}
-
-/**
- * Check if the input is a string.
- */
-export function isString(input: StringInput) {
-  return typeof input === 'string';
-}
-
-/**
- * Convert the given input to a string.
- *
- * This function ensures that the input is cast to a string, whether it's
- * a string, number, or any other type. If the input is already a string,
- * it returns it as-is. If the input is a non-string type, it is converted
- * to its string representation.
- */
-export function from(input: StringInput) {
-  if (input === null || input === undefined) return '';
-
-  if (Array.isArray(input)) {
-    return input.toString();
-  }
-
-  if (typeof input === 'object') {
-    try {
-      return JSON.stringify(input);
-    } catch {
-    }
-  }
-
-  return String(input);
+  symbols?: boolean;
 }
 
 /**
@@ -137,21 +100,21 @@ export function between(input: StringInput, start: StringInput, end: StringInput
 export function betweenLast(input: StringInput, start: StringInput, end: StringInput) {
   const str = from(input);
 
-    // Verifica se start ou end estão vazios e retorna a string inteira, ou o comportamento desejado
-    if (!start || !end) {
-      return str;
-    }
+  // Verifica se start ou end estão vazios e retorna a string inteira, ou o comportamento desejado
+  if (!start || !end) {
+    return str;
+  }
 
-    // Verifica se o start ou o end não existem na string
-    const startIndex = str.lastIndexOf(from(start));
-    const endIndex = str.lastIndexOf(from(end));
+  // Verifica se o start ou o end não existem na string
+  const startIndex = str.lastIndexOf(from(start));
+  const endIndex = str.lastIndexOf(from(end));
 
-    // Se algum dos valores não for encontrado, retorna string vazia
-    if (startIndex === -1 || endIndex === -1 || startIndex >= endIndex) {
-      return '';
-    }
+  // Se algum dos valores não for encontrado, retorna string vazia
+  if (startIndex === -1 || endIndex === -1 || startIndex >= endIndex) {
+    return '';
+  }
 
-    return afterLast(beforeLast(str, end), start);
+  return afterLast(beforeLast(str, end), start);
 }
 
 /**
@@ -159,8 +122,8 @@ export function betweenLast(input: StringInput, start: StringInput, end: StringI
  */
 export function camel(input: StringInput) {
   return from(input)
-    .replace(/[-_\s]+(.)?/g, (_, c) => c ? c.toUpperCase() : '')
-    .replace(/^[A-Z]/, c => c.toLowerCase());
+    .replace(/[-_\s]+(.)?/g, (_, c) => (c ? c.toUpperCase() : ''))
+    .replace(/^[A-Z]/, (c) => c.toLowerCase());
 }
 
 /**
@@ -171,27 +134,10 @@ export function charAt(input: StringInput, index: number) {
 }
 
 /**
- * Remove the given string(s) if it exists at the start of the haystack.
- */
-export function chopStart(input: string, needle: StringInput | StringInput[]) {
-  const str = from(input)
-  const needles = Array.isArray(needle) ? needle : [needle];
-
-  for (const n of needles) {
-    const check = from(n);
-    if (str.startsWith(check)) {
-      return str.slice(check.length);
-    }
-  }
-
-  return str;
-}
-
-/**
  * Remove the given string(s) if it exists at the end of the haystack.
  */
 export function chopEnd(input: string, needle: StringInput | StringInput[]) {
-  const str = from(input)
+  const str = from(input);
   const needles = Array.isArray(needle) ? needle : [needle];
 
   for (const n of needles) {
@@ -205,21 +151,36 @@ export function chopEnd(input: string, needle: StringInput | StringInput[]) {
 }
 
 /**
+ * Remove the given string(s) if it exists at the start of the haystack.
+ */
+export function chopStart(input: string, needle: StringInput | StringInput[]) {
+  const str = from(input);
+  const needles = Array.isArray(needle) ? needle : [needle];
+
+  for (const n of needles) {
+    const check = from(n);
+    if (str.startsWith(check)) {
+      return str.slice(check.length);
+    }
+  }
+
+  return str;
+}
+
+/**
  * Determine if a given string contains a given substring.
  */
 export function contains(input: StringInput, needles: StringInput | StringInput[], ignoreCase = false) {
   const str = from(input);
   const values = Arr.from<string>(needles).map(from);
 
-  if (values.every((needle) => needle === "")) {
+  if (values.every((needle) => needle === '')) {
     return false;
   }
 
   const target = ignoreCase ? str.toLowerCase() : str;
 
-  return values.some(needle =>
-    target.includes(ignoreCase ? needle.toLowerCase() : needle)
-  );
+  return values.some((needle) => target.includes(ignoreCase ? needle.toLowerCase() : needle));
 }
 
 /**
@@ -229,22 +190,13 @@ export function containsAll(input: StringInput, needles: StringInput[], ignoreCa
   const str = from(input);
   const values = Arr.from<string>(needles).map(from);
 
-  if (values.some((needle) => needle === "")) {
+  if (values.some((needle) => needle === '')) {
     return false;
   }
 
   const target = ignoreCase ? str.toLowerCase() : str;
 
-  return values.every(needle =>
-    target.includes(ignoreCase ? needle.toLowerCase() : needle)
-  );
-}
-
-/**
- * Determine if a given string doesn't contain a given substring.
- */
-export function doesntContain(input: StringInput, needles: StringInput | StringInput[], ignoreCase = false) {
-  return !contains(input, needles, ignoreCase);
+  return values.every((needle) => target.includes(ignoreCase ? needle.toLowerCase() : needle));
 }
 
 /**
@@ -255,10 +207,17 @@ export function deduplicate(input: StringInput, character = ' ') {
 }
 
 /**
+ * Determine if a given string doesn't contain a given substring.
+ */
+export function doesntContain(input: StringInput, needles: StringInput | StringInput[], ignoreCase = false) {
+  return !contains(input, needles, ignoreCase);
+}
+
+/**
  * Determine if a given string ends with a given substring.
  */
 export function endsWith(input: StringInput, needles: StringInput | StringInput[]) {
-  return Arr.from(needles).some(needle => from(input).endsWith(from(needle)));
+  return Arr.from(needles).some((needle) => from(input).endsWith(from(needle)));
 }
 
 /**
@@ -272,6 +231,38 @@ export function escapeRegExp(input: StringInput) {
   return from(input).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+/**
+ * Cap a string with a single instance of a given value.
+ */
+export function finish(input: StringInput, cap: StringInput) {
+  const suffix = from(cap);
+  return from(input).replace(new RegExp(`(?:${escapeRegExp(suffix)})+$`, 'u'), '') + suffix;
+}
+
+/**
+ * Convert the given input to a string.
+ *
+ * This function ensures that the input is cast to a string, whether it's
+ * a string, number, or any other type. If the input is already a string,
+ * it returns it as-is. If the input is a non-string type, it is converted
+ * to its string representation.
+ */
+export function from(input: StringInput) {
+  if (input === null || input === undefined) return '';
+
+  if (Array.isArray(input)) {
+    return input.toString();
+  }
+
+  if (typeof input === 'object') {
+    try {
+      return JSON.stringify(input);
+    } catch {}
+  }
+
+  return String(input);
+}
+
 // TODO
 // /**
 //  * Extracts an excerpt from text that matches the first instance of a phrase.
@@ -282,58 +273,56 @@ export function escapeRegExp(input: StringInput) {
 //   options: StringExcerptOptions = {}
 // ) {}
 
-
-/**
- * Cap a string with a single instance of a given value.
- */
-export function finish(input: StringInput, cap: StringInput) {
-  const suffix = from(cap)
-  return from(input).replace(new RegExp(`(?:${escapeRegExp(suffix)})+$`, 'u'), '') + suffix
-}
-
 /**
  * Determine if a given string matches a given pattern.
  */
 export function is(input: StringInput, pattern: RegExp | RegExp[]) {
-  const str = from(input)
+  const str = from(input);
 
   for (const regex of Arr.from<RegExp>(pattern)) {
-    if (regex.test(str)) return true
+    if (regex.test(str)) return true;
   }
 
-  return false
+  return false;
 }
 
 /**
  * Determine if a given string is 7 bit ASCII.
  */
 export function isAscii(input: StringInput) {
-  return Array.from(from(input)).every(char => char.charCodeAt(0) <= 0x7F);
+  return Array.from(from(input)).every((char) => char.charCodeAt(0) <= 0x7f);
 }
 
 /**
  * Determine if a given value is valid JSON.
  */
 export function isJson(input: unknown) {
-  if (typeof input !== 'string' || input.trim() === '') return false
+  if (typeof input !== 'string' || input.trim() === '') return false;
 
   try {
-    const parsed = JSON.parse(input)
-    return typeof parsed === 'object' && parsed !== null
+    const parsed = JSON.parse(input);
+    return typeof parsed === 'object' && parsed !== null;
   } catch {
-    return false
+    return false;
   }
+}
+
+/**
+ * Check if the input is a string.
+ */
+export function isString(input: StringInput) {
+  return typeof input === 'string';
 }
 
 /**
  * Determine if a given value is a valid ULID.
  */
 export function isUlid(input: StringInput) {
-  const str = from(input)
+  const str = from(input);
 
-  if (str.length !== 26) return false
+  if (str.length !== 26) return false;
 
-  return /^[0-7][0-9A-HJKMNP-TV-Zabcdefghjkmnp-tv-z]{25}$/.test(str)
+  return /^[0-7][0-9A-HJKMNP-TV-Zabcdefghjkmnp-tv-z]{25}$/.test(str);
 }
 
 /**
@@ -341,56 +330,50 @@ export function isUlid(input: StringInput) {
  */
 export function isUrl(input: StringInput) {
   try {
-    new URL(from(input))
-    return true
-  } catch {
-  }
+    new URL(from(input));
+    return true;
+  } catch {}
 
-  return false
+  return false;
 }
 
 /**
  * Determine if a given value is a valid UUID.
  */
 export function isUuid(input: StringInput) {
-  return /^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/i.test(from(input))
+  return /^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/i.test(from(input));
 }
 
 /**
  * Convert a string to kebab case.
  */
 export function kebab(input: StringInput) {
-  return slug(input, '-')
+  return slug(input, '-');
 }
 
 /**
  * Return the length of the given string.
  */
 export function length(input: StringInput) {
-  return from(input).length
+  return from(input).length;
 }
 
 /**
  * Limit the number of characters in a string.
  */
-export function limit(
-  input: StringInput,
-  limit = 100,
-  end = '...',
-  preserveWords = false
-) {
-  const str = from(input)
+export function limit(input: StringInput, limit = 100, end = '...', preserveWords = false) {
+  const str = from(input);
 
-  if (str.length <= limit) return str
+  if (str.length <= limit) return str;
 
-  if (!preserveWords) return str.slice(0, limit).trimEnd() + end
+  if (!preserveWords) return str.slice(0, limit).trimEnd() + end;
 
-  const clean = str.replace(/[\n\r]+/g, ' ').trim()
-  const trimmed = clean.slice(0, limit).trimEnd()
+  const clean = str.replace(/[\n\r]+/g, ' ').trim();
+  const trimmed = clean.slice(0, limit).trimEnd();
 
-  if (clean.charAt(limit) === ' ') return trimmed + end
+  if (clean.charAt(limit) === ' ') return trimmed + end;
 
-  return trimmed.replace(/(.*)\s.*/, '$1') + end
+  return trimmed.replace(/(.*)\s.*/, '$1') + end;
 }
 
 /**
@@ -418,74 +401,72 @@ export function lowerFirstWord(input: StringInput) {
 /**
  * Masks a portion of a string with a repeated character.
  */
-export function mask(
-  input: StringInput,
-  character: string,
-  index: number,
-  length?: number
-) {
-  const str = from(input)
-  if (character === '') return str
+export function mask(input: StringInput, character: string, index: number, length?: number) {
+  const str = from(input);
+  if (character === '') return str;
 
-  const segment = str.slice(index, length ? index + length : undefined)
-  if (segment === '') return str
+  const segment = str.slice(index, length ? index + length : undefined);
+  if (segment === '') return str;
 
-  const strlen = str.length
-  const startIndex = index < 0 ? Math.max(0, strlen + index) : index
-  const start = str.slice(0, startIndex)
-  const segmentLen = segment.length
-  const end = str.slice(startIndex + segmentLen)
+  const strlen = str.length;
+  const startIndex = index < 0 ? Math.max(0, strlen + index) : index;
+  const start = str.slice(0, startIndex);
+  const segmentLen = segment.length;
+  const end = str.slice(startIndex + segmentLen);
 
-  return start + character.charAt(0).repeat(segmentLen) + end
+  return start + character.charAt(0).repeat(segmentLen) + end;
 }
 
 /**
  * Pad both sides of a string with another.
  */
 export function padBoth(input: StringInput, length: number, pad = ' ') {
-  const str = from(input)
-  const short = Math.max(0, length - str.length)
-  const left = Math.floor(short / 2)
-  const right = Math.ceil(short / 2)
+  const str = from(input);
+  const short = Math.max(0, length - str.length);
+  const left = Math.floor(short / 2);
+  const right = Math.ceil(short / 2);
 
-  return pad.repeat(left).slice(0, left) + str + pad.repeat(right).slice(0, right)
+  return pad.repeat(left).slice(0, left) + str + pad.repeat(right).slice(0, right);
 }
 
 /**
  * Pad the beginning of a string with another.
  */
 export function padEnd(input: StringInput, length: number, pad = ' ') {
-  return from(input).padEnd(length, pad)
+  return from(input).padEnd(length, pad);
 }
 
 /**
  * Pad the end of a string with another.
  */
 export function padStart(input: StringInput, length: number, pad = ' ') {
-  return from(input).padStart(length, pad)
+  return from(input).padStart(length, pad);
 }
 
 /**
  * Generate a random, secure password.
  */
 export function password(length = 32, options: StringPasswordOptions = {}) {
-  const {letters = true, numbers = true, symbols = true, spaces = false} = options
+  const { letters = true, numbers = true, spaces = false, symbols = true } = options;
 
   const sets = {
     letters: letters ? 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' : '',
     numbers: numbers ? '0123456789' : '',
+    spaces: spaces ? ' ' : '',
     symbols: symbols ? '~!#$%^&*()-_.,<>?/\\{}[]|:;' : '',
-    spaces: spaces ? ' ' : ''
-  }
+  };
 
-  const active = Object.values(sets).filter(s => s)
-  if (!active.length) return ''
+  const active = Object.values(sets).filter((s) => s);
+  if (!active.length) return '';
 
-  const required = active.map(s => s[Math.floor(Math.random() * s.length)])
-  const pool = active.join('')
-  const remaining = Array.from({length: length - required.length}, () => pool[Math.floor(Math.random() * pool.length)])
+  const required = active.map((s) => s[Math.floor(Math.random() * s.length)]);
+  const pool = active.join('');
+  const remaining = Array.from(
+    { length: length - required.length },
+    () => pool[Math.floor(Math.random() * pool.length)],
+  );
 
-  return [...required, ...remaining].sort(() => Math.random() - 0.5).join('')
+  return [...required, ...remaining].sort(() => Math.random() - 0.5).join('');
 }
 
 /**
@@ -502,35 +483,31 @@ export function plural(input: StringInput, count: number, plural?: string) {
  * Find the multi-byte safe position of the first occurrence of a given substring in a string.
  */
 export function position(haystack: StringInput, needle: StringInput, offset = 0) {
-  return from(haystack).indexOf(from(needle), offset)
+  return from(haystack).indexOf(from(needle), offset);
 }
 
 /**
  * Generate a more truly "random" alpha-numeric string.
  */
 export function random(length = 16) {
-  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-  let result = ''
+  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let result = '';
 
   for (let i = 0; i < length; i++) {
-    result += chars[Math.floor(Math.random() * chars.length)]
+    result += chars[Math.floor(Math.random() * chars.length)];
   }
 
-  return result
+  return result;
 }
 
 /**
  * Remove any occurrence of the given string in the subject.
  */
-export function remove(
-  input: StringInput,
-  search: StringInput | StringInput[],
-  ignoreCase = false
-) {
+export function remove(input: StringInput, search: StringInput | StringInput[], ignoreCase = false) {
   return Arr.from(search).reduce((acc, item) => {
-    const regex = new RegExp(escapeRegExp(from(item)), ignoreCase ? 'gi' : 'g')
-    return acc.replace(regex, '')
-  }, from(input))
+    const regex = new RegExp(escapeRegExp(from(item)), ignoreCase ? 'gi' : 'g');
+    return acc.replace(regex, '');
+  }, from(input));
 }
 
 /**
@@ -547,39 +524,45 @@ export function replace(
   input: StringInput | StringInput[],
   search: StringInput | StringInput[],
   replace: StringInput | StringInput[],
-  ignoreCase = false
+  ignoreCase = false,
 ) {
-  const subjects = Arr.from(input).map(from)
-  const searchArr = Arr.from(search).map(from)
-  const replaceArr = Arr.from(replace).map(from)
+  const subjects = Arr.from(input).map(from);
+  const searchArr = Arr.from(search).map(from);
+  const replaceArr = Arr.from(replace).map(from);
 
-  const result = subjects.map(str =>
+  const result = subjects.map((str) =>
     searchArr.reduce((acc, item, i) => {
-      const pattern = new RegExp(escapeRegExp(item), ignoreCase ? 'gi' : 'g')
-      return acc.replace(pattern, replaceArr[i] ?? '')
-    }, str)
-  )
+      const pattern = new RegExp(escapeRegExp(item), ignoreCase ? 'gi' : 'g');
+      return acc.replace(pattern, replaceArr[i] ?? '');
+    }, str),
+  );
 
-  return Array.isArray(input) ? result : result[0]
+  return Array.isArray(input) ? result : result[0];
 }
 
 /**
  * Replace a given value in the string sequentially with an array.
  */
-export function replaceArray(
-  input: StringInput,
-  search: StringInput,
-  replacements: StringInput | StringInput[]
-) {
-  const replacems = Arr.from(replacements)
+export function replaceArray(input: StringInput, search: StringInput, replacements: StringInput | StringInput[]) {
+  const replacems = Arr.from(replacements);
 
   let str = input;
 
   for (const value of replacems) {
-    str = replaceFirst(str, search, value)
+    str = replaceFirst(str, search, value);
   }
 
-  return str
+  return str;
+}
+
+/**
+ * Replace the last occurrence of a given value if it appears at the end of the string.
+ */
+export function replaceEnd(input: StringInput, search: StringInput, replace: StringInput) {
+  const str = from(input);
+  const value = from(search);
+
+  return str.endsWith(value) ? str.slice(0, -value.length) + from(replace) : str;
 }
 
 /**
@@ -613,24 +596,10 @@ export function replaceMatches(input: StringInput, pattern: RegExp, replacement:
  * Replace the first occurrence of the given value if it appears at the start of the string.
  */
 export function replaceStart(input: StringInput, search: StringInput, replace: StringInput) {
-  const str = from(input)
-  const value = from(search)
+  const str = from(input);
+  const value = from(search);
 
-  return str.startsWith(value)
-    ? str.replace(value, from(replace))
-    : str
-}
-
-/**
- * Replace the last occurrence of a given value if it appears at the end of the string.
- */
-export function replaceEnd(input: StringInput, search: StringInput, replace: StringInput) {
-  const str = from(input)
-  const value = from(search)
-
-  return str.endsWith(value)
-    ? str.slice(0, -value.length) + from(replace)
-    : str
+  return str.startsWith(value) ? str.replace(value, from(replace)) : str;
 }
 
 /**
@@ -644,14 +613,14 @@ export function reverse(input: StringInput) {
  * Generate a URL friendly "slug" from a given string.
  */
 export function slug(input: StringInput, separator = '-') {
-  const pattern = new RegExp(`[\\s_]+`, 'g')
+  const pattern = new RegExp(`[\\s_]+`, 'g');
 
   return ascii(input)
     .toLowerCase()
     .replace(pattern, separator)
     .replace(new RegExp(`[^a-z0-9${separator}]`, 'g'), '')
     .replace(new RegExp(`${separator}+`, 'g'), separator)
-    .replace(new RegExp(`^${separator}+|${separator}+$`, 'g'), '')
+    .replace(new RegExp(`^${separator}+|${separator}+$`, 'g'), '');
 }
 
 /**
@@ -774,9 +743,9 @@ export function toBase64(input: StringInput) {
 /**
  * Remove all whitespace from both ends of a string.
  */
-export function trim(input: StringInput, charlist: string | null = null) {
+export function trim(input: StringInput, charlist: null | string = null) {
   if (charlist === null) {
-    const trimDefaultCharacters = " \n\r\t\v\0";
+    const trimDefaultCharacters = ' \n\r\t\v\0';
     const regex = `^[\\s\\uFEFF\\u200B\\u200E${trimDefaultCharacters}]+|[\\s\\uFEFF\\u200B\\u200E${trimDefaultCharacters}]+$`;
     return from(input).replace(new RegExp(regex, 'gu'), '');
   }
@@ -785,11 +754,24 @@ export function trim(input: StringInput, charlist: string | null = null) {
 }
 
 /**
+ * Remove all whitespace from the end of a string.
+ */
+export function trimEnd(input: StringInput, charlist: null | string = null) {
+  if (charlist === null) {
+    const rtrimDefaultCharacters = ' \n\r\t\v\0';
+    const regex = `[\\s\\uFEFF\\u200B\\u200E${rtrimDefaultCharacters}]+$`;
+    return from(input).replace(new RegExp(regex, 'gu'), '');
+  }
+
+  return from(input).replace(new RegExp(`[${escapeRegExp(charlist)}]+$`, 'gu'), '');
+}
+
+/**
  * Remove all whitespace from the beginning of a string.
  */
-export function trimStart(input: StringInput, charlist: string | null = null) {
+export function trimStart(input: StringInput, charlist: null | string = null) {
   if (charlist === null) {
-    const ltrimDefaultCharacters = " \n\r\t\v\0";
+    const ltrimDefaultCharacters = ' \n\r\t\v\0';
     const regex = `^[\\s\\uFEFF\\u200B\\u200E${ltrimDefaultCharacters}]+`;
     return from(input).replace(new RegExp(regex, 'gu'), '');
   }
@@ -798,16 +780,19 @@ export function trimStart(input: StringInput, charlist: string | null = null) {
 }
 
 /**
- * Remove all whitespace from the end of a string.
+ * Unwrap the string with the given strings.
  */
-export function trimEnd(input: StringInput, charlist: string | null = null) {
-  if (charlist === null) {
-    const rtrimDefaultCharacters = " \n\r\t\v\0";
-    const regex = `[\\s\\uFEFF\\u200B\\u200E${rtrimDefaultCharacters}]+$`;
-    return from(input).replace(new RegExp(regex, 'gu'), '');
+export function unwrap(input: StringInput, before: StringInput, after: StringInput = before) {
+  const beforeStr = from(before);
+  const afterStr = from(after);
+  let str = from(input);
+
+  if (str.startsWith(beforeStr) && str.endsWith(afterStr)) {
+    str = str.slice(beforeStr.length);
+    str = str.slice(0, -afterStr.length);
   }
 
-  return from(input).replace(new RegExp(`[${escapeRegExp(charlist)}]+$`, 'gu'), '');
+  return str;
 }
 
 /**
@@ -836,23 +821,9 @@ export function upperFirstWord(input: StringInput) {
  * Split a string into pieces by uppercase characters.
  */
 export function upperSplit(input: StringInput) {
-  return from(input).split(/(?=[A-Z])/).filter(Boolean);
-}
-
-/**
- * Unwrap the string with the given strings.
- */
-export function unwrap(input: StringInput, before: StringInput, after: StringInput = before) {
-  const beforeStr = from(before);
-  const afterStr = from(after);
-  let str = from(input);
-
-  if (str.startsWith(beforeStr) && str.endsWith(afterStr)) {
-    str = str.slice(beforeStr.length);
-    str = str.slice(0, -afterStr.length);
-  }
-
-  return str;
+  return from(input)
+    .split(/(?=[A-Z])/)
+    .filter(Boolean);
 }
 
 /**
@@ -860,7 +831,8 @@ export function unwrap(input: StringInput, before: StringInput, after: StringInp
  */
 export function uuid() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-    const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+    const r = (Math.random() * 16) | 0,
+      v = c === 'x' ? r : (r & 0x3) | 0x8;
     return v.toString(16);
   });
 }
@@ -871,7 +843,7 @@ export function uuid() {
 export function uuid7(time: Date = new Date()) {
   const timestamp = time.getTime();
   const high = Math.floor(timestamp / 0x100000000);
-  const low = timestamp & 0xFFFFFFFF;
+  const low = timestamp & 0xffffffff;
 
   // Gerar UUID com base no timestamp
   const uuid = 'xxxxxxxx-xxxx-7xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -887,7 +859,9 @@ export function uuid7(time: Date = new Date()) {
 
   // Preenchendo o UUID com o timestamp
   return uuid.replace(/^(.{8})(.{4})(.{4})(.{4})(.{12})$/, function (_, p1, p2, p3, p4, p5) {
-    return p1 + p2 + p3 + p4.slice(0, 1) + high.toString(16).slice(0, 1) + p4.slice(1) + low.toString(16).slice(0, 7) + p5;
+    return (
+      p1 + p2 + p3 + p4.slice(0, 1) + high.toString(16).slice(0, 1) + p4.slice(1) + low.toString(16).slice(0, 7) + p5
+    );
   });
 }
 
@@ -896,21 +870,8 @@ export function uuid7(time: Date = new Date()) {
  */
 export function wordCount(input: StringInput) {
   const pattern = /([A-Za-z0-9]+([-_][A-Za-z0-9])?)+\b/g;
-   const words = ascii(input).match(pattern);
-   return words ? words.length : 0;
-}
-
-/**
- * Wrap a string to a given number of characters.
- */
-export function wordWrap(input: StringInput, characters = 75, breakChar = "\n", cutLongWords = false) {
-  const str = from(input);
-
-    const regex = cutLongWords
-      ? new RegExp(`.{1,${characters}}`, 'g')
-      : new RegExp(`(?:.{1,${characters}})(?:\\s|$)`, 'g');
-
-    return str.match(regex)?.map((val) => trim(val))?.join(breakChar) || str;
+  const words = ascii(input).match(pattern);
+  return words ? words.length : 0;
 }
 
 /**
@@ -925,6 +886,24 @@ export function words(input: StringInput, words = 100, end = '...') {
 
   // Se a string original for maior que o truncado, adicione o `end`
   return truncated.length < str.length ? truncated + end : truncated;
+}
+
+/**
+ * Wrap a string to a given number of characters.
+ */
+export function wordWrap(input: StringInput, characters = 75, breakChar = '\n', cutLongWords = false) {
+  const str = from(input);
+
+  const regex = cutLongWords
+    ? new RegExp(`.{1,${characters}}`, 'g')
+    : new RegExp(`(?:.{1,${characters}})(?:\\s|$)`, 'g');
+
+  return (
+    str
+      .match(regex)
+      ?.map((val) => trim(val))
+      ?.join(breakChar) || str
+  );
 }
 
 /**

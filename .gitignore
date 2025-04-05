@@ -1,34 +1,65 @@
-# dependencies (bun install)
-node_modules
+# Env
+.env*.local
 
-# output
+# Log
+logs
+logfile
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Dependency
+web_modules/
+node_modules/
+jspm_packages/
+bower_components/
+
+# Lockfile
+bun.lock
+bun.lockb
+yarn.lock
+pnpm-lock.yaml
+package-lock.json
+
+# TypeScript
+*.tsbuildinfo
+expo-env.d.ts
+next-env.d.ts
+
+# Distribution
 out
 dist
-*.tgz
-
-# code coverage
+build
+package
 coverage
-*.lcov
+web-build
 
-# logs
-logs
-_.log
-report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
-
-# dotenv environment variable files
-.env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
-
-# caches
-.eslintcache
+# Cache
+.npm
+.next
+.nuxt
+.expo
+.temp
 .cache
-*.tsbuildinfo
-
-# IntelliJ based IDEs
-.idea
-
-# Finder (MacOS) folder config
+.vercel
 .DS_Store
+.docusaurus
+.svelte-kit
+.eslintcache
+.cache-loader
+.parcel-cache
+.stylelintcache
+%ProgramData%
+
+# IDE
+.idx
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
