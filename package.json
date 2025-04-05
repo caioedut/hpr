@@ -1,10 +1,38 @@
 {
   "name": "hpr",
+  "description": "A collection of utility functions to manipulate values and data.",
   "version": "0.0.1",
-  "type": "module",
-  "module": "index.ts",
+  "keywords": [
+    "util",
+    "helper",
+    "utility",
+    "modules",
+    "functional",
+    "server",
+    "client",
+    "browser"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/caioedut/hpr"
+  },
+  "author": {
+    "name": "Caio Teixeira",
+    "email": "caioedut@gmail.com"
+  },
+  "type": "commonjs",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "tsup src/index.ts --dts --sourcemap --format esm,cjs",
+    "publish": "npm version patch && git push && npm publish",
+    "release": "npm run build && npm run publish"
   },
   "devDependencies": {
     "@eslint/js": "^9.24.0",

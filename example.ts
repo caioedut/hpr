@@ -1,4 +1,4 @@
-import { Collection } from './src/helpers/Collection.ts';
+import { Collection } from './draft/Collection.ts';
 import * as Str from './src/helpers/Str';
 
 function dump(value: any) {

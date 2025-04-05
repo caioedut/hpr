@@ -1,4 +1,4 @@
-import { Collection } from '../src/helpers/Collection';
+import { Collection } from '../draft/Collection';
 
 const collect = Collection.from;
 
