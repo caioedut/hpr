@@ -3,7 +3,7 @@
 ## **Str**
 To handle strings. The main method is `Str.from`.
 
-### Type Definition
+### Type Definitions
 
 `StringInput` is `any` value that can be converted to string.
 
@@ -568,4 +568,283 @@ Wrap the string with the given strings.
 
 ```ts
 export function wrap(input: StringInput, before: StringInput, after: StringInput): string
+```
+
+---
+
+# Num
+
+To handle numbers. The main method is `Num.from`.
+
+---
+
+## `clamp()`
+Restricts a number between a minimum and maximum value.
+
+```typescript
+function clamp(input: NumberInput, min: NumberInput, max: NumberInput): number;
+```
+
+### Parameters
+- `input`: Value to clamp.
+- `min`: Lower bound.
+- `max`: Upper bound.
+
+### Returns
+Clamped value within `[min, max]`.
+
+### Example
+```typescript
+clamp(15, 0, 10); // 10
+```
+
+---
+
+## `currency()`
+Formats a number as a currency string.
+
+```typescript
+function currency(input: any, options?: NumberCurrencyOptions): string;
+```
+
+### Parameters
+- `input`: Numeric value.
+- `options` (optional):
+  - `currency`: Currency code (default: `'USD'`).
+  - `locale`: Locale string (e.g., `'en-US'`).
+
+### Returns
+Formatted currency string.
+
+### Example
+```typescript
+currency(1000, { currency: 'USD' }); // "$1,000.00"
+```
+
+---
+
+## `format()`
+Formats a number with precision control.
+
+```typescript
+function format(input: NumberInput, options?: NumberFormatOptions): string;
+```
+
+### Parameters
+- `input`: Value to format.
+- `options` (optional):
+  - `precision`: Fixed decimal places.
+  - `maxPrecision`: Maximum decimal places.
+  - `locale`: Locale string.
+
+### Returns
+Formatted number string.
+
+### Example
+```typescript
+format(1234.567, { precision: 2 }); // "1,234.57"
+```
+
+---
+
+## `from()`
+Converts a string/number to a normalized number.
+
+```typescript
+function from(input: NumberInput): number;
+```
+
+### Parameters
+- `input`: String or number (supports comma/decimal separators).
+
+### Returns
+Parsed number (or `0` if invalid).
+
+### Example
+```typescript
+from("1,234.56"); // 1234.56
+```
+
+---
+
+## `isNumber()`
+Checks if a value is of type `number` and not `NaN`.
+
+```typescript
+function isNumber(input: any): boolean;
+```
+
+### Parameters
+- `input`: Value to check.
+
+### Returns
+- `true` if the value is a valid number (type `number` and not `NaN`).
+
+### Example
+```typescript
+isNumber(42);    // true
+isNumber(NaN);   // false
+isNumber("42");  // false
+```
+
+---
+
+## `isNumeric()`
+Checks if a value can be converted to a valid number (including numeric strings).
+
+```typescript
+function isNumeric(input: NumberInput): boolean;
+```
+
+### Parameters
+- `input`: Value to check (can be `number` or `string`).
+
+### Returns
+- `true` if the value is convertible to a finite number.
+
+### Example
+```typescript
+isNumeric(42);       // true
+isNumeric("42");     // true
+isNumeric("1.23");   // true
+isNumeric("abc");    // false
+isNumeric(Infinity); // false
+```
+
+---
+
+### Key Differences: `isNumber` vs `isNumeric`
+
+| Feature                | `isNumber`         | `isNumeric`        |
+|------------------------|--------------------|--------------------|
+| **Accepts `number`**   | ✅ Yes              | ✅ Yes              |
+| **Accepts `string`**   | ❌ No               | ✅ Yes (if numeric) |
+| **Rejects `NaN`**      | ✅ Yes              | ✅ Yes              |
+| **Rejects `Infinity`** | ❌ No               | ✅ Yes              |
+| **Use Case**           | Strict type checks | Input validation   |
+
+---
+
+## `max()`
+Returns the highest value from inputs.
+
+```typescript
+function max(...inputs: NumberInput[]): number;
+```
+
+### Parameters
+- `...inputs`: Values to compare.
+
+### Returns
+Highest number.
+
+### Example
+```typescript
+max(3, 10, -1); // 10
+```
+
+---
+
+## `min()`
+Returns the lowest value from inputs.
+
+```typescript
+function min(...inputs: NumberInput[]): number;
+```
+
+### Parameters
+- `...inputs`: Values to compare.
+
+### Returns
+Lowest number.
+
+### Example
+```typescript
+min(3, 10, -1); // -1
+```
+
+---
+
+## `negative()`
+Converts a number to its negative equivalent (if positive) or preserves it.
+
+```typescript
+function negative(input: NumberInput): number;
+```
+
+### Parameters
+- `input`: Number or string to convert.
+
+### Returns
+- Negative number (or original if already zero/negative).
+
+### Example
+```typescript
+negative(5);   // -5
+negative(-3);  // -3
+negative(0);   // 0
+```
+
+---
+
+## `positive()`
+Converts a number to its positive equivalent (if negative) or preserves it.
+
+```typescript
+function positive(input: NumberInput): number;
+```
+
+### Parameters
+- `input`: Number or string to convert.
+
+### Returns
+- Positive number (or original if already zero/positive).
+
+### Example
+```typescript
+positive(-5);  // 5
+positive(3);   // 3
+positive(0);   // 0
+```
+
+---
+
+## `random()`
+Generates a random integer between two values (inclusive).
+
+```typescript
+function random(min: NumberInput, max: NumberInput): number;
+```
+
+### Parameters
+- `min`: Lower bound (inclusive).
+- `max`: Upper bound (inclusive).
+
+### Returns
+- Random integer in `[min, max]`.
+
+### Example
+```typescript
+random(1, 10);  // Possible output: 7
+random(5, 5);   // Always returns 5
+```
+
+### Notes
+- Uses `Math.floor()` for integer results.
+- Throws an error if `min > max`.
+
+---
+
+## Type Definitions
+```typescript
+type NumberInput = number | string;
+interface NumberCurrencyOptions {
+  currency?: string;
+  locale?: Intl.LocalesArgument;
+}
+interface NumberFormatOptions {
+  locale?: Intl.LocalesArgument;
+  precision?: number;
+  maxPrecision?: number;
+}
 ```

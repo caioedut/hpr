@@ -69,22 +69,22 @@ describe('Num', () => {
 
   describe('higher', () => {
     it('should return the highest value among the inputs', () => {
-      expect(Num.higher(1, 2, 3, 4, 5)).toBe(5);
-      expect(Num.higher(-1, -2, -3, -4, -5)).toBe(-1);
-      expect(Num.higher(1, 3, 2)).toBe(3);
+      expect(Num.max(1, 2, 3, 4, 5)).toBe(5);
+      expect(Num.max(-1, -2, -3, -4, -5)).toBe(-1);
+      expect(Num.max(1, 3, 2)).toBe(3);
     });
 
     it('should handle inputs with string representations of numbers', () => {
-      expect(Num.higher('1', '2', '3')).toBe(3);
-      expect(Num.higher('1.1', '2.2', '0.5')).toBe(2.2);
+      expect(Num.max('1', '2', '3')).toBe(3);
+      expect(Num.max('1.1', '2.2', '0.5')).toBe(2.2);
     });
 
     it('should return -Infinity for an empty input array', () => {
-      expect(Num.higher()).toBe(-Infinity);
+      expect(Num.max()).toBe(-Infinity);
     });
 
     it('should ignore null and undefined values', () => {
-      expect(Num.higher(null, 1, undefined, 2)).toBe(2);
+      expect(Num.max(null, 1, undefined, 2)).toBe(2);
     });
   });
 
@@ -124,22 +124,22 @@ describe('Num', () => {
 
   describe('lower', () => {
     it('should return the lowest value among the inputs', () => {
-      expect(Num.lower(1, 2, 3, 4, 5)).toBe(1);
-      expect(Num.lower(-1, -2, -3, -4, -5)).toBe(-5);
-      expect(Num.lower(1, 3, 2)).toBe(1);
+      expect(Num.min(1, 2, 3, 4, 5)).toBe(1);
+      expect(Num.min(-1, -2, -3, -4, -5)).toBe(-5);
+      expect(Num.min(1, 3, 2)).toBe(1);
     });
 
     it('should handle inputs with string representations of numbers', () => {
-      expect(Num.lower('1', '2', '3')).toBe(1);
-      expect(Num.lower('1.1', '2.2', '0.5')).toBe(0.5);
+      expect(Num.min('1', '2', '3')).toBe(1);
+      expect(Num.min('1.1', '2.2', '0.5')).toBe(0.5);
     });
 
     it('should return Infinity for an empty input array', () => {
-      expect(Num.lower()).toBe(Infinity);
+      expect(Num.min()).toBe(Infinity);
     });
 
     it('should ignore null and undefined values', () => {
-      expect(Num.lower(null, 1, undefined, 2)).toBe(1);
+      expect(Num.min(null, 1, undefined, 2)).toBe(1);
     });
   });
 
