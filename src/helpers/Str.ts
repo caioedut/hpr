@@ -302,7 +302,7 @@ export function isJson(input: unknown) {
 /**
  * Check if the input is a string.
  */
-export function isString(input: StringInput) {
+export function isString(input: any) {
   return typeof input === 'string';
 }
 

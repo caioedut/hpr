@@ -18,6 +18,7 @@ export default tseslint.config(
     rules: {
       'no-control-regex': 'off',
       'no-empty': ['error', { allowEmptyCatch: true }],
+      'prefer-const': ['error', { destructuring: 'all' }],
       radix: ['warn', 'as-needed'],
     },
   },
