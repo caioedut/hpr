@@ -338,11 +338,13 @@ export function isAscii(input: StringInput) {
 /**
  * Determine if a given value is valid JSON.
  */
-export function isJson(input: unknown) {
-  if (typeof input !== 'string' || input.trim() === '') return false;
+export function isJson(input: StringInput) {
+  const str = trim(input);
+
+  if (typeof input !== 'string' || str === '') return false;
 
   try {
-    const parsed = JSON.parse(input);
+    const parsed = JSON.parse(str);
     return typeof parsed === 'object' && parsed !== null;
   } catch {
     return false;
@@ -528,11 +530,11 @@ export function password(length = 32, options: StringPasswordOptions = {}) {
 /**
  * Get the plural form of an word.
  */
-export function plural(input: StringInput, count = 2, plural?: string) {
+export function plural(input: StringInput, count = 2, pluralForm?: string) {
   input = from(input);
   if (!input) return '';
-  plural = plural ?? `${input}s`.replace(/ss$/, 's');
-  return count > 1 ? plural : input;
+  pluralForm = pluralForm ?? `${input}s`.replace(/ss$/, 's');
+  return count > 1 ? pluralForm : input;
 }
 
 /**
@@ -654,13 +656,6 @@ export function replaceLast(input: StringInput, search: StringInput, replace: St
   if (index === -1) return str;
 
   return str.slice(0, index) + from(replace) + str.slice(index + find.length);
-}
-
-/**
- * Replace the patterns matching the given regular expression.
- */
-export function replaceMatches(input: StringInput, pattern: RegExp, replacement: StringInput) {
-  return from(input).replace(pattern, from(replacement));
 }
 
 /**
@@ -892,15 +887,6 @@ export function upperFirst(input: StringInput) {
  */
 export function upperFirstWord(input: StringInput) {
   return from(input).replace(/^\s*\w/, (match) => match.toUpperCase());
-}
-
-/**
- * Split a string into pieces by uppercase characters.
- */
-export function upperSplit(input: StringInput) {
-  return from(input)
-    .split(/(?=[A-Z])/)
-    .filter(Boolean);
 }
 
 /**

@@ -1279,18 +1279,6 @@ describe('Str', () => {
     });
   });
 
-  describe('replaceMatches', () => {
-    it('should replace all occurrences matching the given regex pattern', () => {
-      const result = Str.replaceMatches('hello 123 world 123', /\d+/g, 'XYZ');
-      expect(result).toBe('hello XYZ world XYZ');
-    });
-
-    it('should return the string unchanged if no match is found', () => {
-      const result = Str.replaceMatches('hello world', /123/g, 'XYZ');
-      expect(result).toBe('hello world');
-    });
-  });
-
   describe('replaceStart', () => {
     it('should replace the search string if it appears at the start of the string', () => {
       const result = Str.replaceStart('hello world', 'hello', 'hi');
@@ -1673,28 +1661,6 @@ describe('Str', () => {
     it('should handle an empty string', () => {
       const result = Str.upperFirstWord('');
       expect(result).toBe('');
-    });
-  });
-
-  describe('upperSplit', () => {
-    it('should split the string by uppercase letters', () => {
-      const result = Str.upperSplit('HelloWorld');
-      expect(result).toEqual(['Hello', 'World']);
-    });
-
-    it('should split the string by uppercase letters and filter out empty strings', () => {
-      const result = Str.upperSplit('JavaScriptIsAwesome');
-      expect(result).toEqual(['Java', 'Script', 'Is', 'Awesome']);
-    });
-
-    it('should handle a string without uppercase letters', () => {
-      const result = Str.upperSplit('helloworld');
-      expect(result).toEqual(['helloworld']);
-    });
-
-    it('should handle an empty string', () => {
-      const result = Str.upperSplit('');
-      expect(result).toEqual([]);
     });
   });
 
