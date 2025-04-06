@@ -1,15 +1,19 @@
-<div style="text-align: center;">
+<div align="center">
   <h1 style="color: #FF822D;">
     <br>
     ⚡ HPR
     <br>
   </h1>
 
-  <span>The ultimate helper.</span>
+<span>The ultimate helper.</span>
 
   <a href="https://www.npmjs.com/package/cometta">
    <img src="https://img.shields.io/npm/v/cometta.svg" alt="NPM" />
   </a>
+
+[Str](#str---string-utilities)
+| [Num](#num---number-utilities)
+| [Arr](#arr---array-utilities)
 
 ## Why Choose hpr?
 
@@ -19,9 +23,6 @@
 <br/>
 ✔ **Lightweight** – Zero external dependencies
 
-[Str](#usage)
-| [Num](#normalize-css)
-| [Arr](#variables)
 </div>
 
 ---
