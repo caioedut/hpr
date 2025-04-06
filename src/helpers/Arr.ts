@@ -11,8 +11,7 @@ export function chunk<T>(items: T[], size: number) {
 }
 
 export function collapse<T = any>(input: ArrayInput): T[] {
-  const arr = from(input);
-  return arr.flat();
+  return from(input).flat();
 }
 
 export function compact<T = any>(input: ArrayInput): T[] {
