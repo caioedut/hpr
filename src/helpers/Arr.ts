@@ -16,6 +16,10 @@ export function collapse<T = any>(input: ArrayInput): T[] {
   return arr.flat();
 }
 
+export function compact<T = any>(input: ArrayInput): T[] {
+  return from(input).filter((item) => item !== null && item !== undefined);
+}
+
 export function crossJoin<T = any>(input: ArrayInput, ...arrays: any[]): T[][] {
   const arr = from(input);
   return arr.reduce((acc, val) => acc.flatMap((x: T[]) => arrays.map((y) => [x, ...y])), [[...arr]]);
@@ -270,11 +274,6 @@ export function undot(input: ArrayInput): Record<string, boolean> {
 export function where<T = any>(input: ArrayInput, callback: (value: T) => boolean): T[] {
   const arr = from(input);
   return arr.filter(callback);
-}
-
-export function whereNotNull<T = any>(input: ArrayInput): T[] {
-  const arr = from(input);
-  return arr.filter((item) => item !== null && item !== undefined);
 }
 
 export function wrap<T = any>(input: ArrayInput): T[] {

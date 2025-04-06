@@ -65,7 +65,7 @@ describe('Str', () => {
     });
   });
 
-  describe('after function', () => {
+  describe('after', () => {
     it('should return the substring after the first occurrence of the search string', () => {
       const result = Str.after('hello world', 'hello');
       expect(result).toBe(' world');
@@ -92,7 +92,7 @@ describe('Str', () => {
     });
   });
 
-  describe('afterLast function', () => {
+  describe('afterLast', () => {
     it('should return the substring after the last occurrence of the search string', () => {
       const result = Str.afterLast('hello world hello again', 'hello');
       expect(result).toBe(' again');
@@ -141,7 +141,7 @@ describe('Str', () => {
     });
   });
 
-  describe('before function', () => {
+  describe('before', () => {
     it('should return the substring before the first occurrence of the search string', () => {
       const result = Str.before('hello world', 'hello');
       expect(result).toBe('');
@@ -168,7 +168,7 @@ describe('Str', () => {
     });
   });
 
-  describe('beforeLast function', () => {
+  describe('beforeLast', () => {
     it('should return the substring before the last occurrence of the search string', () => {
       const result = Str.beforeLast('hello world hello again', 'hello');
       expect(result).toBe('hello world ');
@@ -195,7 +195,7 @@ describe('Str', () => {
     });
   });
 
-  describe('between function', () => {
+  describe('between', () => {
     it('should return the substring between the start and end values', () => {
       const result = Str.between('hello world again', 'hello', 'again');
       expect(result).toBe(' world ');
@@ -256,7 +256,7 @@ describe('Str', () => {
     });
   });
 
-  describe('camel function', () => {
+  describe('camel', () => {
     it('should convert a string to camel case', () => {
       const result = Str.camel('hello_world');
       expect(result).toBe('helloWorld');
@@ -283,7 +283,7 @@ describe('Str', () => {
     });
   });
 
-  describe('charAt function', () => {
+  describe('charAt', () => {
     it('should return the character at the specified index', () => {
       const result = Str.charAt('hello', 1);
       expect(result).toBe('e');
@@ -305,7 +305,7 @@ describe('Str', () => {
     });
   });
 
-  describe('chopStart function', () => {
+  describe('chopStart', () => {
     it('should remove the string if it exists at the start', () => {
       const result = Str.chopStart('hello world', 'hello');
       expect(result).toBe(' world');
@@ -332,7 +332,7 @@ describe('Str', () => {
     });
   });
 
-  describe('chopEnd function', () => {
+  describe('chopEnd', () => {
     it('should remove the string if it exists at the end', () => {
       const result = Str.chopEnd('hello world', 'world');
       expect(result).toBe('hello ');
@@ -359,7 +359,7 @@ describe('Str', () => {
     });
   });
 
-  describe('contains function', () => {
+  describe('contains', () => {
     it('should return true if the string contains the substring', () => {
       const result = Str.contains('hello world', 'world');
       expect(result).toBe(true);
@@ -406,7 +406,7 @@ describe('Str', () => {
     });
   });
 
-  describe('containsAll function', () => {
+  describe('containsAll', () => {
     it('should return true if the string contains all substrings', () => {
       const result = Str.containsAll('hello world', ['hello', 'world']);
       expect(result).toBe(true);
@@ -448,7 +448,7 @@ describe('Str', () => {
     });
   });
 
-  describe('doesntContain function', () => {
+  describe('doesntContain', () => {
     it('should return true if the string does not contain the substring', () => {
       const result = Str.doesntContain('hello world', 'goodbye');
       expect(result).toBe(true);
@@ -485,7 +485,7 @@ describe('Str', () => {
     });
   });
 
-  describe('deduplicate function', () => {
+  describe('deduplicate', () => {
     it('should replace consecutive instances of a character with a single character', () => {
       const result = Str.deduplicate('hello    world', ' ');
       expect(result).toBe('hello world');
@@ -512,7 +512,7 @@ describe('Str', () => {
     });
   });
 
-  describe('endsWith function', () => {
+  describe('endsWith', () => {
     it('should return true if the string ends with the given substring', () => {
       const result = Str.endsWith('hello world', 'world');
       expect(result).toBe(true);
@@ -544,7 +544,7 @@ describe('Str', () => {
     });
   });
 
-  describe('escapeRegExp function', () => {
+  describe('escapeRegExp', () => {
     it('should escape special characters for regular expression', () => {
       const result = Str.escapeRegExp('hello.*+?^${}()|[]\\');
       expect(result).toBe('hello\\.\\*\\+\\?\\^\\$\\{\\}\\(\\)\\|\\[\\]\\\\');
@@ -571,7 +571,7 @@ describe('Str', () => {
     });
   });
 
-  describe('suffix function', () => {
+  describe('suffix', () => {
     it('should append the suffix if not present at the end', () => {
       const result = Str.suffix('hello', '!');
       expect(result).toBe('hello!');
@@ -603,7 +603,7 @@ describe('Str', () => {
     });
   });
 
-  describe('is function', () => {
+  describe('is', () => {
     it('should return true if the string matches the given pattern', () => {
       const result = Str.is('hello world', /hello/);
       expect(result).toBe(true);
@@ -640,7 +640,7 @@ describe('Str', () => {
     });
   });
 
-  describe('isAscii function', () => {
+  describe('isAscii', () => {
     it('should return true for a string with only 7-bit ASCII characters', () => {
       const result = Str.isAscii('Hello world');
       expect(result).toBe(true);
@@ -657,7 +657,7 @@ describe('Str', () => {
     });
   });
 
-  describe('isJson function', () => {
+  describe('isJson', () => {
     it('should return true for a valid JSON string', () => {
       const result = Str.isJson('{"name": "John", "age": 30}');
       expect(result).toBe(true);
@@ -679,7 +679,7 @@ describe('Str', () => {
     });
   });
 
-  describe('isUlid function', () => {
+  describe('isUlid', () => {
     it('should return true for a valid ULID', () => {
       const result = Str.isUlid('01F8V9P07J1YZV1G6W3TK0Y3S9');
       expect(result).toBe(true);
@@ -701,7 +701,7 @@ describe('Str', () => {
     });
   });
 
-  describe('isUrl function', () => {
+  describe('isUrl', () => {
     it('should return true for a valid URL', () => {
       const result = Str.isUrl('https://www.example.com');
       expect(result).toBe(true);
@@ -723,7 +723,7 @@ describe('Str', () => {
     });
   });
 
-  describe('isUuid function', () => {
+  describe('isUuid', () => {
     it('should return true for a valid UUID', () => {
       const result = Str.isUuid('123e4567-e89b-12d3-a456-426614174000');
       expect(result).toBe(true);
@@ -745,7 +745,7 @@ describe('Str', () => {
     });
   });
 
-  describe('kebab function', () => {
+  describe('kebab', () => {
     it('should convert a string to kebab case', () => {
       const result = Str.kebab('Hello World Example');
       expect(result).toBe('hello-world-example');
@@ -772,7 +772,7 @@ describe('Str', () => {
     });
   });
 
-  describe('length function', () => {
+  describe('length', () => {
     it('should return the length of the string', () => {
       const result = Str.length('Hello world');
       expect(result).toBe(11);
@@ -799,7 +799,7 @@ describe('Str', () => {
     });
   });
 
-  describe('limit function', () => {
+  describe('limit', () => {
     it('should return the original string if it is shorter than or equal to the limit', () => {
       const result = Str.limit('Hello World', 20);
       expect(result).toBe('Hello World');
@@ -826,7 +826,7 @@ describe('Str', () => {
     });
   });
 
-  describe('limitWords function', () => {
+  describe('limitWords', () => {
     it('should limit the number of words correctly', () => {
       expect(Str.limitWords('Hello world this is a test', 3)).toBe('Hello world this...');
     });
@@ -840,7 +840,7 @@ describe('Str', () => {
     });
   });
 
-  describe('lower function', () => {
+  describe('lower', () => {
     it('should convert all characters to lowercase', () => {
       const result = Str.lower('Hello World');
       expect(result).toBe('hello world');
@@ -857,7 +857,7 @@ describe('Str', () => {
     });
   });
 
-  describe('lowerFirst function', () => {
+  describe('lowerFirst', () => {
     it('should make the first character lowercase', () => {
       const result = Str.lowerFirst('Hello World');
       expect(result).toBe('hello World');
@@ -879,7 +879,7 @@ describe('Str', () => {
     });
   });
 
-  describe('lowerFirstWord function', () => {
+  describe('lowerFirstWord', () => {
     it('should make the first word lowercase', () => {
       const result = Str.lowerFirstWord('Hello World');
       expect(result).toBe('hello World');
@@ -901,7 +901,7 @@ describe('Str', () => {
     });
   });
 
-  describe('mask function', () => {
+  describe('mask', () => {
     it('should mask a portion of the string with the specified character', () => {
       const result = Str.mask('Hello World', '*', 6, 5);
       expect(result).toBe('Hello *****');
@@ -933,7 +933,7 @@ describe('Str', () => {
     });
   });
 
-  describe('pad function', () => {
+  describe('pad', () => {
     it('should pad both sides of a string with spaces', () => {
       const result = Str.pad('Hello', 10);
       expect(result).toBe('  Hello   ');
@@ -955,7 +955,7 @@ describe('Str', () => {
     });
   });
 
-  describe('padStart function', () => {
+  describe('padStart', () => {
     it('should pad the start of a string with spaces', () => {
       const result = Str.padStart('Hello', 10);
       expect(result).toBe('     Hello');
@@ -972,7 +972,7 @@ describe('Str', () => {
     });
   });
 
-  describe('padEnd function', () => {
+  describe('padEnd', () => {
     it('should pad the end of a string with spaces', () => {
       const result = Str.padEnd('Hello', 10);
       expect(result).toBe('Hello     ');
@@ -989,7 +989,7 @@ describe('Str', () => {
     });
   });
 
-  describe('password function', () => {
+  describe('password', () => {
     it('should generate a random password of the default length 32', () => {
       const result = Str.password();
       expect(result).toHaveLength(32);
@@ -1026,7 +1026,7 @@ describe('Str', () => {
     });
   });
 
-  describe('plural function', () => {
+  describe('plural', () => {
     it('should return the singular form when count is 1', () => {
       const result = Str.plural('apple', 1);
       expect(result).toBe('apple');
@@ -1043,7 +1043,7 @@ describe('Str', () => {
     });
   });
 
-  describe('position function', () => {
+  describe('position', () => {
     it('should return the correct position of the first occurrence of the needle', () => {
       const result = Str.position('hello world', 'world');
       expect(result).toBe(6);
@@ -1060,7 +1060,7 @@ describe('Str', () => {
     });
   });
 
-  describe('random function', () => {
+  describe('random', () => {
     it('should generate a random string of the default length 16', () => {
       const result = Str.random();
       expect(result).toHaveLength(16);
@@ -1077,7 +1077,7 @@ describe('Str', () => {
     });
   });
 
-  describe('remove function', () => {
+  describe('remove', () => {
     it('should remove a single occurrence of the string', () => {
       const result = Str.remove('hello world', 'world');
       expect(result).toBe('hello ');
@@ -1099,7 +1099,7 @@ describe('Str', () => {
     });
   });
 
-  describe('repeat function', () => {
+  describe('repeat', () => {
     it('should repeat the string the correct number of times', () => {
       const result = Str.repeat('a', 3);
       expect(result).toBe('aaa');
@@ -1116,7 +1116,7 @@ describe('Str', () => {
     });
   });
 
-  describe('replace function', () => {
+  describe('replace', () => {
     it('should replace a single string with another string', () => {
       const result = Str.replace('hello world', 'world', 'everyone');
       expect(result).toBe('hello everyone');
@@ -1163,7 +1163,7 @@ describe('Str', () => {
     });
   });
 
-  describe('replaceArray function', () => {
+  describe('replaceArray', () => {
     it('should replace sequentially a string with an array of replacements', () => {
       const result = Str.replaceArray('hello world hello', 'hello', ['hi', 'hey']);
       expect(result).toBe('hi world hey');
@@ -1205,7 +1205,7 @@ describe('Str', () => {
     });
   });
 
-  describe('replaceFirst function', () => {
+  describe('replaceFirst', () => {
     it('should replace the first occurrence of the search string', () => {
       const result = Str.replaceFirst('hello world', 'world', 'there');
       expect(result).toBe('hello there');
@@ -1217,7 +1217,7 @@ describe('Str', () => {
     });
   });
 
-  describe('replaceLast function', () => {
+  describe('replaceLast', () => {
     it('should replace the last occurrence of the search string', () => {
       const result = Str.replaceLast('hello world world', 'world', 'there');
       expect(result).toBe('hello world there');
@@ -1229,7 +1229,7 @@ describe('Str', () => {
     });
   });
 
-  describe('replaceMatches function', () => {
+  describe('replaceMatches', () => {
     it('should replace all occurrences matching the given regex pattern', () => {
       const result = Str.replaceMatches('hello 123 world 123', /\d+/g, 'XYZ');
       expect(result).toBe('hello XYZ world XYZ');
@@ -1241,7 +1241,7 @@ describe('Str', () => {
     });
   });
 
-  describe('replaceStart function', () => {
+  describe('replaceStart', () => {
     it('should replace the search string if it appears at the start of the string', () => {
       const result = Str.replaceStart('hello world', 'hello', 'hi');
       expect(result).toBe('hi world');
@@ -1253,7 +1253,7 @@ describe('Str', () => {
     });
   });
 
-  describe('replaceEnd function', () => {
+  describe('replaceEnd', () => {
     it('should replace the search string if it appears at the end of the string', () => {
       const result = Str.replaceEnd('hello world', 'world', 'there');
       expect(result).toBe('hello there');
@@ -1265,7 +1265,7 @@ describe('Str', () => {
     });
   });
 
-  describe('reverse function', () => {
+  describe('reverse', () => {
     it('should reverse the string', () => {
       const result = Str.reverse('hello');
       expect(result).toBe('olleh');
@@ -1282,7 +1282,7 @@ describe('Str', () => {
     });
   });
 
-  describe('slug function', () => {
+  describe('slug', () => {
     it('should generate a slug from the given string', () => {
       const result = Str.slug('Hello World Example');
       expect(result).toBe('hello-world-example');
@@ -1309,7 +1309,7 @@ describe('Str', () => {
     });
   });
 
-  describe('snake function', () => {
+  describe('snake', () => {
     it('should convert a string to snake case', () => {
       const result = Str.snake('Hello World Example');
       expect(result).toBe('hello_world_example');
@@ -1326,7 +1326,7 @@ describe('Str', () => {
     });
   });
 
-  describe('squish function', () => {
+  describe('squish', () => {
     it('should remove extra blank spaces from the string', () => {
       const result = Str.squish('  Hello    World   Example   ');
       expect(result).toBe('Hello World Example');
@@ -1343,7 +1343,7 @@ describe('Str', () => {
     });
   });
 
-  describe('prefix function', () => {
+  describe('prefix', () => {
     it('should add the prefix to the start of the string', () => {
       const result = Str.prefix('World', 'Hello ');
       expect(result).toBe('Hello World');
@@ -1360,7 +1360,7 @@ describe('Str', () => {
     });
   });
 
-  describe('startsWith function', () => {
+  describe('startsWith', () => {
     it('should return true if the string starts with the target', () => {
       const result = Str.startsWith('Hello World', 'Hello');
       expect(result).toBe(true);
@@ -1377,7 +1377,7 @@ describe('Str', () => {
     });
   });
 
-  describe('substr function', () => {
+  describe('substr', () => {
     it('should return a portion of the string based on start and length', () => {
       const result = Str.substr('Hello World', 6, 5);
       expect(result).toBe('World');
@@ -1399,7 +1399,7 @@ describe('Str', () => {
     });
   });
 
-  describe('substrCount function', () => {
+  describe('substrCount', () => {
     it('should return the number of occurrences of a substring', () => {
       const result = Str.substrCount('Hello World Hello World', 'Hello');
       expect(result).toBe(2);
@@ -1421,7 +1421,7 @@ describe('Str', () => {
     });
   });
 
-  describe('substrReplace function', () => {
+  describe('substrReplace', () => {
     it('should replace text within a portion of the string', () => {
       const result = Str.substrReplace('Hello World', 6, 5, 'Universe');
       expect(result).toBe('Hello Universe');
@@ -1443,7 +1443,7 @@ describe('Str', () => {
     });
   });
 
-  describe('swap function', () => {
+  describe('swap', () => {
     it('should swap multiple keywords in the string', () => {
       const input = "Hello world! Let's swap keywords world and Hello.";
       const map = {
@@ -1462,7 +1462,7 @@ describe('Str', () => {
     });
   });
 
-  describe('take function', () => {
+  describe('take', () => {
     it('should take the first n characters when limit is positive', () => {
       const result = Str.take('Hello world', 5);
       expect(result).toBe('Hello');
@@ -1474,7 +1474,7 @@ describe('Str', () => {
     });
   });
 
-  describe('title function', () => {
+  describe('title', () => {
     it('should capitalize the first letter of each word', () => {
       const result = Str.title('hello world');
       expect(result).toBe('Hello World');
@@ -1486,7 +1486,7 @@ describe('Str', () => {
     });
   });
 
-  describe('toBase64 function', () => {
+  describe('toBase64', () => {
     it('should convert string to Base64', () => {
       const result = Str.toBase64('Hello');
       expect(result).toBe('SGVsbG8=');
@@ -1498,7 +1498,7 @@ describe('Str', () => {
     });
   });
 
-  describe('trim function', () => {
+  describe('trim', () => {
     it('should trim whitespace from both ends of the string', () => {
       const result = Str.trim('  Hello world  ');
       expect(result).toBe('Hello world');
@@ -1515,7 +1515,7 @@ describe('Str', () => {
     });
   });
 
-  describe('trimStart function', () => {
+  describe('trimStart', () => {
     it('should trim whitespace from the beginning of the string', () => {
       const result = Str.trimStart('  Hello world');
       expect(result).toBe('Hello world');
@@ -1527,7 +1527,7 @@ describe('Str', () => {
     });
   });
 
-  describe('trimEnd function', () => {
+  describe('trimEnd', () => {
     it('should trim whitespace from the end of the string', () => {
       const result = Str.trimEnd('Hello world  ');
       expect(result).toBe('Hello world');
@@ -1539,7 +1539,7 @@ describe('Str', () => {
     });
   });
 
-  describe('upper function', () => {
+  describe('upper', () => {
     it('should convert the string to upper-case', () => {
       const result = Str.upper('hello world');
       expect(result).toBe('HELLO WORLD');
@@ -1551,7 +1551,7 @@ describe('Str', () => {
     });
   });
 
-  describe('upperFirst function', () => {
+  describe('upperFirst', () => {
     it('should capitalize the first character of the string', () => {
       const result = Str.upperFirst('hello world');
       expect(result).toBe('Hello world');
@@ -1568,7 +1568,7 @@ describe('Str', () => {
     });
   });
 
-  describe('upperFirstWord function', () => {
+  describe('upperFirstWord', () => {
     it('should capitalize the first word of the string', () => {
       const result = Str.upperFirstWord('hello world');
       expect(result).toBe('Hello world');
@@ -1585,7 +1585,7 @@ describe('Str', () => {
     });
   });
 
-  describe('upperSplit function', () => {
+  describe('upperSplit', () => {
     it('should split the string by uppercase letters', () => {
       const result = Str.upperSplit('HelloWorld');
       expect(result).toEqual(['Hello', 'World']);
@@ -1607,7 +1607,7 @@ describe('Str', () => {
     });
   });
 
-  describe('unwrap function', () => {
+  describe('unwrap', () => {
     it('should unwrap the string with the given before and after strings', () => {
       const result = Str.unwrap('<<Hello World>>', '<<', '>>');
       expect(result).toBe('Hello World');
@@ -1644,7 +1644,7 @@ describe('Str', () => {
     });
   });
 
-  describe('uuid function', () => {
+  describe('uuid', () => {
     it('should generate a valid UUID version 4', () => {
       const result = Str.uuid();
       const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
@@ -1652,7 +1652,7 @@ describe('Str', () => {
     });
   });
 
-  describe('uuid7 function', () => {
+  describe('uuid7', () => {
     it('should generate a valid UUID version 7 based on current timestamp', () => {
       const result = Str.uuid7();
       const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-7[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
@@ -1715,7 +1715,7 @@ describe('Str', () => {
     });
   });
 
-  describe('wordWrap function', () => {
+  describe('wordWrap', () => {
     it('should wrap a string to the specified number of characters', () => {
       const result = Str.wordWrap('This is a very long sentence that needs to be wrapped.', 10);
       expect(result).toBe('This is a\nvery long\nsentence\nthat needs\nto be\nwrapped.');
@@ -1732,7 +1732,7 @@ describe('Str', () => {
     });
   });
 
-  describe('wrap function', () => {
+  describe('wrap', () => {
     it('should wrap the string with the given before and after strings', () => {
       const result = Str.wrap('Hello', '<b>', '</b>');
       expect(result).toBe('<b>Hello</b>');
