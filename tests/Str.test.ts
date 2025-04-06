@@ -141,6 +141,18 @@ describe('Str', () => {
     });
   });
 
+  describe('base64', () => {
+    it('should convert string to Base64', () => {
+      const result = Str.base64('Hello');
+      expect(result).toBe('SGVsbG8=');
+    });
+
+    it('should handle empty string', () => {
+      const result = Str.base64('');
+      expect(result).toBe('');
+    });
+  });
+
   describe('before', () => {
     it('should return the substring before the first occurrence of the search string', () => {
       const result = Str.before('hello world', 'hello');
@@ -256,29 +268,29 @@ describe('Str', () => {
     });
   });
 
-  describe('camel', () => {
+  describe('camelCase', () => {
     it('should convert a string to camel case', () => {
-      const result = Str.camel('hello_world');
+      const result = Str.camelCase('hello_world');
       expect(result).toBe('helloWorld');
     });
 
     it('should handle strings with multiple words and spaces', () => {
-      const result = Str.camel('hello world example');
+      const result = Str.camelCase('hello world example');
       expect(result).toBe('helloWorldExample');
     });
 
     it('should handle strings with hyphens', () => {
-      const result = Str.camel('hello-world-example');
+      const result = Str.camelCase('hello-world-example');
       expect(result).toBe('helloWorldExample');
     });
 
     it('should keep existing camel case strings unchanged', () => {
-      const result = Str.camel('helloWorld');
+      const result = Str.camelCase('helloWorld');
       expect(result).toBe('helloWorld');
     });
 
     it('should handle an empty string', () => {
-      const result = Str.camel('');
+      const result = Str.camelCase('');
       expect(result).toBe('');
     });
   });
@@ -783,29 +795,29 @@ describe('Str', () => {
     });
   });
 
-  describe('kebab', () => {
+  describe('kebabCase', () => {
     it('should convert a string to kebab case', () => {
-      const result = Str.kebab('Hello World Example');
+      const result = Str.kebabCase('Hello World Example');
       expect(result).toBe('hello-world-example');
     });
 
     it('should handle strings with special characters', () => {
-      const result = Str.kebab('Hello_World-Example!');
+      const result = Str.kebabCase('Hello_World-Example!');
       expect(result).toBe('hello-world-example');
     });
 
     it('should handle single words', () => {
-      const result = Str.kebab('hello');
+      const result = Str.kebabCase('hello');
       expect(result).toBe('hello');
     });
 
     it('should handle empty string', () => {
-      const result = Str.kebab('');
+      const result = Str.kebabCase('');
       expect(result).toBe('');
     });
 
     it('should handle strings with numbers', () => {
-      const result = Str.kebab('Example 123');
+      const result = Str.kebabCase('Example 123');
       expect(result).toBe('example-123');
     });
   });
@@ -1347,19 +1359,19 @@ describe('Str', () => {
     });
   });
 
-  describe('snake', () => {
+  describe('snakeCase', () => {
     it('should convert a string to snake case', () => {
-      const result = Str.snake('Hello World Example');
+      const result = Str.snakeCase('Hello World Example');
       expect(result).toBe('hello_world_example');
     });
 
     it('should replace spaces with the specified separator', () => {
-      const result = Str.snake('Hello World Example', '-');
+      const result = Str.snakeCase('Hello World Example', '-');
       expect(result).toBe('hello-world-example');
     });
 
     it('should handle an empty string', () => {
-      const result = Str.snake('');
+      const result = Str.snakeCase('');
       expect(result).toBe('');
     });
   });
@@ -1395,6 +1407,18 @@ describe('Str', () => {
     it('should handle an empty string', () => {
       const result = Str.prefix('', 'Hello ');
       expect(result).toBe('Hello ');
+    });
+  });
+
+  describe('properCase', () => {
+    it('should capitalize the first letter of each word', () => {
+      const result = Str.properCase('hello world');
+      expect(result).toBe('Hello World');
+    });
+
+    it('should handle an empty string', () => {
+      const result = Str.properCase('');
+      expect(result).toBe('');
     });
   });
 
@@ -1562,30 +1586,6 @@ describe('Str', () => {
     it('should take the last n characters when limit is negative', () => {
       const result = Str.take('Hello world', -5);
       expect(result).toBe('world');
-    });
-  });
-
-  describe('title', () => {
-    it('should capitalize the first letter of each word', () => {
-      const result = Str.title('hello world');
-      expect(result).toBe('Hello World');
-    });
-
-    it('should handle an empty string', () => {
-      const result = Str.title('');
-      expect(result).toBe('');
-    });
-  });
-
-  describe('toBase64', () => {
-    it('should convert string to Base64', () => {
-      const result = Str.toBase64('Hello');
-      expect(result).toBe('SGVsbG8=');
-    });
-
-    it('should handle empty string', () => {
-      const result = Str.toBase64('');
-      expect(result).toBe('');
     });
   });
 
