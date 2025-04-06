@@ -15,7 +15,7 @@ export function collapse<T = any>(input: ArrayInput): T[] {
 }
 
 export function compact<T = any>(input: ArrayInput): T[] {
-  return from(input).filter((item) => item !== null && item !== undefined);
+  return from(input).filter(Boolean);
 }
 
 export function exists<T = any>(input: ArrayInput, value: T) {
@@ -42,6 +42,10 @@ export function from<T = any>(input: ArrayInput): T[] {
   return [input];
 }
 
+export function get(input: ArrayInput, index: number) {
+  return from(input).at(index);
+}
+
 export function isArray(input: ArrayInput) {
   return Array.isArray(input);
 }
@@ -58,6 +62,21 @@ export function last<T = any>(input: ArrayInput): T | undefined {
   return from(input).at(-1);
 }
 
+export function merge<T = any>(...inputs: ArrayInput[]): T[] {
+  return inputs.flatMap(from);
+}
+
+export function mergeCompact<T = any>(...inputs: ArrayInput[]): T[] {
+  return compact(inputs.flatMap(from));
+}
+
+export function middle<T = any>(input: ArrayInput): T | undefined {
+  const items = from(input);
+  if (items.length === 0) return undefined;
+  const index = Math.floor(items.length / 2);
+  return items[index];
+}
+
 export function prepend<T = any>(input: ArrayInput, value: any): T[] {
   const arr = from(input);
   arr.unshift(value);
@@ -67,6 +86,20 @@ export function prepend<T = any>(input: ArrayInput, value: any): T[] {
 export function random<T = any>(input: ArrayInput): T | undefined {
   const arr = from(input);
   return arr.at(Math.floor(Math.random() * arr.length));
+}
+
+export function range(start: number, end: number, step = 1) {
+  const result: number[] = [];
+
+  if (step === 0) return result;
+
+  const ascending = start < end;
+
+  for (let i = start; ascending ? i <= end : i >= end; i += ascending ? step : -step) {
+    result.push(i);
+  }
+
+  return result;
 }
 
 export function shuffle<T = any>(input: ArrayInput): T[] {
