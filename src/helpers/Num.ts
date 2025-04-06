@@ -13,10 +13,16 @@ export interface NumberFormatOptions {
 
 export type NumberInput = any;
 
+/**
+ * Clamps the input value between the given minimum and maximum values.
+ */
 export function clamp(input: NumberInput, min: NumberInput, max: NumberInput) {
   return Math.min(Math.max(from(input), from(min)), from(max));
 }
 
+/**
+ * Formats the input value as a currency string using the specified locale and currency.
+ */
 export function currency(input: any, options: NumberCurrencyOptions = {}) {
   const { currency = 'USD', locale } = options;
 
@@ -28,6 +34,9 @@ export function currency(input: any, options: NumberCurrencyOptions = {}) {
   }).format(from(input));
 }
 
+/**
+ * Formats the input value as a decimal string using the specified options such as precision and locale.
+ */
 export function format(input: NumberInput, options: NumberFormatOptions = {}) {
   const { locale, maxPrecision, precision } = options;
 
@@ -42,6 +51,9 @@ export function format(input: NumberInput, options: NumberFormatOptions = {}) {
   return formatter.format(from(input));
 }
 
+/**
+ * Converts the input value into a number, accounting for string representations with different decimal separators.
+ */
 export function from(input: NumberInput) {
   if (typeof input === 'string') {
     const dotIndex = input.indexOf('.');
@@ -63,32 +75,53 @@ export function from(input: NumberInput) {
   return isNaN(num) ? 0 : num;
 }
 
+/**
+ * Returns the highest number from the provided inputs.
+ */
 export function higher(...inputs: NumberInput[]) {
   return Math.max(...Arr.compact(inputs).map(from));
 }
 
+/**
+ * Checks if the input value is of type number and is not NaN.
+ */
 export function isNumber(input: any) {
   return typeof input === 'number' && !Number.isNaN(input);
 }
 
+/**
+ * Checks if the input value is a valid numeric value.
+ */
 export function isNumeric(input: NumberInput) {
   return !isNaN(input) && isFinite(input);
 }
 
+/**
+ * Returns the lowest number from the provided inputs.
+ */
 export function lower(...inputs: NumberInput[]) {
   return Math.min(...Arr.compact(inputs).map(from));
 }
 
+/**
+ * Converts the input value to its negative equivalent, or keeps it negative if already so.
+ */
 export function negative(input: NumberInput) {
   const num = from(input);
   return num <= 0 ? num : num * -1;
 }
 
+/**
+ * Converts the input value to its positive equivalent, or keeps it positive if already so.
+ */
 export function positive(input: NumberInput) {
   const num = from(input);
   return num >= 0 ? num : num * -1;
 }
 
+/**
+ * Generates a random number between the specified minimum and maximum values (inclusive).
+ */
 export function random(min: NumberInput, max: NumberInput) {
   const numMin = from(min);
   const numMax = from(max);
