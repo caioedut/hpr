@@ -654,8 +654,8 @@ export function squish(input: StringInput) {
 /**
  * Determine if a given string starts with a given substring.
  */
-export function startsWith(input: StringInput, target: StringInput) {
-  return from(input).startsWith(from(target));
+export function startsWith(input: StringInput, needles: StringInput | StringInput[]) {
+  return Arr.from(needles).some((needle) => from(input).startsWith(from(needle)));
 }
 
 /**
