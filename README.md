@@ -45,6 +45,13 @@ Transliterate a UTF-8 value to ASCII.
 export function ascii(input: StringInput): string
 ```
 
+### toBase64
+Convert the given string to Base64 encoding.
+
+```ts
+export function toBase64(input: StringInput): string
+```
+
 ### before
 Get the portion of a string before the first occurrence of a given value.
 
@@ -73,11 +80,11 @@ Get the portion of a string between the last occurrence of two given values.
 export function betweenLast(input: StringInput, start: StringInput, end: StringInput): string
 ```
 
-### camel
+### camelCase
 Convert a value to camel case.
 
 ```ts
-export function camel(input: StringInput): string
+export function camelCase(input: StringInput): string
 ```
 
 ### charAt
@@ -206,11 +213,11 @@ Determine if a given value is a valid UUID.
 export function isUuid(input: StringInput): boolean
 ```
 
-### kebab
+### kebabCase
 Convert a string to kebab case.
 
 ```ts
-export function kebab(input: StringInput): string
+export function kebabCase(input: StringInput): string
 ```
 
 ### length
@@ -311,6 +318,13 @@ Begin a string with a single instance of a given value.
 export function prefix(input: StringInput, prefix: StringInput): string
 ```
 
+### properCase
+Convert the given string to proper case.
+
+```ts
+export function properCase(input: StringInput): string
+```
+
 ### random
 Generate a more truly "random" alpha-numeric string.
 
@@ -395,11 +409,11 @@ Generate a URL friendly "slug" from a given string.
 export function slug(input: StringInput, separator = '-'): string
 ```
 
-### snake
+### snakeCase
 Convert a string to snake case.
 
 ```ts
-export function snake(input: StringInput, separator = '_'): string
+export function snakeCase(input: StringInput, separator = '_'): string
 ```
 
 ### squish
@@ -459,24 +473,10 @@ export function swap(input: StringInput, map: Record<string, string>): string
 ```
 
 ### take
-Take the first or last {$limit} characters of a string.
+Take the first or last limit characters of a string.
 
 ```ts
 export function take(input: StringInput, limit: number): string
-```
-
-### title
-Convert the given string to proper case.
-
-```ts
-export function title(input: StringInput): string
-```
-
-### toBase64
-Convert the given string to Base64 encoding.
-
-```ts
-export function toBase64(input: StringInput): string
 ```
 
 ### trim

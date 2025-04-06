@@ -46,6 +46,13 @@ export function ascii(input: StringInput) {
 }
 
 /**
+ * Convert the given string to Base64 encoding.
+ */
+export function base64(input: StringInput) {
+  return btoa(from(input));
+}
+
+/**
  * Get the portion of a string before the first occurrence of a given value.
  */
 export function before(input: StringInput, search: StringInput) {
@@ -120,7 +127,7 @@ export function betweenLast(input: StringInput, start: StringInput, end: StringI
 /**
  * Convert a value to camel case.
  */
-export function camel(input: StringInput) {
+export function camelCase(input: StringInput) {
   return from(input)
     .replace(/[-_\s]+(.)?/g, (_, c) => (c ? c.toUpperCase() : ''))
     .replace(/^[A-Z]/, (c) => c.toLowerCase());
@@ -382,7 +389,7 @@ export function isUuid(input: StringInput) {
 /**
  * Convert a string to kebab case.
  */
-export function kebab(input: StringInput) {
+export function kebabCase(input: StringInput) {
   return slug(input, '-');
 }
 
@@ -544,6 +551,13 @@ export function prefix(input: StringInput, prefix: StringInput) {
 }
 
 /**
+ * Convert the given string to proper case.
+ */
+export function properCase(input: StringInput) {
+  return from(input).replace(/\b\w/g, (match) => match.toUpperCase());
+}
+
+/**
  * Generate a more truly "random" alpha-numeric string.
  */
 export function random(length = 16) {
@@ -683,7 +697,7 @@ export function slug(input: StringInput, separator = '-') {
 /**
  * Convert a string to snake case.
  */
-export function snake(input: StringInput, separator = '_') {
+export function snakeCase(input: StringInput, separator = '_') {
   return slug(input, separator);
 }
 
@@ -791,7 +805,7 @@ export function swap(input: StringInput, map: Record<string, string>) {
 }
 
 /**
- * Take the first or last {$limit} characters of a string.
+ * Take the first or last limit characters of a string.
  */
 export function take(input: StringInput, limit: number) {
   const str = from(input);
@@ -801,20 +815,6 @@ export function take(input: StringInput, limit: number) {
   }
 
   return str.slice(0, limit);
-}
-
-/**
- * Convert the given string to proper case.
- */
-export function title(input: StringInput) {
-  return from(input).replace(/\b\w/g, (match) => match.toUpperCase());
-}
-
-/**
- * Convert the given string to Base64 encoding.
- */
-export function toBase64(input: StringInput) {
-  return btoa(from(input));
 }
 
 /**
