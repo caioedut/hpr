@@ -43,8 +43,8 @@ export function format(input: NumberInput, options: NumberFormatOptions = {}) {
   const fallback = !precision && !maxPrecision ? 2 : null;
 
   const formatter = new Intl.NumberFormat(locale, {
-    maximumFractionDigits: higher(precision, maxPrecision, fallback),
-    minimumFractionDigits: lower(precision, maxPrecision, fallback),
+    maximumFractionDigits: max(precision, maxPrecision, fallback),
+    minimumFractionDigits: min(precision, maxPrecision, fallback),
     style: 'decimal',
   });
 
@@ -76,13 +76,6 @@ export function from(input: NumberInput) {
 }
 
 /**
- * Returns the highest number from the provided inputs.
- */
-export function higher(...inputs: NumberInput[]) {
-  return Math.max(...Arr.compact(inputs).map(from));
-}
-
-/**
  * Checks if the input value is of type number and is not NaN.
  */
 export function isNumber(input: any) {
@@ -97,9 +90,16 @@ export function isNumeric(input: NumberInput) {
 }
 
 /**
+ * Returns the highest number from the provided inputs.
+ */
+export function max(...inputs: NumberInput[]) {
+  return Math.max(...Arr.compact(inputs).map(from));
+}
+
+/**
  * Returns the lowest number from the provided inputs.
  */
-export function lower(...inputs: NumberInput[]) {
+export function min(...inputs: NumberInput[]) {
   return Math.min(...Arr.compact(inputs).map(from));
 }
 
