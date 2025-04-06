@@ -359,6 +359,44 @@ describe('Str', () => {
     });
   });
 
+  describe('color', () => {
+    it('should return a hex color string', () => {
+      const result = Str.color('example');
+      expect(result).toMatch(/^#[0-9a-fA-F]{6}$/);
+    });
+
+    it('should return the same color for the same input', () => {
+      const color1 = Str.color('hello');
+      const color2 = Str.color('hello');
+      expect(color1).toBe(color2);
+    });
+
+    it('should return different colors for different inputs', () => {
+      const color1 = Str.color('hello');
+      const color2 = Str.color('world');
+      expect(color1).not.toBe(color2);
+    });
+  });
+
+  describe('colorPastel', () => {
+    it('should return a pastel hex color string', () => {
+      const result = Str.colorPastel('example');
+      expect(result).toMatch(/^#[0-9a-fA-F]{6}$/);
+    });
+
+    it('should return the same pastel color for the same input', () => {
+      const color1 = Str.colorPastel('hello');
+      const color2 = Str.colorPastel('hello');
+      expect(color1).toBe(color2);
+    });
+
+    it('should return different pastel colors for different inputs', () => {
+      const color1 = Str.colorPastel('hello');
+      const color2 = Str.colorPastel('world');
+      expect(color1).not.toBe(color2);
+    });
+  });
+
   describe('contains', () => {
     it('should return true if the string contains the substring', () => {
       const result = Str.contains('hello world', 'world');
@@ -1389,6 +1427,44 @@ describe('Str', () => {
     it('should return false if an empty string is passed as a substring', () => {
       const result = Str.startsWith('hello', '');
       expect(result).toBe(false);
+    });
+  });
+
+  describe('stripTags', () => {
+    it('should remove all HTML tags', () => {
+      const result = Str.stripTags('<p>Hello <strong>World</strong></p>');
+      expect(result).toBe('Hello World');
+    });
+
+    it('should allow specified tags', () => {
+      const result = Str.stripTags('<p>Hello <strong>World</strong></p>', '<strong>');
+      expect(result).toBe('Hello <strong>World</strong>');
+    });
+
+    it('should remove PHP tags and comments', () => {
+      const result = Str.stripTags('Hello <?php echo "World"; ?> <!-- comment -->');
+      expect(result).toBe('Hello  ');
+    });
+
+    it('should treat <br> as newline', () => {
+      const result = Str.stripTags('Line1<br>Line2<br/>Line3<BR />');
+      expect(result).toBe('Line1\nLine2\nLine3\n');
+    });
+
+    it('should handle empty input', () => {
+      const result = Str.stripTags('');
+      expect(result).toBe('');
+    });
+
+    it('should ignore invalid allowed tags', () => {
+      const result = Str.stripTags('<p>Hello</p>', 'invalid');
+      expect(result).toBe('Hello');
+    });
+
+    it('should allow multiple tags', () => {
+      const html = '<p>Hello <strong>World</strong> <em>and</em> everyone</p>';
+      const result = Str.stripTags(html, '<strong><em>');
+      expect(result).toBe('Hello <strong>World</strong> <em>and</em> everyone');
     });
   });
 

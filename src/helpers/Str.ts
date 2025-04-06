@@ -168,6 +168,59 @@ export function chopStart(input: string, needle: StringInput | StringInput[]) {
 }
 
 /**
+ * Generates a consistent hex color based on the input string.
+ */
+export function color(input: StringInput) {
+  const str = from(input);
+
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  let color = '#';
+  for (let i = 0; i < 3; i++) {
+    const value = (hash >> (i * 8)) & 0xff;
+    color += value.toString(16).padStart(2, '0');
+  }
+
+  return color;
+}
+
+/**
+ * Generates a soft pastel hex color based on the input string.
+ */
+export function colorPastel(input: StringInput) {
+  const str = from(input);
+
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  const hue = hash % 360;
+  const saturation = 70;
+  const lightness = 80;
+
+  const h = hue / 360;
+  const s = saturation / 100;
+  const l = lightness / 100;
+
+  const a = s * Math.min(l, 1 - l);
+  const f = (n: number) => {
+    const k = (n + h * 12) % 12;
+    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+    return Math.round(255 * color);
+  };
+
+  const r = f(0);
+  const g = f(8);
+  const b = f(4);
+
+  return `#${[r, g, b].map((x) => x.toString(16).padStart(2, '0')).join('')}`;
+}
+
+/**
  * Determine if a given string contains a given substring.
  */
 export function contains(input: StringInput, needles: StringInput | StringInput[], ignoreCase = false) {
@@ -267,16 +320,6 @@ export function is(input: StringInput, pattern: RegExp | RegExp[]) {
 
   return false;
 }
-
-// TODO
-// /**
-//  * Extracts an excerpt from text that matches the first instance of a phrase.
-//  */
-// export function excerpt(
-//   input: StringInput,
-//   phrase: StringInput = '',
-//   options: StringExcerptOptions = {}
-// ) {}
 
 /**
  * Determine if a given string is 7 bit ASCII.
@@ -656,6 +699,26 @@ export function squish(input: StringInput) {
  */
 export function startsWith(input: StringInput, needles: StringInput | StringInput[]) {
   return Arr.from(needles).some((needle) => from(input).startsWith(from(needle)));
+}
+
+/**
+ * Strip all tags from a string, optionally allowing certain tags.
+ */
+export function stripTags(input: StringInput, allowed?: StringInput) {
+  const str = from(input).replace(/<br ?\/?>/gi, '\n');
+
+  const allowedTags =
+    from(allowed)
+      .toLowerCase()
+      .match(/<[a-z][a-z0-9]*>/g)
+      ?.map((tag) => tag.replace(/[<>]/g, '')) ?? [];
+
+  const tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi;
+  const commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
+
+  return str.replace(commentsAndPhpTags, '').replace(tags, (_match, tag) => {
+    return allowedTags.includes(tag.toLowerCase()) ? _match : '';
+  });
 }
 
 /**

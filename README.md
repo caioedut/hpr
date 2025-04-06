@@ -101,6 +101,20 @@ Remove the given string(s) if it exists at the start of the haystack.
 export function chopStart(input: string, needle: StringInput | StringInput[]): string
 ```
 
+### color
+Generates a consistent hex color based on the input string.
+
+```ts
+export function color(input: StringInput): string
+```
+
+### colorPastel
+Generates a soft pastel hex color based on the input string.
+
+```ts
+export function colorPastel(input: StringInput): string
+```
+
 ### contains
 Determine if a given string contains a given substring.
 
@@ -400,6 +414,13 @@ Determine if a given string starts with a given substring.
 
 ```ts
 export function startsWith(input: StringInput, needles: StringInput | StringInput[]): boolean
+```
+
+### stripTags
+Strip all tags from a string, optionally allowing certain tags.
+
+```ts
+export function stripTags(input: StringInput, allowed?: StringInput): string
 ```
 
 ### substr
