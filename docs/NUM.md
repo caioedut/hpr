@@ -1,147 +1,144 @@
 # Num
 
-Static methods for safe number manipulation, formatting, and validation.
+Number manipulation, formatting, and validation with TypeScript safety.
 <br/>
-Call using `Num.*()` syntax (e.g., `Num.clamp()`).
+Call using `Num.*()` syntax (e.g., `Num.from('42,55')`).
 
+### Import
 ```ts
 import { Num } from 'hpr';
 ```
 
-> **Key Foundation**:
-> <br/>
-> All methods use `Num.from()` internally - the **core sanitizer** that:
-> <br/>
-> ✔ Converts any input to a valid number
-> <br/>
-> ✔ Returns `0` for invalid inputs (e.g., `NaN`)
+### Core Type
+```typescript
+type NumberInput = any;
+```
 
 ---
 
-## 🔢 Core Conversion
-
 ### `from()`
-The foundation: safely converts any input to number (invalid → 0).
+Converts any input to a number.
 
 ```typescript
 static from(input: NumberInput): number;
 ```
 
 **Key Features**:
-- Auto-detects decimal/thousand separators
-- Fallback to `0` for NaN values
-- Unifies number handling across methods
+- Decimal separators (`.` or `,`)
+- Thousand separators (`,` or `.`)
+- Returns `0` for unparseable values
+- Used internally by all Num methods
 
 **Examples**
 ```typescript
-Num.from("1.234,56"); // 1234.56
-Num.from("1,234.56"); // 1234.56
-Num.from("invalid");  // 0
-Num.from(null);       // 0
-Num.from({});         // 0
-Num.from([0]);        // 0
-Num.from([1]);        // 1
+Num.from("1,234.56");  // 1234.56
+Num.from("1.234,56");  // 1234.56
+Num.from("invalid");   // 0
+Num.from(null);        // 0
+Num.from([]);          // 0
+Num.from([1]);         // 1
 ```
 
 ---
-
-### `negative()` / `positive()`
-Converts to negative/positive equivalent.
-
-```typescript
-static negative(input: NumberInput): number;
-static positive(input: NumberInput): number;
-```
-
-**Examples**
-```typescript
-Num.positive(-5); // 5
-Num.negative("3"); // -3
-```
-
----
-
-## 📏 Value Control
 
 ### `clamp()`
-Restricts value between min/max.
+Restricts a value between min/max bounds.
 
 ```typescript
 static clamp(input: NumberInput, min: NumberInput, max: NumberInput): number;
 ```
 
-**Example**
+**Examples**
 ```typescript
-Num.clamp(15, 0, 10); // 10
+Num.clamp(15, 0, 10);     // 10
+Num.clamp(-5, 0, 10);     // 0
+Num.clamp("7", "5", "9"); // 7 (number parsing)
+Num.clamp(3, 5, 1);       // 1 (auto-corrects swapped bounds)
 ```
 
 ---
 
-### `min()` / `max()`
-Returns smallest/largest value.
+### `currency()`
+Formats numbers as locale-aware currency strings.
 
 ```typescript
-static min(...inputs: NumberInput[]): number;
-static max(...inputs: NumberInput[]): number;
+static currency(input: NumberInput, options?: NumberCurrencyOptions): string;
 ```
 
 **Examples**
 ```typescript
-Num.min(2, 0, 1); // 0
-Num.max(2, 5, 1); // 5
+// Default USD formatting
+Num.currency(1234.5); // "$1,234.50"
+
+// Explicit currency and locale
+Num.currency(1000, {
+  currency: 'BRL',
+  locale: 'pt-BR'
+}); // "R$1.000,00"
+
+// Euro with German formatting
+Num.currency("1.234,56", {
+  currency: 'EUR',
+  locale: 'de-DE'
+}); // "1.234,56 €"
+```
+
+**Options**
+```typescript
+interface NumberCurrencyOptions {
+  currency?: string;  // ISO 4217 currency code (e.g. 'USD', 'EUR')
+  locale?: string;    // BCP 47 locale tag (e.g. 'en-US', 'pt-BR')
+}
 ```
 
 ---
 
-## 💰 Formatting
-
-### `currency()`
-Formats as currency string.
+### `format()`
+Formats numbers with locale-aware decimal precision.
 
 ```typescript
-static currency(input: any, options?: NumberCurrencyOptions): string;
+static format(input: NumberInput, options?: NumberFormatOptions): string;
 ```
 
-**Example**
+**Examples**
 ```typescript
-Num.currency(1000, { currency: 'BRL' }); // "R$ 1.000,00"
+Num.format(1234.5678); // "1,234.57"
+Num.format(1.23456, { precision: 3 }); // "1.235"
+Num.format("1,234", { locale: 'fr-FR' }); // "1 234,00"
+```
+
+**Options**
+```typescript
+interface NumberFormatOptions {
+  locale?: string;           // BCP 47 locale tag (e.g. 'en-US', 'pt-BR')
+  precision?: number;        // Fixed decimal places
+  maxPrecision?: number;     // Maximum decimal places
+}
 ```
 
 ---
 
-## 🔍 Validation
-
-### `isNumber()`
-Strict type check (only primitive numbers, excluding NaN).
+### `isNumber()` / `isNumeric()`
+Number validation utilities.
 
 ```typescript
 static isNumber(input: any): boolean;
-```
-
-**Example**
-```typescript
-Num.isNumber(42);     // true
-Num.isNumber("42");   // false
-Num.isNumber(NaN);    // false
-```
-
----
-
-### `isNumeric()`
-Checks if convertible to a finite number (including strings).
-
-```typescript
 static isNumeric(input: NumberInput): boolean;
 ```
 
-**Example**
+**Examples**
 ```typescript
-Num.isNumeric("42");    // true
+Num.isNumber(42);       // true (number type)
+Num.isNumber("42");     // false
+Num.isNumeric("42");    // true (coercible)
 Num.isNumeric("1.23");  // true
 Num.isNumeric("10px");  // false
 ```
 
-### Comparison: `isNumber` vs `isNumeric`
+**Comparison: `isNumber` vs `isNumeric`**:
+- `isNumber`: Strict type check (excludes strings)
+- `isNumeric`: Loose check (allows numeric strings)
+
 | Feature                | `isNumber`       | `isNumeric`        |
 |------------------------|------------------|--------------------|
 | **Type Check**         | Must be `number` | Any convertible    |
@@ -156,34 +153,60 @@ Num.isNumeric("10px");  // false
 
 ---
 
-## 🎲 Randomization
+### `max()` / `min()`
+Finds the highest/lowest value in a set of numbers.
+
+```typescript
+static max(...inputs: NumberInput[]): number;
+static min(...inputs: NumberInput[]): number;
+```
+
+**Examples**
+```typescript
+Num.max(1, 5, 3);          // 5
+Num.min("2", "4", "1");    // 1
+Num.max(10, null, 20);     // 20 (ignores null)
+Num.min([]);               // Infinity (empty set)
+```
+
+**Behavior**:
+- Ignores `null`/`undefined` values
+- Converts number strings automatically
+- Returns `-Infinity` (max) / `Infinity` (min) for empty inputs
+- Handles all `NumberInput` types (number/string)
+
+---
+
+### `negative()` / `positive()`
+Converts numbers to their signed equivalents.
+
+```typescript
+static negative(input: NumberInput): number;
+static positive(input: NumberInput): number;
+```
+
+**Examples**
+```typescript
+Num.positive(-5);      // 5
+Num.negative(3);       // -3
+Num.positive("2.5");   // 2.5
+Num.negative(0);       // 0 (unchanged)
+Num.positive(-0);      // 0
+```
+
+---
 
 ### `random()`
-Generates random integer.
+Generates a random integer within a range (inclusive).
 
 ```typescript
 static random(min: NumberInput, max: NumberInput): number;
 ```
 
-**Example**
+**Examples**
 ```typescript
-Num.random(1, 100); // 57 (example)
-```
-
----
-
-## 🏷️ Type Definitions
-```typescript
-type NumberInput = number | string;
-
-interface NumberCurrencyOptions {
-  currency?: string;
-  locale?: Intl.LocalesArgument;
-}
-
-interface NumberFormatOptions {
-  locale?: Intl.LocalesArgument;
-  precision?: number;
-  maxPrecision?: number;
-}
+Num.random(1, 10);     // 7 (example)
+Num.random(0, 100);    // 42 (example)
+Num.random("5", "10"); // 8 (example)
+Num.random(3, 3);      // 3
 ```
