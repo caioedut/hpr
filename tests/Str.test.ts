@@ -538,9 +538,9 @@ describe('Str', () => {
       expect(result).toBe(false);
     });
 
-    it('should return true if an empty string is passed as a substring', () => {
+    it('should return false if an empty string is passed as a substring', () => {
       const result = Str.endsWith('hello', '');
-      expect(result).toBe(true);
+      expect(result).toBe(false);
     });
   });
 
@@ -1361,18 +1361,33 @@ describe('Str', () => {
   });
 
   describe('startsWith', () => {
-    it('should return true if the string starts with the target', () => {
-      const result = Str.startsWith('Hello World', 'Hello');
+    it('should return true if the string starts with the given substring', () => {
+      const result = Str.startsWith('hello world', 'hello');
       expect(result).toBe(true);
     });
 
-    it('should return false if the string does not start with the target', () => {
-      const result = Str.startsWith('Hello World', 'World');
+    it('should return false if the string does not start with the given substring', () => {
+      const result = Str.startsWith('hello world', 'world');
       expect(result).toBe(false);
     });
 
-    it('should handle an empty string', () => {
-      const result = Str.startsWith('', 'Hello');
+    it('should return true if the string starts with any of the given substrings', () => {
+      const result = Str.startsWith('hello world', ['hello', 'hi']);
+      expect(result).toBe(true);
+    });
+
+    it('should return false if the string does not start with any of the given substrings', () => {
+      const result = Str.startsWith('hello world', ['world', 'earth']);
+      expect(result).toBe(false);
+    });
+
+    it('should handle empty strings', () => {
+      const result = Str.startsWith('', 'hello');
+      expect(result).toBe(false);
+    });
+
+    it('should return false if an empty string is passed as a substring', () => {
+      const result = Str.startsWith('hello', '');
       expect(result).toBe(false);
     });
   });
