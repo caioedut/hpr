@@ -399,7 +399,7 @@ export function squish(input: StringInput): string
 Determine if a given string starts with a given substring.
 
 ```ts
-export function startsWith(input: StringInput, target: StringInput): boolean
+export function startsWith(input: StringInput, needles: StringInput | StringInput[]): boolean
 ```
 
 ### substr
