@@ -20,7 +20,7 @@ type StringInput = any;
 Converts any input to string.
 
 ```typescript
-static from(input: StringInput): string;
+function from(input: StringInput): string;
 ```
 
 **Key Features**:
@@ -41,8 +41,8 @@ Str.from([1, 2]);            // "1,2"
 Extracts segments relative to first match.
 
 ```typescript
-static after(input: StringInput, search: StringInput): string;
-static before(input: StringInput, search: StringInput): string;
+function after(input: StringInput, search: StringInput): string;
+function before(input: StringInput, search: StringInput): string;
 ```
 
 **Examples**
@@ -57,8 +57,8 @@ Str.before("user@domain", "@");   // "user"
 Extracts segments relative to last match.
 
 ```typescript
-static afterLast(input: StringInput, search: StringInput): string;
-static beforeLast(input: StringInput, search: StringInput): string;
+function afterLast(input: StringInput, search: StringInput): string;
+function beforeLast(input: StringInput, search: StringInput): string;
 ```
 
 **Examples**
@@ -73,8 +73,8 @@ Str.beforeLast("file.txt.zip", "."); // "file.txt"
 Extracts text between delimiters.
 
 ```typescript
-static between(input: StringInput, start: StringInput, end: StringInput): string;
-static betweenLast(input: StringInput, start: StringInput, end: StringInput): string;
+function between(input: StringInput, start: StringInput, end: StringInput): string;
+function betweenLast(input: StringInput, start: StringInput, end: StringInput): string;
 ```
 
 **Examples**
@@ -89,7 +89,7 @@ Str.betweenLast("(a)(b)", "(", ")");     // "b"
 Converts Unicode to ASCII.
 
 ```typescript
-static ascii(input: StringInput): string;
+function ascii(input: StringInput): string;
 ```
 
 **Example**
@@ -103,7 +103,7 @@ Str.ascii("Déjà Vu"); // "Deja Vu"
 Base64 encoding.
 
 ```typescript
-static base64(input: StringInput): string;
+function base64(input: StringInput): string;
 ```
 
 ---
@@ -112,10 +112,10 @@ static base64(input: StringInput): string;
 Case conversion utilities.
 
 ```typescript
-static camelCase(input: StringInput): string;
-static snakeCase(input: StringInput, separator?: string): string;
-static kebabCase(input: StringInput): string;
-static properCase(input: StringInput): string;
+function camelCase(input: StringInput): string;
+function snakeCase(input: StringInput, separator?: string): string;
+function kebabCase(input: StringInput): string;
+function properCase(input: StringInput): string;
 ```
 
 **Examples**
@@ -130,7 +130,7 @@ Str.kebabCase("HelloWorld");     // "hello-world"
 Gets the character at a specific index.
 
 ```typescript
-static charAt(input: StringInput, index: number): string;
+function charAt(input: StringInput, index: number): string;
 ```
 
 **Example**
@@ -144,8 +144,8 @@ Str.charAt("hello", 1); // "e"
 Removes prefixes/suffixes.
 
 ```typescript
-static chopStart(input: StringInput, needle: StringInput|StringInput[]): string;
-static chopEnd(input: StringInput, needle: StringInput|StringInput[]): string;
+function chopStart(input: StringInput, needle: StringInput|StringInput[]): string;
+function chopEnd(input: StringInput, needle: StringInput|StringInput[]): string;
 ```
 
 **Examples**
@@ -160,8 +160,8 @@ Str.chopEnd("file.txt", ".txt");  // "file"
 Generates HEX colors from strings.
 
 ```typescript
-static color(input: StringInput): string;
-static colorPastel(input: StringInput): string;
+function color(input: StringInput): string;
+function colorPastel(input: StringInput): string;
 ```
 
 **Example**
@@ -175,9 +175,9 @@ Str.color("hello"); // "#5a3b2c"
 Substring checks.
 
 ```typescript
-static contains(input: StringInput, needles: StringInput|StringInput[], ignoreCase?: boolean): boolean;
-static containsAll(input: StringInput, needles: StringInput[], ignoreCase?: boolean): boolean;
-static doesntContain(input: StringInput, needles: StringInput|StringInput[], ignoreCase?: boolean): boolean;
+function contains(input: StringInput, needles: StringInput|StringInput[], ignoreCase?: boolean): boolean;
+function containsAll(input: StringInput, needles: StringInput[], ignoreCase?: boolean): boolean;
+function doesntContain(input: StringInput, needles: StringInput|StringInput[], ignoreCase?: boolean): boolean;
 ```
 
 **Examples**
@@ -193,7 +193,7 @@ Str.doesntContain("Hello", "world");          // true
 Collapses repeated characters.
 
 ```typescript
-static deduplicate(input: StringInput, character?: string): string;
+function deduplicate(input: StringInput, character?: string): string;
 ```
 
 ---
@@ -202,8 +202,8 @@ static deduplicate(input: StringInput, character?: string): string;
 Prefix/suffix verification.
 
 ```typescript
-static endsWith(input: StringInput, needles: StringInput|StringInput[]): boolean;
-static startsWith(input: StringInput, needles: StringInput|StringInput[]): boolean;
+function endsWith(input: StringInput, needles: StringInput|StringInput[]): boolean;
+function startsWith(input: StringInput, needles: StringInput|StringInput[]): boolean;
 ```
 
 ---
@@ -212,7 +212,7 @@ static startsWith(input: StringInput, needles: StringInput|StringInput[]): boole
 Escapes special regex characters for safe pattern usage.
 
 ```typescript
-static escapeRegExp(input: StringInput): string;
+function escapeRegExp(input: StringInput): string;
 ```
 
 **Escapes**: `. * + ? | ( ) [ ] { } ^ $ \`
@@ -229,7 +229,7 @@ Str.escapeRegExp("(test)");   // "\\(test\\)"
 Checks if string matches any provided regex pattern.
 
 ```typescript
-static is(input: StringInput, pattern: RegExp|RegExp[]): boolean;
+function is(input: StringInput, pattern: RegExp|RegExp[]): boolean;
 ```
 
 **Examples**
@@ -245,7 +245,7 @@ Str.is("test", [/\d+/]); // false
 Checks if string contains only ASCII characters (0-127).
 
 ```typescript
-static isAscii(input: StringInput): boolean;
+function isAscii(input: StringInput): boolean;
 ```
 
 **Examples**
@@ -261,7 +261,7 @@ Str.isAscii("日本"); // false
 Validates if a string is valid JSON (parses to an object).
 
 ```typescript
-static isJson(input: StringInput): boolean;
+function isJson(input: StringInput): boolean;
 ```
 
 **Behavior**:
@@ -284,7 +284,7 @@ Str.isJson('invalid');         // false
 Checks if input is a primitive string.
 
 ```typescript
-static isString(input: any): boolean;
+function isString(input: any): boolean;
 ```
 
 **Examples**
@@ -301,7 +301,7 @@ Str.isString(null);       // false
 Validates if a string is a properly formatted URL.
 
 ```typescript
-static isUrl(input: StringInput): boolean;
+function isUrl(input: StringInput): boolean;
 ```
 
 **Behavior**:
@@ -323,7 +323,7 @@ Str.isUrl("invalid url");         // false
 Validates if a string is a properly formatted UUID.
 
 ```typescript
-static isUuid(input: StringInput): boolean;
+function isUuid(input: StringInput): boolean;
 ```
 
 **UUID Format**:
@@ -345,7 +345,7 @@ Str.isUuid("123E4567-E89B-12D3-A456-426614174000"); // true (uppercase)
 Returns the character length of a string.
 
 ```typescript
-static length(input: StringInput): number;
+function length(input: StringInput): number;
 ```
 
 **Examples**
@@ -362,8 +362,8 @@ Str.length(null);    // 0
 Truncates strings with optional ellipsis.
 
 ```typescript
-static limit(input: StringInput, limit?: number, end?: string, preserveWords?: boolean): string;
-static limitWords(input: StringInput, words?: number, end?: string): string;
+function limit(input: StringInput, limit?: number, end?: string, preserveWords?: boolean): string;
+function limitWords(input: StringInput, words?: number, end?: string): string;
 ```
 
 **Examples**
@@ -384,8 +384,8 @@ Str.limitWords("One two three", 2); // "One two..."
 Case modification.
 
 ```typescript
-static lower(input: StringInput): string;
-static upper(input: StringInput): string;
+function lower(input: StringInput): string;
+function upper(input: StringInput): string;
 ```
 
 ---
@@ -394,8 +394,8 @@ static upper(input: StringInput): string;
 First character case control.
 
 ```typescript
-static lowerFirst(input: StringInput): string;
-static upperFirst(input: StringInput): string;
+function lowerFirst(input: StringInput): string;
+function upperFirst(input: StringInput): string;
 ```
 
 **Examples**
@@ -410,8 +410,8 @@ Str.upperFirst("hello");    // "Hello"
 Modifies the case of the first word's first letter.
 
 ```typescript
-static lowerFirstWord(input: StringInput): string;
-static upperFirstWord(input: StringInput): string;
+function lowerFirstWord(input: StringInput): string;
+function upperFirstWord(input: StringInput): string;
 ```
 
 **Behavior**:
@@ -433,7 +433,7 @@ Str.upperFirstWord("123 test");     // "123 test" (no effect)
 Replaces a portion of a string with repeating characters.
 
 ```typescript
-static mask(input: StringInput, character: string, index: number, length?: number): string;
+function mask(input: StringInput, character: string, index: number, length?: number): string;
 ```
 
 **Examples**
@@ -449,9 +449,9 @@ Str.mask("test", "-", 10);             // "test"
 Pads strings to specified length.
 
 ```typescript
-static pad(input: StringInput, length: number, pad?: string): string;
-static padStart(input: StringInput, length: number, pad?: string): string;
-static padEnd(input: StringInput, length: number, pad?: string): string;
+function pad(input: StringInput, length: number, pad?: string): string;
+function padStart(input: StringInput, length: number, pad?: string): string;
+function padEnd(input: StringInput, length: number, pad?: string): string;
 ```
 
 **Examples**
@@ -467,7 +467,7 @@ Str.padEnd("hi", 4, "!");  // "hi!!"
 Secure password generator.
 
 ```typescript
-static password(length?: number, options?: StringPasswordOptions): string;
+function password(length?: number, options?: StringPasswordOptions): string;
 ```
 
 **Options**
@@ -486,7 +486,7 @@ interface StringPasswordOptions {
 Returns the plural form of a word based on count.
 
 ```typescript
-static plural(input: StringInput, count?: number, pluralForm?: string): string;
+function plural(input: StringInput, count?: number, pluralForm?: string): string;
 ```
 
 **Examples**
@@ -502,7 +502,7 @@ Str.plural("child", 2, "children"); // "children"
 Finds the index of a substring's first occurrence.
 
 ```typescript
-static position(haystack: StringInput, needle: StringInput, offset?: number): number;
+function position(haystack: StringInput, needle: StringInput, offset?: number): number;
 ```
 
 **Examples**
@@ -518,8 +518,8 @@ Str.position("hello", "x");      // -1
 Ensures strings start/end with exactly one instance of given value.
 
 ```typescript
-static prefix(input: StringInput, prefix: StringInput): string;
-static suffix(input: StringInput, suffix: StringInput): string;
+function prefix(input: StringInput, prefix: StringInput): string;
+function suffix(input: StringInput, suffix: StringInput): string;
 ```
 
 **Examples**
@@ -536,7 +536,7 @@ Str.suffix("test!!", "!");      // "test!"
 Generates a random alphanumeric string.
 
 ```typescript
-static random(length?: number): string;
+function random(length?: number): string;
 ```
 
 **Examples**
@@ -552,7 +552,7 @@ Str.random(4);   // "9fWx"
 Removes all occurrences of substring(s) from a string.
 
 ```typescript
-static remove(input: StringInput, search: StringInput|StringInput[], ignoreCase?: boolean): string;
+function remove(input: StringInput, search: StringInput|StringInput[], ignoreCase?: boolean): string;
 ```
 
 **Examples**
@@ -568,7 +568,7 @@ Str.remove("Hello", "h", true);          // "ello"
 Creates a new string by repeating the input.
 
 ```typescript
-static repeat(input: StringInput, times: number): string;
+function repeat(input: StringInput, times: number): string;
 ```
 
 **Examples**
@@ -584,9 +584,9 @@ Str.repeat("", 5);     // ""
 Basic string replacement operations.
 
 ```typescript
-static replace(input: StringInput|StringInput[], search: StringInput|StringInput[], replace: StringInput|StringInput[], ignoreCase?: boolean): string|string[];
-static replaceFirst(input: StringInput, search: StringInput, replace: StringInput): string;
-static replaceLast(input: StringInput, search: StringInput, replace: StringInput): string;
+function replace(input: StringInput|StringInput[], search: StringInput|StringInput[], replace: StringInput|StringInput[], ignoreCase?: boolean): string|string[];
+function replaceFirst(input: StringInput, search: StringInput, replace: StringInput): string;
+function replaceLast(input: StringInput, search: StringInput, replace: StringInput): string;
 ```
 
 **Examples**
@@ -602,8 +602,8 @@ Str.replaceLast("hello", "l", "x");     // "helxo"
 Targeted replacement at string edges.
 
 ```typescript
-static replaceStart(input: StringInput, search: StringInput, replace: StringInput): string;
-static replaceEnd(input: StringInput, search: StringInput, replace: StringInput): string;
+function replaceStart(input: StringInput, search: StringInput, replace: StringInput): string;
+function replaceEnd(input: StringInput, search: StringInput, replace: StringInput): string;
 ```
 
 **Examples**
@@ -618,7 +618,7 @@ Str.replaceEnd("test", "st", "x");      // "tex"
 Sequential replacements from an array.
 
 ```typescript
-static replaceArray(input: StringInput, search: StringInput, replacements: StringInput|StringInput[]): string;
+function replaceArray(input: StringInput, search: StringInput, replacements: StringInput|StringInput[]): string;
 ```
 
 **Example**
@@ -632,7 +632,7 @@ Str.replaceArray("?/?", "?", ["1", "2"]); // "1/2"
 Reverses the characters in a string.
 
 ```typescript
-static reverse(input: StringInput): string;
+function reverse(input: StringInput): string;
 ```
 
 **Examples**
@@ -648,7 +648,7 @@ Str.reverse("");       // ""
 Converts a string to a URL-friendly slug.
 
 ```typescript
-static slug(input: StringInput, separator?: string): string;
+function slug(input: StringInput, separator?: string): string;
 ```
 
 **Examples**
@@ -669,7 +669,7 @@ Str.slug("Hello  World! 123"); // "hello-world-123"
 Removes extra whitespace and trims the string.
 
 ```typescript
-static squish(input: StringInput): string;
+function squish(input: StringInput): string;
 ```
 
 **Examples**
@@ -685,7 +685,7 @@ Str.squish("  No  Extra  ");      // "No Extra"
 Removes HTML tags while preserving line breaks and optional allowed tags.
 
 ```typescript
-static stripTags(input: StringInput, allowed?: StringInput): string;
+function stripTags(input: StringInput, allowed?: StringInput): string;
 ```
 
 **Examples**
@@ -701,7 +701,7 @@ Str.stripTags("<div>Test<br>Text</div>"); // "Test\nText"
 Extracts a substring by position and length.
 
 ```typescript
-static substr(input: StringInput, start: number, length?: number): string;
+function substr(input: StringInput, start: number, length?: number): string;
 ```
 
 **Examples**
@@ -718,7 +718,7 @@ Str.substr("Hello", 10);          // ""
 Counts occurrences of a substring.
 
 ```typescript
-static substrCount(haystack: StringInput, needle: StringInput, offset?: number, length?: number): number;
+function substrCount(haystack: StringInput, needle: StringInput, offset?: number, length?: number): number;
 ```
 
 **Examples**
@@ -735,7 +735,7 @@ Str.substrCount("aaaa", "aa");          // 2 (non-overlapping)
 Replaces text within a specific portion of a string.
 
 ```typescript
-static substrReplace(input: StringInput, start: number, length: number, replacement: StringInput): string;
+function substrReplace(input: StringInput, start: number, length: number, replacement: StringInput): string;
 ```
 
 **Examples**
@@ -751,7 +751,7 @@ Str.substrReplace("test", -3, 2, "xx");             // "txxst"
 Replaces words using a key-value mapping.
 
 ```typescript
-static swap(input: StringInput, map: Record<string, string>): string;
+function swap(input: StringInput, map: Record<string, string>): string;
 ```
 
 **Examples**
@@ -767,7 +767,7 @@ Str.swap("test", {});                                    // "test"
 Extracts the first or last characters of a string.
 
 ```typescript
-static take(input: StringInput, limit: number): string;
+function take(input: StringInput, limit: number): string;
 ```
 
 **Examples**
@@ -783,9 +783,9 @@ Str.take("Hello", 10);   // "Hello"
 Removes whitespace from string edges.
 
 ```typescript
-static trim(input: StringInput, chars?: string|null): string;
-static trimStart(input: StringInput, chars?: string|null): string;
-static trimEnd(input: StringInput, chars?: string|null): string;
+function trim(input: StringInput, chars?: string|null): string;
+function trimStart(input: StringInput, chars?: string|null): string;
+function trimEnd(input: StringInput, chars?: string|null): string;
 ```
 
 **Examples**
@@ -802,7 +802,7 @@ Str.trim("__hello__", "_");    // "hello"
 Generates a random UUID (version 4).
 
 ```typescript
-static uuid(): string;
+function uuid(): string;
 ```
 
 **Examples**
@@ -819,8 +819,8 @@ Str.uuid(); // "123e4567-e89b-12d3-a456-426614174000"
 Generates UUID strings (versions 4 and 7).
 
 ```typescript
-static uuid(): string;          // Version 4 (random)
-static uuid7(time?: Date): string; // Version 7 (time-based)
+function uuid(): string;          // Version 4 (random)
+function uuid7(time?: Date): string; // Version 7 (time-based)
 ```
 
 **Examples**
@@ -843,7 +843,7 @@ Str.uuid7(); // "018e0a14-7e23-7e00-8234-57a1009a2e7f" (v7)
 Counts words in a string (supports hyphenated/underscored words).
 
 ```typescript
-static wordCount(input: StringInput): number;
+function wordCount(input: StringInput): number;
 ```
 
 **Examples**
@@ -859,7 +859,7 @@ Str.wordCount("");                 // 0
 Wraps text to specified line length.
 
 ```typescript
-static wordWrap(input: StringInput, characters?: number, breakChar?: string, cutLongWords?: boolean): string;
+function wordWrap(input: StringInput, characters?: number, breakChar?: string, cutLongWords?: boolean): string;
 ```
 
 **Examples**
@@ -874,8 +874,8 @@ Str.wordWrap("abcdefgh", 3, "\n", true); // "abc\ndef\ngh"
 Adds/removes wrapping strings.
 
 ```typescript
-static wrap(input: StringInput, before: StringInput, after: StringInput): string;
-static unwrap(input: StringInput, before: StringInput, after?: StringInput): string;
+function wrap(input: StringInput, before: StringInput, after: StringInput): string;
+function unwrap(input: StringInput, before: StringInput, after?: StringInput): string;
 ```
 
 **Examples**
