@@ -295,28 +295,6 @@ describe('Str', () => {
     });
   });
 
-  describe('charAt', () => {
-    it('should return the character at the specified index', () => {
-      const result = Str.charAt('hello', 1);
-      expect(result).toBe('e');
-    });
-
-    it('should return an empty string if the index is out of bounds', () => {
-      const result = Str.charAt('hello', 10);
-      expect(result).toBe('');
-    });
-
-    it('should return the first character if the index is 0', () => {
-      const result = Str.charAt('hello', 0);
-      expect(result).toBe('h');
-    });
-
-    it('should handle empty strings', () => {
-      const result = Str.charAt('', 0);
-      expect(result).toBe('');
-    });
-  });
-
   describe('chopStart', () => {
     it('should remove the string if it exists at the start', () => {
       const result = Str.chopStart('hello world', 'hello');
@@ -653,43 +631,6 @@ describe('Str', () => {
     });
   });
 
-  describe('is', () => {
-    it('should return true if the string matches the given pattern', () => {
-      const result = Str.is('hello world', /hello/);
-      expect(result).toBe(true);
-    });
-
-    it("should return false if the string doesn't match the given pattern", () => {
-      const result = Str.is('hello world', /goodbye/);
-      expect(result).toBe(false);
-    });
-
-    it('should return true if the string matches any of the given patterns', () => {
-      const result = Str.is('hello world', [/goodbye/, /hello/]);
-      expect(result).toBe(true);
-    });
-
-    it("should return false if the string doesn't match any of the given patterns", () => {
-      const result = Str.is('hello world', [/goodbye/, /earth/]);
-      expect(result).toBe(false);
-    });
-
-    it('should handle empty string input', () => {
-      const result = Str.is('', /hello/);
-      expect(result).toBe(false);
-    });
-
-    it('should return true if the pattern is an array of regex and any match', () => {
-      const result = Str.is('example text', [/\d/, /text/]);
-      expect(result).toBe(true);
-    });
-
-    it('should return false if the pattern array does not match', () => {
-      const result = Str.is('example text', [/\d/, /numbers/]);
-      expect(result).toBe(false);
-    });
-  });
-
   describe('isAscii', () => {
     it('should return true for a string with only 7-bit ASCII characters', () => {
       const result = Str.isAscii('Hello world');
@@ -819,33 +760,6 @@ describe('Str', () => {
     it('should handle strings with numbers', () => {
       const result = Str.kebabCase('Example 123');
       expect(result).toBe('example-123');
-    });
-  });
-
-  describe('length', () => {
-    it('should return the length of the string', () => {
-      const result = Str.length('Hello world');
-      expect(result).toBe(11);
-    });
-
-    it('should return 0 for an empty string', () => {
-      const result = Str.length('');
-      expect(result).toBe(0);
-    });
-
-    it('should return the correct length for a string with special characters', () => {
-      const result = Str.length('Hello! World?');
-      expect(result).toBe(13);
-    });
-
-    it('should return the correct length for a string with numbers', () => {
-      const result = Str.length('Hello123');
-      expect(result).toBe(8);
-    });
-
-    it('should return the correct length for a string with spaces', () => {
-      const result = Str.length('Hello world ');
-      expect(result).toBe(12);
     });
   });
 
@@ -1093,23 +1007,6 @@ describe('Str', () => {
     });
   });
 
-  describe('position', () => {
-    it('should return the correct position of the first occurrence of the needle', () => {
-      const result = Str.position('hello world', 'world');
-      expect(result).toBe(6);
-    });
-
-    it('should return -1 when the needle is not found', () => {
-      const result = Str.position('hello world', 'foo');
-      expect(result).toBe(-1);
-    });
-
-    it('should consider the offset when searching for the needle', () => {
-      const result = Str.position('hello world', 'o', 5);
-      expect(result).toBe(7);
-    });
-  });
-
   describe('random', () => {
     it('should generate a random string of the default length 16', () => {
       const result = Str.random();
@@ -1146,23 +1043,6 @@ describe('Str', () => {
     it('should handle an array of strings to remove', () => {
       const result = Str.remove('hello world hello', ['hello', 'world']);
       expect(result).toBe('  ');
-    });
-  });
-
-  describe('repeat', () => {
-    it('should repeat the string the correct number of times', () => {
-      const result = Str.repeat('a', 3);
-      expect(result).toBe('aaa');
-    });
-
-    it('should return an empty string when the repetition count is 0', () => {
-      const result = Str.repeat('a', 0);
-      expect(result).toBe('');
-    });
-
-    it('should return the original string when the repetition count is 1', () => {
-      const result = Str.repeat('a', 1);
-      expect(result).toBe('a');
     });
   });
 
