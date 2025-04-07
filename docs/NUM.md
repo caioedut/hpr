@@ -20,7 +20,7 @@ type NumberInput = any;
 Converts any input to a number.
 
 ```typescript
-static from(input: NumberInput): number;
+function from(input: NumberInput): number;
 ```
 
 **Key Features**:
@@ -45,7 +45,7 @@ Num.from([1]);         // 1
 Restricts a value between min/max bounds.
 
 ```typescript
-static clamp(input: NumberInput, min: NumberInput, max: NumberInput): number;
+function clamp(input: NumberInput, min: NumberInput, max: NumberInput): number;
 ```
 
 **Examples**
@@ -62,7 +62,7 @@ Num.clamp(3, 5, 1);       // 1 (auto-corrects swapped bounds)
 Formats numbers as locale-aware currency strings.
 
 ```typescript
-static currency(input: NumberInput, options?: NumberCurrencyOptions): string;
+function currency(input: NumberInput, options?: NumberCurrencyOptions): string;
 ```
 
 **Examples**
@@ -97,7 +97,7 @@ interface NumberCurrencyOptions {
 Formats numbers with locale-aware decimal precision.
 
 ```typescript
-static format(input: NumberInput, options?: NumberFormatOptions): string;
+function format(input: NumberInput, options?: NumberFormatOptions): string;
 ```
 
 **Examples**
@@ -122,8 +122,8 @@ interface NumberFormatOptions {
 Number validation utilities.
 
 ```typescript
-static isNumber(input: any): boolean;
-static isNumeric(input: NumberInput): boolean;
+function isNumber(input: any): boolean;
+function isNumeric(input: NumberInput): boolean;
 ```
 
 **Examples**
@@ -157,8 +157,8 @@ Num.isNumeric("10px");  // false
 Finds the highest/lowest value in a set of numbers.
 
 ```typescript
-static max(...inputs: NumberInput[]): number;
-static min(...inputs: NumberInput[]): number;
+function max(...inputs: NumberInput[]): number;
+function min(...inputs: NumberInput[]): number;
 ```
 
 **Examples**
@@ -181,8 +181,8 @@ Num.min([]);               // Infinity (empty set)
 Converts numbers to their signed equivalents.
 
 ```typescript
-static negative(input: NumberInput): number;
-static positive(input: NumberInput): number;
+function negative(input: NumberInput): number;
+function positive(input: NumberInput): number;
 ```
 
 **Examples**
@@ -200,7 +200,7 @@ Num.positive(-0);      // 0
 Generates a random integer within a range (inclusive).
 
 ```typescript
-static random(min: NumberInput, max: NumberInput): number;
+function random(min: NumberInput, max: NumberInput): number;
 ```
 
 **Examples**
