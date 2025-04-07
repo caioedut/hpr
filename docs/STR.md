@@ -126,20 +126,6 @@ Str.kebabCase("HelloWorld");     // "hello-world"
 
 ---
 
-### `charAt()`
-Gets the character at a specific index.
-
-```typescript
-function charAt(input: StringInput, index: number): string;
-```
-
-**Example**
-```typescript
-Str.charAt("hello", 1); // "e"
-```
-
----
-
 ### `chopStart()` / `chopEnd()`
 Removes prefixes/suffixes.
 
@@ -221,22 +207,6 @@ function escapeRegExp(input: StringInput): string;
 ```typescript
 Str.escapeRegExp("file.txt"); // "file\\.txt"
 Str.escapeRegExp("(test)");   // "\\(test\\)"
-```
-
----
-
-### `is()`
-Checks if string matches any provided regex pattern.
-
-```typescript
-function is(input: StringInput, pattern: RegExp|RegExp[]): boolean;
-```
-
-**Examples**
-```typescript
-Str.is("hello", /^h/); // true
-Str.is("world", [/^h/, /rld$/]); // true (matches second pattern)
-Str.is("test", [/\d+/]); // false
 ```
 
 ---
@@ -337,23 +307,6 @@ Str.isUuid("123e4567-e89b-12d3-a456-426614174000"); // true
 Str.isUuid("00000000-0000-0000-0000-000000000000"); // true
 Str.isUuid("invalid-uuid"); // false
 Str.isUuid("123E4567-E89B-12D3-A456-426614174000"); // true (uppercase)
-```
-
----
-
-### `length()`
-Returns the character length of a string.
-
-```typescript
-function length(input: StringInput): number;
-```
-
-**Examples**
-```typescript
-Str.length("hello");  // 5
-Str.length("");      // 0
-Str.length(123);     // 3 (converted to string)
-Str.length(null);    // 0
 ```
 
 ---
@@ -498,22 +451,6 @@ Str.plural("child", 2, "children"); // "children"
 
 ---
 
-### `position()`
-Finds the index of a substring's first occurrence.
-
-```typescript
-function position(haystack: StringInput, needle: StringInput, offset?: number): number;
-```
-
-**Examples**
-```typescript
-Str.position("hello", "e");      // 1
-Str.position("hello", "l", 3);   // 3
-Str.position("hello", "x");      // -1
-```
-
----
-
 ### `prefix()` / `suffix()`
 Ensures strings start/end with exactly one instance of given value.
 
@@ -560,22 +497,6 @@ function remove(input: StringInput, search: StringInput|StringInput[], ignoreCas
 Str.remove("Hello World", "l");          // "Heo Word"
 Str.remove("FooBarBaz", ["o", "a"]);     // "FBrBz"
 Str.remove("Hello", "h", true);          // "ello"
-```
-
----
-
-### `repeat()`
-Creates a new string by repeating the input.
-
-```typescript
-function repeat(input: StringInput, times: number): string;
-```
-
-**Examples**
-```typescript
-Str.repeat("a", 3);    // "aaa"
-Str.repeat("ab", 2);   // "abab"
-Str.repeat("", 5);     // ""
 ```
 
 ---

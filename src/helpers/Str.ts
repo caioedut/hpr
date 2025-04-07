@@ -134,13 +134,6 @@ export function camelCase(input: StringInput) {
 }
 
 /**
- * Get the character at the specified index.
- */
-export function charAt(input: StringInput, index: number) {
-  return from(input).charAt(index);
-}
-
-/**
  * Remove the given string(s) if it exists at the end of the haystack.
  */
 export function chopEnd(input: string, needle: StringInput | StringInput[]) {
@@ -316,19 +309,6 @@ export function from(input: StringInput) {
 }
 
 /**
- * Determine if a given string matches a given pattern.
- */
-export function is(input: StringInput, pattern: RegExp | RegExp[]) {
-  const str = from(input);
-
-  for (const regex of Arr.from<RegExp>(pattern)) {
-    if (regex.test(str)) return true;
-  }
-
-  return false;
-}
-
-/**
  * Determine if a given string is 7 bit ASCII.
  */
 export function isAscii(input: StringInput) {
@@ -393,13 +373,6 @@ export function isUuid(input: StringInput) {
  */
 export function kebabCase(input: StringInput) {
   return slug(input, '-');
-}
-
-/**
- * Return the length of the given string.
- */
-export function length(input: StringInput) {
-  return from(input).length;
 }
 
 /**
@@ -538,13 +511,6 @@ export function plural(input: StringInput, count = 2, pluralForm?: string) {
 }
 
 /**
- * Find the multi-byte safe position of the first occurrence of a given substring in a string.
- */
-export function position(haystack: StringInput, needle: StringInput, offset = 0) {
-  return from(haystack).indexOf(from(needle), offset);
-}
-
-/**
  * Begin a string with a single instance of a given value.
  */
 export function prefix(input: StringInput, prefix: StringInput) {
@@ -581,13 +547,6 @@ export function remove(input: StringInput, search: StringInput | StringInput[], 
     const regex = new RegExp(escapeRegExp(from(item)), ignoreCase ? 'gi' : 'g');
     return acc.replace(regex, '');
   }, from(input));
-}
-
-/**
- * Repeat the given string.
- */
-export function repeat(input: StringInput, times: number) {
-  return from(input).repeat(times);
 }
 
 /**
