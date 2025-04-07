@@ -7,8 +7,8 @@
 
 <span>The ultimate helper.</span>
 
-  <a href="https://www.npmjs.com/package/cometta">
-   <img src="https://img.shields.io/npm/v/cometta.svg" alt="NPM" />
+  <a href="https://www.npmjs.com/package/hpr">
+   <img src="https://img.shields.io/npm/v/hpr.svg" alt="NPM" />
   </a>
 
 [Str](#str---string-utilities)
