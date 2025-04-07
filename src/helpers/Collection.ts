@@ -43,7 +43,7 @@ export class Collection<T extends CollectionItem = CollectionItem> {
    */
   avgBy(key: keyof T) {
     const values = this.items.map((item) => Num.from(item[key]));
-    return values.length > 0 ? values.reduce((a, b) => a + b, 0) / values.length : undefined;
+    return values.length > 0 ? values.reduce((a, b) => a + b, 0) / values.length : 0;
   }
 
   /**
@@ -110,34 +110,11 @@ export class Collection<T extends CollectionItem = CollectionItem> {
   }
 
   /**
-   * Removes all falsy values (false, null, 0, "", undefined, NaN) from the collection
+   *  @alias some
+   * Checks if at least one item satisfies the condition (function or key-value pairs).
    */
-  compact() {
-    return new Collection(this.items.filter(Boolean));
-  }
-
-  /**
-   * Merges multiple arrays or collections into a new Collection.
-   */
-  concat(...inputs: (Collection | T[])[]) {
-    const merged = [...this.items];
-
-    for (const input of inputs) {
-      if (input instanceof Collection) {
-        merged.push(...(input as Collection<T>).items);
-      } else {
-        merged.push(...input);
-      }
-    }
-
-    return new Collection<T>(merged);
-  }
-
-  /**
-   * Checks if the collection contains an item that satisfies the callback.
-   */
-  contains(callback: (item: T, index: number, collection: Collection<T>) => boolean) {
-    return this.some(callback);
+  contains(condition: ((item: T, index: number, collection: Collection<T>) => boolean) | Partial<T>, strict = true) {
+    return this.some(condition, strict);
   }
 
   /**
@@ -199,30 +176,16 @@ export class Collection<T extends CollectionItem = CollectionItem> {
   }
 
   /**
-   * Checks if all items pass the test implemented by the callback.
+   * Checks if all items satisfies the condition (function or key-value pairs).
    */
-  every(callback: (item: T, index: number, collection: Collection<T>) => boolean): boolean {
-    return this.items.every((item, index) => callback(item, index, this));
-  }
-
-  /**
-   * Returns a new collection with items that pass the test.
-   */
-  filter(callback: (item: T, index: number, collection: Collection<T>) => boolean): Collection<T> {
-    return new Collection(this.items.filter((item, index) => callback(item, index, this)));
-  }
-
-  /**
-   * Returns the first item that satisfies the callback.
-   */
-  find(callback: (item: T, index: number, collection: Collection<T>) => boolean): T | undefined {
-    return this.items.find((item, index) => callback(item, index, this));
+  every(condition: ((item: T, index: number, collection: Collection<T>) => boolean) | Partial<T>, strict = true) {
+    return this.where(condition, strict).length == this.items.length;
   }
 
   /**
    * Returns the index of the first item that satisfies the callback.
    */
-  findIndex(callback: (item: T, index: number, collection: Collection<T>) => boolean): number {
+  findIndex(callback: (item: T, index: number, collection: Collection<T>) => boolean) {
     return this.items.findIndex((item, index) => callback(item, index, this));
   }
 
@@ -260,6 +223,21 @@ export class Collection<T extends CollectionItem = CollectionItem> {
   }
 
   /**
+   * Finds the first item using a callback or key-value pairs.
+   */
+  firstWhere(condition: ((item: T, index: number, collection: Collection<T>) => boolean) | Partial<T>, strict = true) {
+    if (typeof condition === 'function') {
+      return this.items.find((item, index) => condition(item, index, this));
+    }
+
+    const keys = Object.keys(condition);
+
+    return this.items.find((item) => {
+      return keys.every((key) => (strict ? item[key] === condition[key] : item[key] == condition[key]));
+    });
+  }
+
+  /**
    * Flattens the collection by one level
    */
   flat() {
@@ -269,14 +247,14 @@ export class Collection<T extends CollectionItem = CollectionItem> {
   /**
    * Maps each item using the callback and flattens the result.
    */
-  flatMap<U>(callback: (item: T, index: number, collection: Collection<T>) => U[]): U[] {
+  flatMap<U>(callback: (item: T, index: number, collection: Collection<T>) => U[]) {
     return this.items.flatMap((item, index) => callback(item, index, this));
   }
 
   /**
    * Groups items by a property key
    */
-  groupBy<K extends keyof T>(key: K): { [P in Extract<T[K], string>]?: T[] } {
+  groupBy<K extends keyof T>(key: K) {
     return this.items.reduce(
       (groups, item) => {
         const groupKey = item[key];
@@ -288,20 +266,6 @@ export class Collection<T extends CollectionItem = CollectionItem> {
       },
       {} as { [P in Extract<T[K], string>]: T[] },
     );
-  }
-
-  /**
-   * Checks if the collection has at least one item that matches the given key-value pairs.
-   */
-  has(filter: Partial<T>, strict = true) {
-    return this.where(filter, strict).isNotEmpty();
-  }
-
-  /**
-   * Checks if the collection has at least one item that matches any of the given key-value pairs.
-   */
-  hasAny(filter: Partial<T>, strict = true) {
-    return this.orWhere(filter, strict).isNotEmpty();
   }
 
   /**
@@ -321,7 +285,7 @@ export class Collection<T extends CollectionItem = CollectionItem> {
   /**
    * Joins all elements of the collection into a string
    */
-  join(separator: string = ',', transform?: (item: T) => string): string {
+  join(separator: string = ',', transform?: (item: T) => string) {
     return this.items.map((item) => (transform ? transform(item) : Str.from(item))).join(separator);
   }
 
@@ -333,9 +297,24 @@ export class Collection<T extends CollectionItem = CollectionItem> {
   }
 
   /**
+   * Finds the last item using a callback or key-value pairs.
+   */
+  lastWhere(condition: ((item: T, index: number, collection: Collection<T>) => boolean) | Partial<T>, strict = true) {
+    if (typeof condition === 'function') {
+      return this.items.findLast((item, index) => condition(item, index, this));
+    }
+
+    const keys = Object.keys(condition);
+
+    return this.items.findLast((item) => {
+      return keys.every((key) => (strict ? item[key] === condition[key] : item[key] == condition[key]));
+    });
+  }
+
+  /**
    * Maps each item using the callback.
    */
-  map<U>(callback: (item: T, index: number, collection: Collection<T>) => U): U[] {
+  map<U>(callback: (item: T, index: number, collection: Collection<T>) => U) {
     const result = new Array<U>(this.items.length);
     for (let i = 0; i < this.items.length; i++) {
       result[i] = callback(this.items[i]!, i, this);
@@ -380,17 +359,6 @@ export class Collection<T extends CollectionItem = CollectionItem> {
   }
 
   /**
-   * Filters the collection based on key-value pairs provided in an object using a logical OR condition.
-   */
-  orWhere(filter: Partial<T>, strict = true) {
-    return new Collection(
-      this.items.filter((item) => {
-        return Object.keys(filter).some((key) => (strict ? item[key] === filter[key] : item[key] == filter[key]));
-      }),
-    );
-  }
-
-  /**
    * Extracts a single key's value from all items.
    */
   pluck(key: keyof T) {
@@ -407,7 +375,7 @@ export class Collection<T extends CollectionItem = CollectionItem> {
   /**
    * Reduces the collection to a single value.
    */
-  reduce<U>(callback: (accumulator: U, item: T, index: number, collection: Collection<T>) => U, initialValue: U): U {
+  reduce<U>(callback: (accumulator: U, item: T, index: number, collection: Collection<T>) => U, initialValue: U) {
     return this.items.reduce((acc, item, index) => callback(acc, item, index, this), initialValue);
   }
 
@@ -447,10 +415,11 @@ export class Collection<T extends CollectionItem = CollectionItem> {
   }
 
   /**
-   * Checks if any item passes the test.
+   * Checks if at least one item satisfies the condition (function or key-value pairs).
    */
-  some(callback: (item: T, index: number, collection: Collection<T>) => boolean): boolean {
-    return this.items.some((item, index) => callback(item, index, this));
+  some(condition: ((item: T, index: number, collection: Collection<T>) => boolean) | Partial<T>, strict = true) {
+    const result = this.firstWhere(condition, strict);
+    return result !== null && result !== undefined;
   }
 
   /**
@@ -503,20 +472,33 @@ export class Collection<T extends CollectionItem = CollectionItem> {
   }
 
   /**
-   * Removes duplicate items from a collection based on a specified key.
+   * Removes duplicate items from a collection based on a specified key, keeping the first occurrence.
    */
   uniqueBy(key: keyof T) {
-    const uniqueItems = Array.from(new Map(this.items.map((item) => [item[key], item])).values());
+    const seen = new Set<T[keyof T]>();
+    const uniqueItems = this.items.filter((item) => {
+      const value = item[key];
+      if (seen.has(value)) return false;
+      seen.add(value);
+      return true;
+    });
+
     return new Collection(uniqueItems);
   }
 
   /**
-   * Filters the collection based on key-value pairs provided in an object.
+   * Filters the collection using a condition function or key-value pairs.
    */
-  where(filter: Partial<T>, strict = true) {
+  where(condition: ((item: T, index: number, collection: Collection<T>) => boolean) | Partial<T>, strict = true) {
+    if (typeof condition === 'function') {
+      return new Collection(this.items.filter((item, index) => condition(item, index, this)));
+    }
+
+    const keys = Object.keys(condition);
+
     return new Collection(
       this.items.filter((item) => {
-        return Object.keys(filter).every((key) => (strict ? item[key] === filter[key] : item[key] == filter[key]));
+        return keys.every((key) => (strict ? item[key] === condition[key] : item[key] == condition[key]));
       }),
     );
   }
