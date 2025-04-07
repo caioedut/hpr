@@ -1,3 +1,7 @@
+import * as Arr from '../../src/helpers/Arr';
+import * as Num from '../../src/helpers/Num';
+import * as Str from '../../src/helpers/Str';
+
 type CollectionItem = Record<string, any>;
 
 export class Collection<T extends CollectionItem = CollectionItem> {
@@ -35,6 +39,84 @@ export class Collection<T extends CollectionItem = CollectionItem> {
   }
 
   /**
+   * Returns the average value of a given property in the collection.
+   */
+  avgBy(key: keyof T) {
+    const values = this.items.map((item) => Num.from(item[key]));
+    return values.length > 0 ? values.reduce((a, b) => a + b, 0) / values.length : undefined;
+  }
+
+  /**
+   * Divides the collection into multiple smaller collections (chunks) of the specified size
+   */
+  chunk(size: number) {
+    const result: T[][] = [];
+
+    for (let i = 0; i < this.items.length; i += size) {
+      result.push(this.items.slice(i, i + size));
+    }
+
+    return new Collection(result);
+  }
+
+  /**
+   * Returns a deep clone that preserves instances, prototypes, Maps, Sets, Dates, etc.
+   */
+  clone() {
+    const deepClone = <T>(value: T, seen = new WeakMap()) => {
+      if (value === null || typeof value !== 'object') return value;
+      if (seen.has(value)) return seen.get(value);
+
+      if (value instanceof Date) return new Date(value.getTime()) as any;
+      if (value instanceof RegExp) return new RegExp(value.source, value.flags) as any;
+
+      if (value instanceof Map) {
+        const result = new Map();
+        seen.set(value, result);
+        for (const [key, val] of value) {
+          result.set(deepClone(key, seen), deepClone(val, seen));
+        }
+        return result as any;
+      }
+
+      if (value instanceof Set) {
+        const result = new Set();
+        seen.set(value, result);
+        for (const item of value) {
+          result.add(deepClone(item, seen));
+        }
+        return result as any;
+      }
+
+      if (Array.isArray(value)) {
+        const result: any[] = [];
+        seen.set(value, result);
+        value.forEach((item, i) => {
+          result[i] = deepClone(item, seen);
+        });
+        return result as any;
+      }
+
+      const result = Object.create(Object.getPrototypeOf(value));
+      seen.set(value, result);
+      for (const key of Object.keys(value)) {
+        result[key] = deepClone((value as any)[key], seen);
+      }
+
+      return result;
+    };
+
+    return new Collection<T>(deepClone(this.items));
+  }
+
+  /**
+   * Removes all falsy values (false, null, 0, "", undefined, NaN) from the collection
+   */
+  compact() {
+    return new Collection(this.items.filter(Boolean));
+  }
+
+  /**
    * Merges multiple arrays or collections into a new Collection.
    */
   concat(...inputs: (Collection | T[])[]) {
@@ -49,6 +131,27 @@ export class Collection<T extends CollectionItem = CollectionItem> {
     }
 
     return new Collection<T>(merged);
+  }
+
+  /**
+   * Checks if the collection contains an item that satisfies the callback.
+   */
+  contains(callback: (item: T, index: number, collection: Collection<T>) => boolean) {
+    return this.some(callback);
+  }
+
+  /**
+   * Counts the occurrences of items grouped by a key.
+   */
+  countBy<K extends keyof T>(key: K) {
+    return this.items.reduce(
+      (acc, item) => {
+        const k = item[key];
+        acc[k] = (acc[k] || 0) + 1;
+        return acc;
+      },
+      {} as { [P in Extract<T[K], string>]: number },
+    );
   }
 
   /**
@@ -157,6 +260,13 @@ export class Collection<T extends CollectionItem = CollectionItem> {
   }
 
   /**
+   * Flattens the collection by one level
+   */
+  flat() {
+    return new Collection(Arr.from<T>(this.items).flat());
+  }
+
+  /**
    * Maps each item using the callback and flattens the result.
    */
   flatMap<U>(callback: (item: T, index: number, collection: Collection<T>) => U[]): U[] {
@@ -164,10 +274,34 @@ export class Collection<T extends CollectionItem = CollectionItem> {
   }
 
   /**
-   * Checks if the collection includes the given item.
+   * Groups items by a property key
    */
-  includes(item: T) {
-    return this.items.includes(item);
+  groupBy<K extends keyof T>(key: K): { [P in Extract<T[K], string>]?: T[] } {
+    return this.items.reduce(
+      (groups, item) => {
+        const groupKey = item[key];
+        if (typeof groupKey === 'string') {
+          groups[groupKey] = groups[groupKey] || [];
+          groups[groupKey]!.push(item);
+        }
+        return groups;
+      },
+      {} as { [P in Extract<T[K], string>]: T[] },
+    );
+  }
+
+  /**
+   * Checks if the collection has at least one item that matches the given key-value pairs.
+   */
+  has(filter: Partial<T>, strict = true) {
+    return this.where(filter, strict).isNotEmpty();
+  }
+
+  /**
+   * Checks if the collection has at least one item that matches any of the given key-value pairs.
+   */
+  hasAny(filter: Partial<T>, strict = true) {
+    return this.orWhere(filter, strict).isNotEmpty();
   }
 
   /**
@@ -175,6 +309,20 @@ export class Collection<T extends CollectionItem = CollectionItem> {
    */
   isEmpty() {
     return this.items.length === 0;
+  }
+
+  /**
+   * Checks if the collection is'nt empty.
+   */
+  isNotEmpty() {
+    return this.items.length > 0;
+  }
+
+  /**
+   * Joins all elements of the collection into a string
+   */
+  join(separator: string = ',', transform?: (item: T) => string): string {
+    return this.items.map((item) => (transform ? transform(item) : Str.from(item))).join(separator);
   }
 
   /**
@@ -196,18 +344,64 @@ export class Collection<T extends CollectionItem = CollectionItem> {
   }
 
   /**
-   * Returns the middle item in the collection.
+   * Returns the maximum value of a given property in the collection.
    */
-  middle() {
-    const len = this.items.length;
-    return len === 0 ? undefined : this.items[Math.floor(len / 2)];
+  maxBy(key: keyof T) {
+    const values = this.items.map((item) => Num.from(item[key]));
+    return values.length > 0 ? Math.max(...values) : undefined;
+  }
+
+  /**
+   * Merges multiple arrays or collections into this one by a given key, replacing duplicates.
+   */
+  mergeBy(key: keyof T, ...inputs: (Collection<T> | T[])[]) {
+    const map = new Map<T[keyof T], T>();
+
+    for (const item of this.items) {
+      map.set(item[key], item);
+    }
+
+    for (const input of inputs) {
+      const items = input instanceof Collection ? input.toArray() : input;
+      for (const item of items) {
+        map.set(item[key], item);
+      }
+    }
+
+    return new Collection<T>(Array.from(map.values()));
+  }
+
+  /**
+   * Returns the minimum value of a given property in the collection.
+   */
+  minBy(key: keyof T) {
+    const values = this.items.map((item) => Num.from(item[key]));
+    return values.length > 0 ? Math.min(...values) : undefined;
+  }
+
+  /**
+   * Filters the collection based on key-value pairs provided in an object using a logical OR condition.
+   */
+  orWhere(filter: Partial<T>, strict = true) {
+    return new Collection(
+      this.items.filter((item) => {
+        return Object.keys(filter).some((key) => (strict ? item[key] === filter[key] : item[key] == filter[key]));
+      }),
+    );
   }
 
   /**
    * Extracts a single key's value from all items.
    */
-  pluck<K extends keyof T>(key: K) {
-    return new Collection(this.items.map((item) => item[key] as any));
+  pluck(key: keyof T) {
+    return this.items.map((item) => item[key]);
+  }
+
+  /**
+   * Returns a random item from the collection
+   */
+  random() {
+    return Arr.random<T>(this.items);
   }
 
   /**
@@ -232,6 +426,13 @@ export class Collection<T extends CollectionItem = CollectionItem> {
   }
 
   /**
+   * Returns a new collection with items shuffled (Fisher-Yates algorithm)
+   */
+  shuffle() {
+    return new Collection(Arr.shuffle<T>(this.items));
+  }
+
+  /**
    * Returns the number of items in the collection.
    */
   size() {
@@ -253,6 +454,33 @@ export class Collection<T extends CollectionItem = CollectionItem> {
   }
 
   /**
+   * Sorts the collection by a property in ascending or descending order
+   */
+  sortBy(key: keyof T, direction: 'asc' | 'desc' = 'asc') {
+    return new Collection<T>(
+      [...this.items].sort((a, b) => {
+        if (a[key] === b[key]) return 0;
+        const compare = a[key] > b[key] ? 1 : -1;
+        return direction === 'asc' ? compare : -compare;
+      }),
+    );
+  }
+
+  /**
+   * Subtracts the values of a specific key from all items.
+   */
+  subBy(key: keyof T) {
+    return this.items.reduce((total, item) => total - Num.from(item[key]), 0);
+  }
+
+  /**
+   * Returns the sum of a given property in the collection.
+   */
+  sumBy(key: keyof T) {
+    return this.items.reduce((total, item) => total + Num.from(item[key]), 0);
+  }
+
+  /**
    * Enables iteration with `for...of`.
    */
   [Symbol.iterator]() {
@@ -260,9 +488,36 @@ export class Collection<T extends CollectionItem = CollectionItem> {
   }
 
   /**
+   * Executes the given callback with the entire collection and returns the collection.
+   */
+  tap(callback: (collection: Collection<T>) => void) {
+    callback(this);
+    return this;
+  }
+
+  /**
    * Returns the collection as a regular array.
    */
   toArray() {
     return [...this.items];
+  }
+
+  /**
+   * Removes duplicate items from a collection based on a specified key.
+   */
+  uniqueBy(key: keyof T) {
+    const uniqueItems = Array.from(new Map(this.items.map((item) => [item[key], item])).values());
+    return new Collection(uniqueItems);
+  }
+
+  /**
+   * Filters the collection based on key-value pairs provided in an object.
+   */
+  where(filter: Partial<T>, strict = true) {
+    return new Collection(
+      this.items.filter((item) => {
+        return Object.keys(filter).every((key) => (strict ? item[key] === filter[key] : item[key] == filter[key]));
+      }),
+    );
   }
 }
