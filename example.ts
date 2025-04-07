@@ -1,11 +1,12 @@
-import { Collection } from './draft/Collection.ts';
+import * as Arr from './src/helpers/Arr';
+import { Collection } from './src/helpers/Collection';
 import * as Str from './src/helpers/Str';
 
 function dump(value: any) {
   console.log(`'${typeof value}'`, value);
 }
 
-console.log('\n---[ Str');
+console.log('\n---[ Str\n');
 
 dump(Str.from('oi'));
 dump(Str.from(1));
@@ -14,23 +15,26 @@ dump(Str.from(undefined));
 dump(Str.from([1, 2, 3]));
 dump(Str.from({ x: [1, 2, 3] }));
 
-console.log('\n---[ Collection');
+console.log('\n---[ Arr\n');
 
-// Coletando itens em uma Collection
-const numbers = Collection.from([1, 2, 3, 4, 5]);
+const arr = Arr.from([1, 2, 3]);
+console.log('arr === from(arr)', arr === Arr.from(arr));
+console.log('arr !== clone(arr)', arr !== Arr.clone(arr));
 
-// Exemplo de map
-const doubled = numbers.map((x) => x * 2);
-console.log(doubled.all()); // [2, 4, 6, 8, 10]
+console.log('\n---[ Collection\n');
 
-// Exemplo de filter
-const greaterThanThree = numbers.filter((x) => x > 3);
-console.log(greaterThanThree.all()); // [4, 5]
+const items = Collection.from([
+  { id: 1, name: 'First Item', status: 'completed' },
+  { id: 2, name: 'Second Item', status: 'pending' },
+  { id: 3, name: 'Third Item', status: 'running' },
+  { id: 4, name: 'Fourth Item', status: 'completed' },
+]);
 
-// Exemplo de reduce
-const sum = numbers.reduce((acc, curr) => acc + curr, 0);
-console.log(sum); // 15
+const counts = items.countBy('status');
+console.log('counts', counts);
 
-// Verifica se a coleção contém um valor
-const hasTwo = numbers.contains(2);
-console.log(hasTwo); // true
+const groups = items.groupBy('status');
+console.log('groups', groups);
+
+const first = items.first();
+console.log('first', first);
