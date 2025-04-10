@@ -6,6 +6,12 @@ It offers a variety of methods for traversing, modifying, and querying the colle
 <br/>
 Call using `Collection.from([])` or `new Collection([])`.
 
+> 🛠️ **Documentation in progress**
+>
+> We're still working on the full documentation for this class. In the meantime, you can check the source code here:
+>
+> [View Collection.ts on GitHub](https://github.com/caioedut/hpr/blob/main/src/helpers/Collection.ts)
+
 ### Import
 ```ts
 import { Collection } from 'hpr';
