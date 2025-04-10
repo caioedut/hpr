@@ -14,6 +14,8 @@
 [Str](#str---string-utilities)
 | [Num](#num---number-utilities)
 | [Arr](#arr---array-utilities)
+| [Util](#util---other-utilities)
+| [Collection](#collection---object-collection)
 
 ## Why Choose hpr?
 
@@ -49,4 +51,18 @@ Type-safe array transformations.
 
 📚 See **[Arr API](docs/ARR.md)** - All methods with examples and type definitions.
 
+---
 
+## `Util` - Other Utilities
+
+Type-safe array transformations.
+
+📚 See **[Arr API](docs/ARR.md)** - All methods with examples and type definitions.
+
+---
+
+## `Collection` - Object Collection
+
+Type-safe array transformations.
+
+📚 See **[Arr API](docs/ARR.md)** - All methods with examples and type definitions.
