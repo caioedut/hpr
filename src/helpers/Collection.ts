@@ -1,6 +1,6 @@
-import * as Arr from '../../src/helpers/Arr';
-import * as Num from '../../src/helpers/Num';
-import * as Str from '../../src/helpers/Str';
+import * as Arr from './Arr';
+import * as Num from './Num';
+import * as Str from './Str';
 
 type CollectionItem = Record<string, any>;
 

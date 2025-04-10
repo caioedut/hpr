@@ -1,4 +1,4 @@
-import * as Arr from '../../src/helpers/Arr';
+import * as Arr from './Arr';
 
 export interface NumberCurrencyOptions {
   currency?: Intl.NumberFormatOptions['currency'];
