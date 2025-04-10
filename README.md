@@ -55,14 +55,10 @@ Type-safe array transformations.
 
 ## `Util` - Other Utilities
 
-Type-safe array transformations.
-
-📚 See **[Arr API](docs/ARR.md)** - All methods with examples and type definitions.
+📚 See **[Util API](docs/UTIL.md)** - All methods with examples and type definitions.
 
 ---
 
 ## `Collection` - Object Collection
 
-Type-safe array transformations.
-
-📚 See **[Arr API](docs/ARR.md)** - All methods with examples and type definitions.
+📚 See **[Collection API](docs/COLLECTION.md)** - All methods with examples and type definitions.
