@@ -1,7 +1,7 @@
 {
   "name": "hpr",
   "description": "A collection of utility functions to manipulate values and data.",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "keywords": [
     "util",
     "helper",
