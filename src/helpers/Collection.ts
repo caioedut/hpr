@@ -408,6 +408,13 @@ export class Collection<T extends CollectionItem = CollectionItem> {
   }
 
   /**
+   * Returns a new collection excluding the first `count` items.
+   */
+  skip(count: number) {
+    return new Collection(this.items.slice(count));
+  }
+
+  /**
    * Returns a portion of the collection as a new collection.
    */
   slice(start?: number, end?: number) {
@@ -454,6 +461,13 @@ export class Collection<T extends CollectionItem = CollectionItem> {
    */
   [Symbol.iterator]() {
     return this.items[Symbol.iterator]();
+  }
+
+  /**
+   * Returns a new collection with a limited number of items.
+   */
+  take(limit: number) {
+    return new Collection(limit >= 0 ? this.items.slice(0, limit) : this.items.slice(limit));
   }
 
   /**
