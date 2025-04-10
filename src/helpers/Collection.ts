@@ -276,6 +276,23 @@ export class Collection<T extends CollectionItem = CollectionItem> {
   }
 
   /**
+   * Checks if the given collection is equal to the current one (by value, not by reference).
+   *
+   * Two collections are considered equal if they have the same length and each item
+   * in the same position is deeply equal.
+   */
+  isEqual(other: Collection) {
+    if (this.length !== other.length) {
+      return false;
+    }
+
+    return this.items.every((item, index) => {
+      // TODO: replace JSON.stringify with deep check
+      return JSON.stringify(item) === JSON.stringify(other.at(index));
+    });
+  }
+
+  /**
    * Checks if the collection is'nt empty.
    */
   isNotEmpty() {
