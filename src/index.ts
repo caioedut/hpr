@@ -1,5 +1,5 @@
 import * as Arr from './helpers/Arr.ts';
-import * as Collection from './helpers/Collection.ts';
+import { Collection } from './helpers/Collection.ts';
 import * as Num from './helpers/Num.ts';
 import * as Obj from './helpers/Obj.ts';
 import * as Str from './helpers/Str.ts';
