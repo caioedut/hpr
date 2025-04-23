@@ -42,6 +42,45 @@ export function isEmpty(value: any) {
 }
 
 /**
+ * Performs a deep comparison between two values to determine if they are equivalent.
+ *
+ * @param {any} a - The first value to compare.
+ * @param {any} b - The second value to compare.
+ * @returns {boolean} Returns `true` if the values are deeply equal, otherwise `false`.
+ *
+ * @example
+ * Util.isEqual(1, 1); // true
+ * Util.isEqual({ a: 1 }, { a: 1 }); // true
+ * Util.isEqual([1, 2], [1, 2]); // true
+ * Util.isEqual(new Date('2023-01-01'), new Date('2023-01-01')); // true
+ * Util.isEqual({ a: 1 }, { a: 2 }); // false
+ */
+export function isEqual(a: any, b: any): boolean {
+  if (a === b) return true;
+
+  if (a instanceof Date && b instanceof Date) {
+    return a.getTime() === b.getTime();
+  }
+
+  if (typeof a !== 'object' || typeof b !== 'object' || a == null || b == null) {
+    return false;
+  }
+
+  const keysA = Object.keys(a);
+  const keysB = Object.keys(b);
+
+  if (keysA.length !== keysB.length) return false;
+
+  for (const key of keysA) {
+    if (!keysB.includes(key) || !isEqual(a[key], b[key])) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+/**
  * Caches the result of a function based on its arguments.
  * Useful for expensive computations.
  */

@@ -56,4 +56,44 @@ describe('Obj', () => {
       expect(missing).toBe('default-value');
     });
   });
+
+  describe('omit', () => {
+    test('should remove specified keys', () => {
+      const obj = { a: 1, b: 2, c: 3 };
+      const result = Obj.omit(obj, ['b']);
+      expect(result).toEqual({ a: 1, c: 3 });
+    });
+
+    test('should return same object if keys array is empty', () => {
+      const obj = { a: 1, b: 2 };
+      const result = Obj.omit(obj, []);
+      expect(result).toEqual({ a: 1, b: 2 });
+    });
+
+    test('should ignore keys not in object', () => {
+      const obj = { a: 1 };
+      const result = Obj.omit(obj, ['b' as any]);
+      expect(result).toEqual({ a: 1 });
+    });
+  });
+
+  describe('pick', () => {
+    test('should return object with only specified keys', () => {
+      const obj = { a: 1, b: 2, c: 3 };
+      const result = Obj.pick(obj, ['a', 'c']);
+      expect(result).toEqual({ a: 1, c: 3 });
+    });
+
+    test('should return empty object if keys array is empty', () => {
+      const obj = { a: 1, b: 2 };
+      const result = Obj.pick(obj, []);
+      expect(result).toEqual({});
+    });
+
+    test('should skip keys not in object', () => {
+      const obj = { a: 1 };
+      const result = Obj.pick(obj, ['a', 'b' as any]);
+      expect(result).toEqual({ a: 1 });
+    });
+  });
 });
