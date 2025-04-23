@@ -32,7 +32,7 @@
   "scripts": {
     "test": "jest",
     "build": "tsup src/index.ts --dts --sourcemap --format esm,cjs",
-    "release": "npm run build && npm version patch && git push && npm publish"
+    "release": "jest && npm run build && npm version patch && git push && npm publish"
   },
   "devDependencies": {
     "@eslint/js": "^9.24.0",
