@@ -211,6 +211,28 @@ Str.escapeRegExp("(test)");   // "\\(test\\)"
 
 ---
 
+### `indexToAlpha()` / `alphaToIndex()`
+Converts between numeric indices and alphabetic labels, similar to Excel column naming. Useful for mapping numbers to letters (e.g., table columns, spreadsheet logic, or sequential labels).
+
+```typescript
+function indexToAlpha(input: StringInput): string;
+function alphaToIndex(input: StringInput): number;
+```
+
+**Examples**
+```typescript
+Str.indexToAlpha(0);   // 'A'
+Str.indexToAlpha(25);  // 'Z'
+Str.indexToAlpha(26);  // 'AA'
+Str.indexToAlpha(-2);  // 'C'
+
+Str.alphaToIndex('A');   // 0
+Str.alphaToIndex('Z');   // 25
+Str.alphaToIndex('AA');  // 26
+```
+
+---
+
 ### `isAscii()`
 Checks if string contains only ASCII characters (0-127).
 

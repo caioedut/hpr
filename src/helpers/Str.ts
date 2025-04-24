@@ -1,4 +1,5 @@
 import * as Arr from './Arr';
+import * as Num from './Num';
 
 export type StringInput = any;
 
@@ -33,6 +34,27 @@ export function afterLast(input: StringInput, search: StringInput) {
 
   const index = str.lastIndexOf(needle);
   return index === -1 ? str : str.slice(index + needle.length);
+}
+
+/**
+ * Converts an alphabetic string label (like Excel columns) to a numeric index.
+ *
+ * @example
+ * Str.alphaToIndex('A')   // 0
+ * Str.alphaToIndex('Z')   // 25
+ * Str.alphaToIndex('AA')  // 26
+ */
+export function alphaToIndex(input: StringInput) {
+  const str = from(input)
+    .replace(/[^A-Za-z]/g, '')
+    .trim();
+
+  return (
+    str
+      .toUpperCase()
+      .split('')
+      .reduce((acc, char) => acc * 26 + (char.charCodeAt(0) - 64), 0) - 1
+  );
 }
 
 /**
@@ -306,6 +328,30 @@ export function from(input: StringInput) {
   }
 
   return String(input);
+}
+
+/**
+ * Converts a numeric index to an alphabetic string label, similar to Excel column naming.
+ *
+ * @example
+ * Str.indexToAlpha(0)   // 'A'
+ * Str.indexToAlpha(25)  // 'Z'
+ * Str.indexToAlpha(26)  // 'AA'
+ * Str.indexToAlpha(-2) // 'C'
+ */
+export function indexToAlpha(input: StringInput) {
+  let num = Num.positive(input);
+
+  let result = '';
+  num++;
+
+  while (num > 0) {
+    num--;
+    result = String.fromCharCode(65 + (num % 26)) + result;
+    num = Math.floor(num / 26);
+  }
+
+  return result;
 }
 
 /**
