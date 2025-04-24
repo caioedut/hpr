@@ -631,6 +631,70 @@ describe('Str', () => {
     });
   });
 
+  describe('indexToAlpha', () => {
+    it('should handle zero index', () => {
+      expect(Str.indexToAlpha(0)).toBe('A');
+    });
+
+    it('should handle positive indices', () => {
+      expect(Str.indexToAlpha(25)).toBe('Z');
+      expect(Str.indexToAlpha(26)).toBe('AA');
+      expect(Str.indexToAlpha(51)).toBe('AZ');
+      expect(Str.indexToAlpha(52)).toBe('BA');
+    });
+
+    it('should handle negative indices as positive', () => {
+      expect(Str.indexToAlpha(-1)).toBe(Str.indexToAlpha(1));
+      expect(Str.indexToAlpha(-2)).toBe(Str.indexToAlpha(2));
+      expect(Str.indexToAlpha(-26)).toBe(Str.indexToAlpha(26));
+      expect(Str.indexToAlpha(-27)).toBe(Str.indexToAlpha(27));
+      expect(Str.indexToAlpha(-52)).toBe(Str.indexToAlpha(52));
+      expect(Str.indexToAlpha(-53)).toBe(Str.indexToAlpha(53));
+    });
+
+    it('should handle large positive indices', () => {
+      expect(Str.indexToAlpha(702)).toBe('AAA');
+      expect(Str.indexToAlpha(703)).toBe('AAB');
+    });
+
+    it('should handle large negative indices', () => {
+      expect(Str.indexToAlpha(-702)).toBe(Str.indexToAlpha(702));
+      expect(Str.indexToAlpha(-703)).toBe(Str.indexToAlpha(703));
+    });
+  });
+
+  describe('alphaToIndex', () => {
+    it('should handle single letter labels', () => {
+      expect(Str.alphaToIndex('A')).toBe(0);
+      expect(Str.alphaToIndex('Z')).toBe(25);
+    });
+
+    it('should handle double letter labels', () => {
+      expect(Str.alphaToIndex('AA')).toBe(26);
+      expect(Str.alphaToIndex('AZ')).toBe(51);
+      expect(Str.alphaToIndex('BA')).toBe(52);
+    });
+
+    it('should handle multi-letter labels', () => {
+      expect(Str.alphaToIndex('AAA')).toBe(702);
+      expect(Str.alphaToIndex('AAB')).toBe(703);
+    });
+
+    it('should ignore non-alphabetic characters', () => {
+      expect(Str.alphaToIndex('A1')).toBe(0);
+      expect(Str.alphaToIndex('Z!')).toBe(25);
+      expect(Str.alphaToIndex('A A')).toBe(26);
+      expect(Str.alphaToIndex('AA!')).toBe(26);
+    });
+
+    it('should handle mixed-case labels', () => {
+      expect(Str.alphaToIndex('a')).toBe(0);
+      expect(Str.alphaToIndex('z')).toBe(25);
+      expect(Str.alphaToIndex('AA')).toBe(26);
+      expect(Str.alphaToIndex('aa')).toBe(26);
+    });
+  });
+
   describe('isAscii', () => {
     it('should return true for a string with only 7-bit ASCII characters', () => {
       const result = Str.isAscii('Hello world');
