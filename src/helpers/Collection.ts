@@ -257,12 +257,12 @@ export class Collection<T extends CollectionItem = CollectionItem> {
   groupBy<K extends keyof T>(key: K) {
     return this.items.reduce(
       (groups, item) => {
-        const groupKey = String(item[key]) as Extract<T[K], string>;
+        const groupKey = String(item[key]);
         groups[groupKey] = groups[groupKey] || [];
-        groups[groupKey]!.push(item);
+        groups[groupKey].push(item);
         return groups;
       },
-      {} as Record<Extract<T[K], string>, T[]>,
+      {} as Record<string, T[]>,
     );
   }
 
