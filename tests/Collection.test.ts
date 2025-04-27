@@ -461,15 +461,16 @@ describe('Collection', () => {
       });
     });
 
-    it('should skip items with non-string keys', () => {
+    it('should accept items with non-string keys', () => {
       const collection = new Collection([
         { name: 'apple', type: 'fruit' },
-        { name: 'invalid', type: 1 as any },
+        { name: 'invalid', type: 1 },
       ]);
 
       const result = collection.groupBy('type');
 
       expect(result).toEqual({
+        '1': [{ name: 'invalid', type: 1 }],
         fruit: [{ name: 'apple', type: 'fruit' }],
       });
     });
