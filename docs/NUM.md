@@ -196,6 +196,25 @@ Num.positive(-0);      // 0
 
 ---
 
+### `percent()`
+Calculates the percentage of a value relative to a total.
+
+Returns 0 if the total is 0 or negative.
+
+```typescript
+function percent(input: NumberInput, total: NumberInput, precision: NumberInput): number;
+```
+
+**Examples**
+```typescript
+Num.percent(1, 100);   // 1
+Num.percent(1, 50);    // 2
+Num.percent(5, 12);    // 41
+Num.percent(5, 12, 1); // 41.67
+```
+
+---
+
 ### `random()`
 Generates a random integer within a range (inclusive).
 

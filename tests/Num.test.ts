@@ -185,6 +185,25 @@ describe('Num', () => {
     });
   });
 
+  describe('percent function', () => {
+    it('should return the correct percentage for valid inputs', () => {
+      expect(Num.percent(1, 50)).toBe(2);
+      expect(Num.percent(3, 50)).toBe(6);
+      expect(Num.percent(5, 12, 2)).toBe(41.67);
+    });
+
+    it('should return 0 when total is 0 or negative', () => {
+      expect(Num.percent(5, 0)).toBe(0);
+      expect(Num.percent(5, -10)).toBe(0);
+    });
+
+    it('should respect precision when provided', () => {
+      expect(Num.percent(1, 3, 1)).toBe(33.3);
+      expect(Num.percent(1, 3, 2)).toBe(33.33);
+      expect(Num.percent(1, 3, 0)).toBe(33);
+    });
+  });
+
   describe('random function', () => {
     it('should generate a random number within the given range', () => {
       const min = 1;

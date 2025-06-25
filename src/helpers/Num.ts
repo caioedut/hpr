@@ -112,6 +112,22 @@ export function negative(input: NumberInput) {
 }
 
 /**
+ * Calculates the percentage of a value relative to a total.
+ *
+ * Returns 0 if the total is 0 or negative.
+ *
+ * If `precision` is provided, the result is rounded to the specified number of decimal places.
+ */
+export function percent(input: NumberInput, total: NumberInput, precision: NumberInput = 0): number {
+  input = from(input);
+  total = from(total);
+  precision = from(precision);
+  if (total <= 0) return 0;
+  const value = (input / total) * 100;
+  return Number(value.toFixed(precision));
+}
+
+/**
  * Converts the input value to its positive equivalent, or keeps it positive if already so.
  */
 export function positive(input: NumberInput) {
