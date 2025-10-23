@@ -101,3 +101,7 @@ export function sort<T = any>(input: ArrayInput, direction: 'asc' | 'desc' = 'as
     return (a < b ? -1 : 1) * (direction === 'asc' ? 1 : -1);
   });
 }
+
+export function unique<T = any>(input: ArrayInput) {
+  return [...new Set(from<T>(input))];
+}
