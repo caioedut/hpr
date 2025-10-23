@@ -1,5 +1,19 @@
 import * as Str from './Str';
 
+/**
+ * Returns the first non-empty value from the provided list of values.
+ * A value is considered non-empty based on a custom `isEmpty` check.
+ *
+ * @example
+ * Util.coalesce(user.firstName, user.nickname, 'Guest');
+ *
+ * @example
+ * Returns 0
+ * Util.coalesce(null, 0, undefined, 'hello');
+ *
+ * @example Returns undefined
+ * Util.coalesce(null, undefined, '', []); // undefined
+ */
 export function coalesce<T>(...values: unknown[]) {
   for (const value of values) {
     if (!isEmpty(value)) {
@@ -19,7 +33,31 @@ export function coalesce<T>(...values: unknown[]) {
  * - an empty array ([])
  * - an empty object ({})
  *
- * Note: Values like `0` and `false` are NOT considered empty.
+ * ⚠️ Note: Values like `0` (zero) and `false` are **NOT** considered empty.
+ *
+ * @example
+ * // Returns true
+ * Util.isEmpty(null);
+ *
+ * @example
+ * // Returns true
+ * Util.isEmpty('');
+ *
+ * @example
+ * // Returns true
+ * Util.isEmpty([]);
+ *
+ * @example
+ * // Returns true
+ * Util.isEmpty({});
+ *
+ * @example
+ * // Returns false
+ * Util.isEmpty(0);
+ *
+ * @example
+ * // Returns false
+ * Util.isEmpty(false);
  */
 export function isEmpty(value: any) {
   if (value === null || value === undefined || value === '') {
@@ -44,16 +82,29 @@ export function isEmpty(value: any) {
 /**
  * Performs a deep comparison between two values to determine if they are equivalent.
  *
- * @param {any} a - The first value to compare.
- * @param {any} b - The second value to compare.
- * @returns {boolean} Returns `true` if the values are deeply equal, otherwise `false`.
+ * @example
+ * // Returns true
+ * Util.isEqual(1, 1);
  *
  * @example
- * Util.isEqual(1, 1); // true
- * Util.isEqual({ a: 1 }, { a: 1 }); // true
- * Util.isEqual([1, 2], [1, 2]); // true
- * Util.isEqual(new Date('2023-01-01'), new Date('2023-01-01')); // true
- * Util.isEqual({ a: 1 }, { a: 2 }); // false
+ * // Returns true
+ * Util.isEqual({ a: 1 }, { a: 1 });
+ *
+ * @example
+ * // Returns true
+ * Util.isEqual(new Date('2023-01-01'), new Date('2023-01-01'));
+ *
+ * @example
+ * // Returns true
+ * Util.isEqual([1, 2], [1, 2]);
+ *
+ * @example
+ * // Returns false (array with same values in different order)
+ * Util.isEqual([2, 1], [1, 2]);
+ *
+ * @example
+ * // Returns false
+ * Util.isEqual({ a: 1 }, { a: 2 });
  */
 export function isEqual(a: any, b: any): boolean {
   if (a === b) return true;
@@ -83,6 +134,11 @@ export function isEqual(a: any, b: any): boolean {
 /**
  * Caches the result of a function based on its arguments.
  * Useful for expensive computations.
+ *
+ * @example
+ * const memoizedFn = Util.memoize((a, b) => a + b);
+ * memoizedFn(1, 2); // Function runs, result is cached
+ * memoizedFn(1, 2); // Result returned from cache (much faster)
  */
 export function memoize<T extends (...args: any[]) => any>(fn: T): T {
   const cache = new Map<string, ReturnType<T>>();
@@ -97,13 +153,32 @@ export function memoize<T extends (...args: any[]) => any>(fn: T): T {
   }) as T;
 }
 
+/**
+ * Returns a promise that resolves after a specified number of milliseconds.
+ * Useful for pausing execution in `async` functions.
+ *
+ * @example
+ * // Pauses for 1 second
+ * await Util.sleep(1000);
+ */
 export async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 /**
- * Safely executes a function and returns a tuple [result, error].
- * Useful for avoiding try/catch blocks.
+ * Safely executes a function and returns a tuple `[result, error]`.
+ * This is an alternative to traditional try/catch blocks.
+ *
+ * - If successful, returns `[result, null]`.
+ * - If an error occurs, returns `[null, Error]`.
+ *
+ * @example
+ * // `data` will be `{}` and `error` will be null
+ * const [data, error] = Util.tryCatch(() => JSON.parse('{}'));
+ *
+ * @example
+ * // `data` will be null and `error` will be an instance of `Error`
+ * const [data, error] = Util.tryCatch(() => JSON.parse('invalid'));
  */
 export function tryCatch<T>(fn: () => T): [null, Error] | [T, null] {
   try {
@@ -114,8 +189,18 @@ export function tryCatch<T>(fn: () => T): [null, Error] | [T, null] {
 }
 
 /**
- * Safely executes a function and returns Promise with a tuple [result, error].
- * Useful for avoiding try/catch blocks.
+ * Safely executes a function and returns Promise with a tuple `[result, error]`.
+ * This is an alternative to traditional try/catch blocks.
+ *
+ * - If successful, returns `[result, null]`.
+ * - If an error occurs, returns `[null, Error]`.
+ *
+ * @example
+ * // `data` will be filled and `error` will be null
+ * const [data, error] = await Util.tryCatchAsync(() => fetch('/success'));
+ *
+ * // `data` will be null and `error` will be an instance of `Error`
+ * const [data, error] = await Util.tryCatchAsync(() => fetch('/fail'));
  */
 export async function tryCatchAsync<T>(fn: () => Promise<T>): Promise<[null, Error] | [T, null]> {
   try {

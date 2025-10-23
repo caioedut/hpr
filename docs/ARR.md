@@ -226,3 +226,22 @@ Arr.sort([3, 1, 2], "desc"); // [3, 2, 1]
 ```
 
 ---
+
+### `unique()`
+Removes duplicate values from the array.
+
+```typescript
+function sort<T = any>(input: ArrayInput, direction?: 'asc' | 'desc'): T[];
+function unique<T = any>(input: ArrayInput): T[]
+```
+
+**Examples**
+```typescript
+Arr.unique([1, 2, 2, 3, 1]); // [1, 2, 3]
+Arr.unique(['a', 'b', 'a', 'c']); // ['a', 'b', 'c']
+
+// different objects are not considered equal
+Arr.unique([{ id: 1 }, { id: 1 }]); // [{ id: 1 }, { id: 1 }]
+```
+
+---
