@@ -51,6 +51,31 @@ describe('Arr', () => {
     });
   });
 
+  describe('containsAll', () => {
+    it('should return true if all values are present', () => {
+      expect(Arr.containsAll([1, 2, 3, 4], [2, 3])).toBe(true);
+      expect(Arr.containsAll(['a', 'b', 'c'], ['a', 'c'])).toBe(true);
+    });
+
+    it('should return false if any value is missing', () => {
+      expect(Arr.containsAll([1, 2, 3], [2, 5])).toBe(false);
+      expect(Arr.containsAll(['a', 'b'], ['a', 'c'])).toBe(false);
+    });
+
+    it('should work with a predicate function', () => {
+      expect(Arr.containsAll([1, 2, 3], (x) => x > 0)).toBe(true);
+      expect(Arr.containsAll([1, 2, 3], (x) => x > 2)).toBe(false);
+    });
+
+    it('should return true for an empty array of values', () => {
+      expect(Arr.containsAll([1, 2, 3], [])).toBe(true);
+    });
+
+    it('should return true for an empty input array with predicate always false', () => {
+      expect(Arr.containsAll([], () => false)).toBe(true); // vacuously true
+    });
+  });
+
   describe('first / last', () => {
     test('should return first and last elements', () => {
       const arr = [10, 20, 30];
