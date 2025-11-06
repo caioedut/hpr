@@ -4,10 +4,17 @@
  * @param key Key to search for
  * @returns The value if found, otherwise the 'default' value (if exists), or undefined
  */
-export function match<T extends Record<string, any>, K extends keyof T>(
-  obj: T,
-  key: K,
-): T[K] | (T extends { default: any } ? T['default'] : undefined) {
+
+// When T has default and the key exists
+export function match<T extends { default: any }, K extends keyof T>(obj: T, key: K): T[K];
+// When T has default and the key can be anything
+export function match<T extends { default: any }>(obj: T, key: any): T['default'];
+// When T does not have default and the key exists
+export function match<T, K extends keyof T>(obj: T, key: K): T[K];
+// When T does not have default and the key does not exist
+export function match<T>(obj: T, key: any): undefined;
+// implementation
+export function match(obj: any, key: any) {
   return key in obj ? obj[key] : obj.default;
 }
 
