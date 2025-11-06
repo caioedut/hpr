@@ -14,14 +14,12 @@ describe('Obj', () => {
         default: 'no-color',
       };
       expect(Obj.match(obj, 'colors')).toEqual(['red', 'blue']);
-      // @ts-expect-error
       expect(Obj.match(obj, 'theme')).toBe('no-color');
     });
 
     it('should return undefined when no key and no default', () => {
       const obj = { title: 'Test' };
       expect(Obj.match(obj, 'title')).toBe('Test');
-      // @ts-expect-error
       expect(Obj.match(obj, 'missing')).toBeUndefined();
     });
 
@@ -34,7 +32,6 @@ describe('Obj', () => {
 
       expect(Obj.match(obj, 'count')).toBe(10);
       expect(Obj.match(obj, 'active')).toBe(true);
-      // @ts-expect-error
       expect(Obj.match(obj, 'missing')).toBeNull();
     });
 
@@ -48,12 +45,34 @@ describe('Obj', () => {
       // Teste de tipos (o TypeScript irá verificar)
       const id: number | string = Obj.match(obj, 'id');
       const name: string = Obj.match(obj, 'name');
-      // @ts-expect-error
-      const missing: string = Obj.match(obj, 'unknown');
+      const missing = Obj.match(obj, 'unknown');
 
       expect(id).toBe(123);
       expect(name).toBe('Test');
       expect(missing).toBe('default-value');
+    });
+
+    it('should return default for non-string keys when default exists', () => {
+      const obj = { a: 1, default: 'default-value' };
+      expect(Obj.match(obj, 42)).toBe('default-value');
+      expect(Obj.match(obj, true)).toBe('default-value');
+    });
+
+    it('should handle undefined or null values correctly', () => {
+      const obj = { a: undefined, b: null, default: 'default' };
+      expect(Obj.match(obj, 'a')).toBeUndefined();
+      expect(Obj.match(obj, 'b')).toBeNull();
+      expect(Obj.match(obj, 'missing')).toBe('default');
+    });
+
+    it('should work with empty object but default exists', () => {
+      const obj = { default: 'only-default' };
+      expect(Obj.match(obj, 'anything')).toBe('only-default');
+    });
+
+    it('should return complex default values correctly', () => {
+      const obj = { default: [1, 2, 3] };
+      expect(Obj.match(obj, 'missing')).toEqual([1, 2, 3]);
     });
   });
 
