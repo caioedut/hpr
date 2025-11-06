@@ -109,6 +109,7 @@ function base64(input: StringInput): string;
 ---
 
 ### `camelCase()` / `snakeCase()` / `kebabCase()` / `properCase()`
+
 Case conversion utilities.
 
 ```typescript
@@ -119,9 +120,14 @@ function properCase(input: StringInput): string;
 ```
 
 **Examples**
+
 ```typescript
-Str.camelCase("hello_world");    // "helloWorld"
-Str.kebabCase("HelloWorld");     // "hello-world"
+Str.camelCase("hello_world");          // "helloWorld"
+Str.snakeCase("Hello World");          // "hello_world"
+Str.snakeCase("Hello World", "-");     // "hello-world"
+Str.kebabCase("HelloWorld");           // "hello-world"
+Str.properCase("hello world");         // "Hello World"
+Str.properCase("maria-clara d'avila"); // "Maria-Clara D'Avila"
 ```
 
 ---
