@@ -1352,6 +1352,29 @@ describe('Str', () => {
       const result = Str.properCase('');
       expect(result).toBe('');
     });
+
+    it('should handle accented characters', () => {
+      expect(Str.properCase('árvore')).toBe('Árvore');
+      expect(Str.properCase('ação humana')).toBe('Ação Humana');
+    });
+
+    it('should handle hyphenated words', () => {
+      expect(Str.properCase('maria-clara')).toBe('Maria-Clara');
+      expect(Str.properCase('joão-pedro')).toBe('João-Pedro');
+    });
+
+    it('should handle words with apostrophes', () => {
+      expect(Str.properCase("d'avila")).toBe("D'Avila");
+      expect(Str.properCase('l’amour')).toBe('L’Amour');
+    });
+
+    it('should handle multiple spaces correctly', () => {
+      expect(Str.properCase('  hello   world  ')).toBe('  Hello   World  ');
+    });
+
+    it('should not affect already capitalized text', () => {
+      expect(Str.properCase('John Doe')).toBe('John Doe');
+    });
   });
 
   describe('startsWith', () => {
