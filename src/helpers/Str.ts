@@ -568,7 +568,7 @@ export function prefix(input: StringInput, prefix: StringInput) {
  * Convert the given string to proper case.
  */
 export function properCase(input: StringInput) {
-  return from(input).replace(/\b\w/g, (match) => match.toUpperCase());
+  return from(input).replace(/(^|[\s'’"-])(\p{L})/gu, (_, p1, p2) => p1 + p2.toUpperCase());
 }
 
 /**
