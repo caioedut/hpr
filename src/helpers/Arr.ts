@@ -24,6 +24,16 @@ export function contains<T = any>(input: ArrayInput, valueOrHandler: ((item: T, 
   return arr.includes(valueOrHandler);
 }
 
+export function containsAll<T = any>(input: ArrayInput, valuesOrHandler: ((item: T, index: number) => boolean) | T[]) {
+  const arr = from<T>(input);
+
+  if (typeof valuesOrHandler === 'function') {
+    return arr.every(valuesOrHandler);
+  }
+
+  return valuesOrHandler.every((v) => arr.includes(v));
+}
+
 export function first<T = any>(input: ArrayInput) {
   return from<T>(input).at(0);
 }

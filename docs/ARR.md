@@ -86,7 +86,8 @@ Arr.compact(null); // []
 
 ---
 
-### `contains()`
+### `contains()` / `containsAll()`
+
 Checks if a value or condition exists in the array.
 
 ```typescript
@@ -94,12 +95,23 @@ function contains<T = any>(
   input: ArrayInput,
   valueOrHandler: ((item: T, index: number) => boolean) | T
 ): boolean;
+
+function containsAll<T = any>(
+  input: ArrayInput,
+  valuesOrHandler: ((item: T, index: number) => boolean) | T[]
+): boolean;
 ```
 
 **Examples**
+
 ```typescript
 Arr.contains([1, 2, 3], 2); // true
 Arr.contains(["a", "b"], (item) => item === "c"); // false
+
+Arr.containsAll([1, 2, 3, 4], [2, 3]); // true
+Arr.containsAll([1, 2, 3], [2, 5]); // false
+Arr.containsAll([1, 2, 3], (x) => x > 0); // true
+Arr.containsAll([1, 2, 3], (x) => x > 2); // false
 ```
 
 ---
