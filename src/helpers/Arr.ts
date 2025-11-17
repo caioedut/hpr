@@ -62,6 +62,18 @@ export function isList<T = any>(input: ArrayInput) {
   return from<T>(input).every((item, index) => item === index);
 }
 
+export function join(input: ArrayInput, separator = ', ', lastSeparator = separator) {
+  const arr = clone(input).filter((v) => v !== null && v !== undefined && v !== '');
+  const count = arr.length;
+
+  if (count === 0) return '';
+  if (count === 1) return arr[0];
+
+  const last = arr.pop();
+
+  return arr.join(separator) + (lastSeparator ?? separator) + last;
+}
+
 export function last<T = any>(input: ArrayInput) {
   return from<T>(input).at(-1);
 }
