@@ -162,6 +162,27 @@ Arr.isList([1, 2, 3]); // false
 
 ---
 
+### `join()`
+Joins array elements into a string, using a separator between items and an optional different separator before the last item. Automatically ignores `null`, `undefined`, and `''` (empty strings).
+
+```typescript
+function join(input: ArrayInput, separator?: string, lastSeparator?: string): string;
+```
+
+**Examples**
+```typescript
+join([]); // ""
+join(['A']); // "A"
+join(['A', 'B']); // "A, B"
+join(['A', 'B'], ', ', ' and '); // "A and B"
+join(['A', 'B', 'C']); // "A, B, C"
+join(['A', 'B', 'C'], ', ', ' and '); // "A, B and C"
+join([1, 2, 3], ', ', ' & '); // "1, 2 & 3"
+join([null, '', 'A', undefined, 'B'], ', ', ' & '); // "A & B"
+```
+
+---
+
 ### `merge()` / `mergeCompact()`
 Combines multiple array-like inputs into one.
 `mergeCompact()` also removes falsy values from the result.

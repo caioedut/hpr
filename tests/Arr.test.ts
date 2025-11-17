@@ -76,6 +76,40 @@ describe('Arr', () => {
     });
   });
 
+  describe('join', () => {
+    it('returns empty string for empty array', () => {
+      expect(Arr.join([])).toBe('');
+    });
+
+    it('returns the single item if array has one element', () => {
+      expect(Arr.join(['A'])).toBe('A');
+    });
+
+    it('uses default separator for 2 elements', () => {
+      expect(Arr.join(['A', 'B'])).toBe('A, B');
+    });
+
+    it('uses lastSeparator if provided for 2 elements', () => {
+      expect(Arr.join(['A', 'B'], ', ', ' and ')).toBe('A and B');
+    });
+
+    it('uses default separator between all except last', () => {
+      expect(Arr.join(['A', 'B', 'C'])).toBe('A, B, C');
+    });
+
+    it('uses custom lastSeparator before the last item', () => {
+      expect(Arr.join(['A', 'B', 'C'], ', ', ' and ')).toBe('A, B and C');
+    });
+
+    it('converts all items to strings', () => {
+      expect(Arr.join([1, 2, 3], ', ', ' & ')).toBe('1, 2 & 3');
+    });
+
+    it('ignores null/undefined/empty-string items if present', () => {
+      expect(Arr.join([null, 'A', undefined, '', 'B'], ', ', ' and ')).toBe('A and B');
+    });
+  });
+
   describe('first / last', () => {
     test('should return first and last elements', () => {
       const arr = [10, 20, 30];
