@@ -11,6 +11,15 @@ import { Obj } from 'hpr';
 
 ---
 
+### `compact()`
+Removes keys with falsy values (`false`, `0`, `""`, `null`, `undefined`, `NaN`) from the object.
+
+```typescript
+function compact(obj: object);
+```
+
+---
+
 ### `match()`
 
 Safely retrieves a property from an object, falling back to a `default` property when the key does not exist. Fully typed in TypeScript to preserve type information.

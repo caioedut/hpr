@@ -1,6 +1,63 @@
 import * as Obj from '../src/helpers/Obj';
 
 describe('Obj', () => {
+  describe('compact', () => {
+    it('should remove null and undefined properties', () => {
+      const input = { a: 1, b: null, c: undefined };
+      const expected = { a: 1 };
+
+      expect(Obj.compact(input)).toEqual(expected);
+    });
+
+    it('should remove all falsy values (false, 0, empty string)', () => {
+      const input = {
+        active: false,
+        count: 0,
+        name: '',
+        text: 'hello',
+        valid: true,
+      };
+
+      const expected = {
+        text: 'hello',
+        valid: true,
+      };
+
+      expect(Obj.compact(input)).toEqual(expected);
+    });
+
+    it('should preserve truthy values like empty objects and arrays', () => {
+      const input = {
+        data: {},
+        id: 123,
+        list: [],
+      };
+
+      expect(Obj.compact(input)).toEqual(input);
+    });
+
+    it('should not mutate the original object', () => {
+      const input = { a: 1, b: null };
+      const result = Obj.compact(input);
+
+      expect(result).not.toBe(input);
+      expect(input.b).toBe(null);
+    });
+
+    it('should correctly handle TypeScript interfaces', () => {
+      interface User {
+        id: number;
+        token: null | string;
+      }
+
+      const user: User = { id: 1, token: null };
+      const result = Obj.compact(user);
+
+      expect(result.id).toBe(1);
+      expect(result.token).toBeUndefined();
+    });
+  });
+
   describe('match', () => {
     it('should return the value when key exists', () => {
       const obj = { age: 30, name: 'John' };
